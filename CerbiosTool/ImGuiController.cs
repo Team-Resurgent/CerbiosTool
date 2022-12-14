@@ -1,5 +1,4 @@
 ﻿using ImGuiNET;
-using Repackinator.Shared;
 using SixLabors.ImageSharp.PixelFormats;
 using System;
 using System.Numerics;
@@ -8,7 +7,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Veldrid;
 
-namespace RepackinatorUI
+namespace CerbiosTool
 {
     public class ImGuiController : IDisposable
     {
@@ -137,12 +136,12 @@ namespace RepackinatorUI
 
         public void InitImages()
         {
-            _cerbiosTextTexture = CreateTextureFromResource("CerbiosTool.Shared.Resources.CerbiosText.png");
-            _safeModeTextTexture = CreateTextureFromResource("CerbiosTool.Shared.Resources.SafeModeText.png");
-            _logo1Texture = CreateTextureFromResource("CerbiosTool.Shared.Resources.Logo1.png");
-            _logo2Texture = CreateTextureFromResource("CerbiosTool.Shared.Resources.Logo2.png");
-            _logo3Texture = CreateTextureFromResource("CerbiosTool.Shared.Resources.Logo3.png");
-            _logo4Texture = CreateTextureFromResource("CerbiosTool.Shared.Resources.Logo4.png");
+            _cerbiosTextTexture = CreateTextureFromResource("CerbiosTool.Resources.CerbiosText.png");
+            _safeModeTextTexture = CreateTextureFromResource("CerbiosTool.Resources.SafeModeText.png");
+            _logo1Texture = CreateTextureFromResource("CerbiosTool.Resources.Logo1.png");
+            _logo2Texture = CreateTextureFromResource("CerbiosTool.Resources.Logo2.png");
+            _logo3Texture = CreateTextureFromResource("CerbiosTool.Resources.Logo3.png");
+            _logo4Texture = CreateTextureFromResource("CerbiosTool.Resources.Logo4.png");
         }
 
         public unsafe ImGuiController(GraphicsDevice gd, OutputDescription outputDescription, int width, int height)

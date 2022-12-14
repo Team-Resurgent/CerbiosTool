@@ -1,6 +1,4 @@
-﻿using CerbiosTool.Shared;
-using ImGuiNET;
-using Repackinator.Shared;
+﻿using ImGuiNET;
 using SharpDX.DXGI;
 using System.Numerics;
 using System.Text;
@@ -8,7 +6,7 @@ using Veldrid;
 using Veldrid.Sdl2;
 using Veldrid.StartupUtilities;
 
-namespace RepackinatorUI
+namespace CerbiosTool
 {
     public class Application
     {

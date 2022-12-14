@@ -4,7 +4,7 @@ using System.Numerics;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 
-namespace RepackinatorUI
+namespace CerbiosTool
 {
     public class PathPicker
     {

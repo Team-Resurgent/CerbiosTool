@@ -18,12 +18,38 @@
 
 	<ItemGroup>
 	  <None Remove="Resources\ARIALUNI.TTF" />
+	  <None Remove="Resources\CerbiosText.png" />
+	  <None Remove="Resources\Logo1.png" />
+	  <None Remove="Resources\Logo2.png" />
+	  <None Remove="Resources\Logo3.png" />
+	  <None Remove="Resources\Logo4.png" />
+	  <None Remove="Resources\pack.exe" />
+	  <None Remove="Resources\SafeModeText.png" />
+	  <None Remove="Resources\unpack.exe" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<EmbeddedResource Include="Resources\ARIALUNI.TTF">
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</EmbeddedResource>
+		<EmbeddedResource Include="Resources\CerbiosText.png">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</EmbeddedResource>
+		<EmbeddedResource Include="Resources\Logo1.png">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</EmbeddedResource>
+		<EmbeddedResource Include="Resources\Logo2.png">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</EmbeddedResource>
+		<EmbeddedResource Include="Resources\Logo3.png">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</EmbeddedResource>
+		<EmbeddedResource Include="Resources\Logo4.png" />
+		<EmbeddedResource Include="Resources\pack.exe" />
+		<EmbeddedResource Include="Resources\SafeModeText.png">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</EmbeddedResource>
+		<EmbeddedResource Include="Resources\unpack.exe" />
 		<EmbeddedResource Include="Shaders/GLSL/imgui-vertex.glsl" LogicalName="imgui-vertex.glsl" />
 		<EmbeddedResource Include="Shaders/GLSL/imgui-frag.glsl" LogicalName="imgui-frag.glsl" />
 		<EmbeddedResource Include="Shaders/HLSL/imgui-vertex.hlsl.bytes" LogicalName="imgui-vertex.hlsl.bytes" />
@@ -45,11 +71,8 @@
 
 	<ItemGroup>
 		<PackageReference Include="ImGui.NET" Version="1.87.3" />
+		<PackageReference Include="SixLabors.ImageSharp.Drawing" Version="1.0.0-beta15" />
 		<PackageReference Include="Veldrid.StartupUtilities" Version="4.8.0" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <ProjectReference Include="..\CerbiosTool.Shared\CerbiosTool.Shared.csproj" />
 	</ItemGroup>
 
 </Project>
