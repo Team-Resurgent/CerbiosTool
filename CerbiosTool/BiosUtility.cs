@@ -151,7 +151,7 @@ namespace CerbiosTool
             return true;
         }
 
-        public static void SaveBiosComfig(Config config, string path, byte[] biosData)
+        public static void SaveBiosConfig(Config config, string loadPath, string savePath, byte[] biosData)
         {
             var packer = ResourceLoader.GetEmbeddedResourceBytes("CerbiosTool.Resources.pack.exe");
             var tempFile = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
@@ -220,7 +220,8 @@ namespace CerbiosTool
             var tempInFile = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
             File.WriteAllBytes(tempInFile, biosData);
 
-            var processStartInfo = new ProcessStartInfo(tempFile, $"\"{tempInFile}\" \"{path}\" \"{path}\"")
+            var arguments = $"\"{tempInFile}\" \"{loadPath}\" \"{savePath}\"";
+            var processStartInfo = new ProcessStartInfo(tempFile, arguments)
             {
                 CreateNoWindow = true
             };

@@ -14,7 +14,8 @@ namespace CerbiosTool
         private GraphicsDevice? m_graphicsDevice;
         private CommandList? m_commandList;
         private ImGuiController? m_controller;
-        private PathPicker? m_biosFilePicker;
+        private PathPicker? m_biosFileOpenPicker;
+        private PathPicker? m_biosFileSavePicker;
         private OkDialog? m_okDialog;
         private Config m_config = new();
         private bool m_biosLoaded = false;
@@ -142,11 +143,20 @@ namespace CerbiosTool
 
             SetXboxTheme();
 
-            m_biosFilePicker = new PathPicker
+            m_biosFileOpenPicker = new PathPicker
             {
-                Mode = PathPicker.PickerMode.File,
+                Mode = PathPicker.PickerMode.FileOpen,
+                AllowedFiles = new[] { "*.bin" },
                 ButtonName = "Open"
-            };     
+            };
+
+            m_biosFileSavePicker = new PathPicker
+            {
+                Mode = PathPicker.PickerMode.FileSave,
+                AllowedFiles = new[] { "*.bin" },
+                SaveName = "Bios.bin",
+                ButtonName = "Save"
+            };
 
             m_okDialog = new();
 
@@ -190,16 +200,23 @@ namespace CerbiosTool
         {
             if (m_window == null ||
                 m_controller == null ||
-                m_biosFilePicker == null ||
+                m_biosFileOpenPicker == null ||
+                m_biosFileSavePicker == null ||
                 m_okDialog == null)
             {
                 return;
             }
 
-            if (m_biosFilePicker.Render() && !m_biosFilePicker.Cancelled)
+            if (m_biosFileOpenPicker.Render() && !m_biosFileOpenPicker.Cancelled)
             {
-                m_biosPath = Path.Combine(m_biosFilePicker.SelectedFolder, m_biosFilePicker.SelectedFile);
+                m_biosPath = Path.Combine(m_biosFileOpenPicker.SelectedFolder, m_biosFileOpenPicker.SelectedFile);
                 m_biosLoaded = BiosUtility.LoadBiosComfig(m_biosPath, ref m_config, ref m_biosData); 
+            }
+
+            if (m_biosFileSavePicker.Render() && !m_biosFileSavePicker.Cancelled && m_biosPath != null)
+            {
+                var savePath = Path.Combine(m_biosFileSavePicker.SelectedFolder, m_biosFileSavePicker.SaveName);
+                BiosUtility.SaveBiosConfig(m_config, m_biosPath, savePath, m_biosData);
             }
 
             m_okDialog.Render();
@@ -306,6 +323,14 @@ namespace CerbiosTool
 
             var frontLed = m_config.FrontLed;
             ImGui.Text("Front LED:");
+            if (ImGui.IsItemHovered())
+            {
+                ImGui.BeginTooltip();
+                ImGui.PushTextWrapPos(ImGui.GetFontSize() * 35.0f);
+                ImGui.TextUnformatted("G = Green, R = Red, A = Amber, O = Off");
+                ImGui.PopTextWrapPos();
+                ImGui.EndTooltip();
+            }
             ImGui.PushItemWidth(200);
             if (ImGui.InputText("##frontLed", ref frontLed, 4))
             {
@@ -333,6 +358,14 @@ namespace CerbiosTool
 
             var igrDash = m_config.IGRDash;
             ImGui.Text("IGR Dash:");
+            if (ImGui.IsItemHovered())
+            {
+                ImGui.BeginTooltip();
+                ImGui.PushTextWrapPos(ImGui.GetFontSize() * 35.0f);
+                ImGui.TextUnformatted("A = 0, B = 1, X = 2, Y = 3, BLACK = 4, WHITE = 5, L-TRIGGER = 6, R-TRIGGER = 7\nUP = 8, DOWN = 9, LEFT = A, RIGHT = B, START = C, BACK = D, L-THUMB = E, R-THUMB = F");
+                ImGui.PopTextWrapPos();
+                ImGui.EndTooltip();
+            }
             ImGui.PushItemWidth(200);
             if (ImGui.InputText("##igrDash", ref igrDash, 4, ImGuiInputTextFlags.CharsHexadecimal))
             {
@@ -342,6 +375,14 @@ namespace CerbiosTool
 
             var igrGame = m_config.IGRGame;
             ImGui.Text("IGR Game:");
+            if (ImGui.IsItemHovered())
+            {
+                ImGui.BeginTooltip();
+                ImGui.PushTextWrapPos(ImGui.GetFontSize() * 35.0f);
+                ImGui.TextUnformatted("A = 0, B = 1, X = 2, Y = 3, BLACK = 4, WHITE = 5, L-TRIGGER = 6, R-TRIGGER = 7\nUP = 8, DOWN = 9, LEFT = A, RIGHT = B, START = C, BACK = D, L-THUMB = E, R-THUMB = F");
+                ImGui.PopTextWrapPos();
+                ImGui.EndTooltip();
+            }
             ImGui.PushItemWidth(200);
             if (ImGui.InputText("##igrGame", ref igrGame, 4, ImGuiInputTextFlags.CharsHexadecimal))
             {
@@ -351,6 +392,14 @@ namespace CerbiosTool
 
             var igrFull = m_config.IGRFull;
             ImGui.Text("IGR Full:");
+            if (ImGui.IsItemHovered())
+            {
+                ImGui.BeginTooltip();
+                ImGui.PushTextWrapPos(ImGui.GetFontSize() * 35.0f);
+                ImGui.TextUnformatted("A = 0, B = 1, X = 2, Y = 3, BLACK = 4, WHITE = 5, L-TRIGGER = 6, R-TRIGGER = 7\nUP = 8, DOWN = 9, LEFT = A, RIGHT = B, START = C, BACK = D, L-THUMB = E, R-THUMB = F");
+                ImGui.PopTextWrapPos();
+                ImGui.EndTooltip();
+            }
             ImGui.PushItemWidth(200);
             if (ImGui.InputText("##igrFull", ref igrFull, 4, ImGuiInputTextFlags.CharsHexadecimal))
             {
@@ -360,6 +409,14 @@ namespace CerbiosTool
 
             var igrShutdown = m_config.IGRShutdown;
             ImGui.Text("IGR Shutdown:");
+            if (ImGui.IsItemHovered())
+            {
+                ImGui.BeginTooltip();
+                ImGui.PushTextWrapPos(ImGui.GetFontSize() * 35.0f);
+                ImGui.TextUnformatted("A = 0, B = 1, X = 2, Y = 3, BLACK = 4, WHITE = 5, L-TRIGGER = 6, R-TRIGGER = 7\nUP = 8, DOWN = 9, LEFT = A, RIGHT = B, START = C, BACK = D, L-THUMB = E, R-THUMB = F");
+                ImGui.PopTextWrapPos();
+                ImGui.EndTooltip();
+            }
             ImGui.PushItemWidth(200);
             if (ImGui.InputText("##igrFull", ref igrShutdown, 4, ImGuiInputTextFlags.CharsHexadecimal))
             {
@@ -461,7 +518,7 @@ namespace CerbiosTool
 
             if (ImGui.Button("Open", new Vector2(75, 30)))
             {
-                m_biosFilePicker.ShowModal(Directory.GetCurrentDirectory());
+                m_biosFileOpenPicker.ShowModal(Directory.GetCurrentDirectory());
             }
 
             if (File.Exists(m_biosPath))
@@ -477,7 +534,7 @@ namespace CerbiosTool
 
                 if (ImGui.Button("Save", new Vector2(75, 30)))
                 {
-                    BiosUtility.SaveBiosComfig(m_config, m_biosPath, m_biosData);
+                    m_biosFileSavePicker.ShowModal(Directory.GetCurrentDirectory());
                 }
             }
 

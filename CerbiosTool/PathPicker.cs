@@ -10,7 +10,8 @@ namespace CerbiosTool
     {
         public enum PickerMode
         {
-            File,
+            FileOpen,
+            FileSave,
             Folder
         }
 
@@ -38,6 +39,13 @@ namespace CerbiosTool
             set => _selectedFolder = value;
         }
 
+        private string _saveName = string.Empty;
+        public string SaveName
+        {
+            get => _saveName;
+            set => _saveName = value;
+        }
+
         public string SelectedFile { get; private set; } = string.Empty;
         public bool Cancelled { get; private set; } = false;
         public string[] AllowedFiles { get; set; } = Array.Empty<string>();
@@ -58,7 +66,7 @@ namespace CerbiosTool
 
         public PathPicker()
         {
-            Mode = PickerMode.File;
+            Mode = PickerMode.FileOpen;
             AllowedFiles = new[] { "*.bin" };
             ShowHidden = false;
         }
@@ -219,6 +227,7 @@ namespace CerbiosTool
                 if (ImGui.Selectable(name, isSelected, ImGuiSelectableFlags.DontClosePopups | ImGuiSelectableFlags.AllowDoubleClick))
                 {
                     SelectedFile = fse;
+                    SaveName = fse;
                     if (ImGui.IsMouseDoubleClicked(0))
                     {
                         Cancelled = false;
@@ -256,7 +265,7 @@ namespace CerbiosTool
 
             if (ImGui.IsWindowAppearing())
             {
-                ImGui.SetWindowSize(new Vector2(740, 480));
+                ImGui.SetWindowSize(new Vector2(760, 480));
                 ImGui.SetWindowPos(new Vector2(50, 40));
             }
 
@@ -266,7 +275,16 @@ namespace CerbiosTool
             ImGui.InputText("###file-path", ref _selectedFolder, 300, ImGuiInputTextFlags.ReadOnly);
             ImGui.Spacing();
 
-            if (ImGui.BeginChildFrame(1, new Vector2(200, size.Y - 104), ImGuiWindowFlags.None))
+            if (Mode == PickerMode.FileSave)
+            {
+                ImGui.PushItemWidth(size.X - 16);
+                ImGui.InputText("###file-name", ref _saveName, 300, ImGuiInputTextFlags.ReadOnly);
+                ImGui.Spacing();
+            }
+
+            var frameYOffset = ImGui.GetCursorPosY();
+
+            if (ImGui.BeginChildFrame(1, new Vector2(200, size.Y - (46 + frameYOffset)), ImGuiWindowFlags.None))
             {
                 var specialFolders = GetSpecialFolders();
                 foreach (var specialFolder in specialFolders)
@@ -281,7 +299,8 @@ namespace CerbiosTool
             }
 
             ImGui.SameLine();
-            if (ImGui.BeginChildFrame(2, new Vector2(size.X - 224, size.Y - 104), ImGuiWindowFlags.None))
+
+            if (ImGui.BeginChildFrame(2, new Vector2(size.X - 224, size.Y - (46 + frameYOffset)), ImGuiWindowFlags.None))
             {
                 var directoryInfo = new DirectoryInfo(_selectedFolder);
                 if (directoryInfo.Parent != null)
@@ -315,7 +334,8 @@ namespace CerbiosTool
             if (ImGui.Button(ButtonName, new Vector2(100, 30)))
             {
                 var valid = false;
-                valid |= Mode == PickerMode.File && !string.IsNullOrEmpty(SelectedFile);
+                valid |= Mode == PickerMode.FileSave;
+                valid |= Mode == PickerMode.FileOpen && !string.IsNullOrEmpty(SelectedFile);
                 valid |= Mode == PickerMode.Folder && !string.IsNullOrEmpty(SelectedFolder);
                 if (valid)
                 {
