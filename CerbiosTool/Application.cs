@@ -136,7 +136,7 @@ namespace RepackinatorUI
         {
             m_biosPath = string.Empty;
 
-            VeldridStartup.CreateWindowAndGraphicsDevice(new WindowCreateInfo(50, 50, 556 + 320, 410 + 150, WindowState.Normal, $"CerbiosTool - {m_version}"), new GraphicsDeviceOptions(true, null, true, ResourceBindingModel.Improved, true, true), VeldridStartup.GetPlatformDefaultBackend(), out m_window, out m_graphicsDevice);
+            VeldridStartup.CreateWindowAndGraphicsDevice(new WindowCreateInfo(50, 50, 556 + 340, 410 + 130, WindowState.Normal, $"CerbiosTool - {m_version}"), new GraphicsDeviceOptions(true, null, true, ResourceBindingModel.Improved, true, true), VeldridStartup.GetPlatformDefaultBackend(), out m_window, out m_graphicsDevice);
            
             m_window.Resizable = false;
 
@@ -152,7 +152,7 @@ namespace RepackinatorUI
 
             m_okDialog = new();
 
-            m_config = Config.LoadConfig();
+            m_config = Config.LoadConfiguration();
 
             m_window.Resized += () =>
             {
@@ -210,21 +210,180 @@ namespace RepackinatorUI
             ImGui.SetWindowSize(new Vector2(m_window.Width, m_window.Height));
             ImGui.SetWindowPos(new Vector2(0, 0), ImGuiCond.Always);
 
+            ImGui.Spacing();
+
+            ImGui.SetCursorPosY(10);
+            ImGui.BeginChild(1, new Vector2(230, 480), true, ImGuiWindowFlags.AlwaysUseWindowPadding);
+
             if (!m_biosLoaded)
             {
                 ImGui.BeginDisabled();
             }
 
-            ImGui.Spacing();
+            var loadConfig = m_config.LoadConfig == 1;
+            ImGui.Text("Load Config:");
+            Toggle("##loadConfig", ref loadConfig, new Vector2(38, 20));
+            m_config.LoadConfig = (byte)(loadConfig ? 1 : 0);
+
+            string[] driveSetupModes = new string[] { "HDD & DVD", "HDD & No DVD (Legacy Mode)", "HDD & No DVD (Modern Mode)", "Dual HDD" };
+            var driveSetup = (int)m_config.DriveSetup;
+            ImGui.Text("Drive Setup:");
+            ImGui.PushItemWidth(200);
+            ImGui.Combo("##driveSetup", ref driveSetup, driveSetupModes, driveSetupModes.Length);
+            ImGui.PopItemWidth();
+            m_config.DriveSetup = (byte)driveSetup;
+
+            var avCheck = m_config.AVCheck == 1;
+            ImGui.Text("AV Check:");
+            Toggle("##avCheck", ref avCheck, new Vector2(38, 20));
+            m_config.AVCheck = (byte)(avCheck ? 1 : 0);
+
+            var debug = m_config.Debug == 1;
+            ImGui.Text("Debug:");
+            Toggle("##debug", ref debug, new Vector2(38, 20));
+            m_config.Debug = (byte)(debug ? 1 : 0);
+
+            var cdPath1 = m_config.CdPath1;
+            ImGui.Text("Cd Path 1:");
+            ImGui.PushItemWidth(200);
+            if (ImGui.InputText("##cdPath1", ref cdPath1, 99))
+            {
+                m_config.CdPath1 = cdPath1;
+            }
+            ImGui.PopItemWidth();
+
+            var cdPath2 = m_config.CdPath2;
+            ImGui.Text("Cd Path 2:");
+            ImGui.PushItemWidth(200);
+            if (ImGui.InputText("##cdPath2", ref cdPath2, 99))
+            {
+                m_config.CdPath2 = cdPath2;
+            }
+            ImGui.PopItemWidth();
+
+            var cdPath3 = m_config.CdPath3;
+            ImGui.Text("Cd Path 3:");
+            ImGui.PushItemWidth(200);
+            if (ImGui.InputText("##cdPath3", ref cdPath3, 99))
+            {
+                m_config.CdPath3 = cdPath3;
+            }
+            ImGui.PopItemWidth();
+
+            var dashPath1 = m_config.DashPath1;
+            ImGui.Text("Dash Path 1:");
+            ImGui.PushItemWidth(200);
+            if (ImGui.InputText("##dashPath1", ref dashPath1, 99))
+            {
+                m_config.DashPath1 = dashPath1;
+            }
+            ImGui.PopItemWidth();
+
+            var dashPath2 = m_config.DashPath2;
+            ImGui.Text("Dash Path 2:");
+            ImGui.PushItemWidth(200);
+            if (ImGui.InputText("##dashPath2", ref dashPath2, 99))
+            {
+                m_config.DashPath2 = dashPath2;
+            }
+            ImGui.PopItemWidth();
+
+            var dashPath3 = m_config.DashPath3;
+            ImGui.Text("Dash Path 3:");
+            ImGui.PushItemWidth(200);
+            if (ImGui.InputText("##dashPath3", ref dashPath3, 99))
+            {
+                m_config.DashPath3 = dashPath3;
+            }
+            ImGui.PopItemWidth();
+
+            var bootAnimPath = m_config.BootAnimPath;
+            ImGui.Text("Boot Anim Path:");
+            ImGui.PushItemWidth(200);
+            if (ImGui.InputText("##bootAnimPath", ref bootAnimPath, 99))
+            {
+                m_config.BootAnimPath = bootAnimPath;
+            }
+            ImGui.PopItemWidth();
+
+            var frontLed = m_config.FrontLed;
+            ImGui.Text("Front LED:");
+            ImGui.PushItemWidth(200);
+            if (ImGui.InputText("##frontLed", ref frontLed, 4))
+            {
+                var result = string.Empty;
+                frontLed = frontLed.ToUpper();
+                for (var i =0; i < frontLed.Length; i++)
+                {
+                    if (!frontLed[i].Equals('G') && !frontLed[i].Equals('R') && !frontLed[i].Equals('A') && !frontLed[i].Equals('O')) {
+                        continue;
+                    }
+                    result += frontLed[i];
+                    result.PadRight(4, 'O');
+                }
+                m_config.FrontLed = result;
+            }
+            ImGui.PopItemWidth();
+
+            string[] igrMasterPorts = new string[] { "All", "1", "2", "3", "4" };
+            var igrMasterPort = (int)m_config.IGRMasterPort;
+            ImGui.Text("IGR Master Port:");
+            ImGui.PushItemWidth(200);
+            ImGui.Combo("##igrMasterPort", ref igrMasterPort, igrMasterPorts, igrMasterPorts.Length);
+            ImGui.PopItemWidth();
+            m_config.IGRMasterPort = (byte)igrMasterPort;
+
+            var igrDash = m_config.IGRDash;
+            ImGui.Text("IGR Dash:");
+            ImGui.PushItemWidth(200);
+            if (ImGui.InputText("##igrDash", ref igrDash, 4, ImGuiInputTextFlags.CharsHexadecimal))
+            {
+                m_config.IGRDash = igrDash;
+            }
+            ImGui.PopItemWidth();
+
+            var igrGame = m_config.IGRGame;
+            ImGui.Text("IGR Game:");
+            ImGui.PushItemWidth(200);
+            if (ImGui.InputText("##igrGame", ref igrGame, 4, ImGuiInputTextFlags.CharsHexadecimal))
+            {
+                m_config.IGRGame = igrGame;
+            }
+            ImGui.PopItemWidth();
+
+            var igrFull = m_config.IGRFull;
+            ImGui.Text("IGR Full:");
+            ImGui.PushItemWidth(200);
+            if (ImGui.InputText("##igrFull", ref igrFull, 4, ImGuiInputTextFlags.CharsHexadecimal))
+            {
+                m_config.IGRFull = igrFull;
+            }
+            ImGui.PopItemWidth();
+
+            var igrShutdown = m_config.IGRShutdown;
+            ImGui.Text("IGR Shutdown:");
+            ImGui.PushItemWidth(200);
+            if (ImGui.InputText("##igrFull", ref igrShutdown, 4, ImGuiInputTextFlags.CharsHexadecimal))
+            {
+                m_config.IGRShutdown = igrShutdown;
+            }
+            ImGui.PopItemWidth();
+
+            string[] fanSpeeds = new string[] { "Auto", "10", "20", "30", "40", "50", "60", "70", "80", "90", "100" };
+            var fanSpeed = (int)m_config.FanSpeed / 10;
+            ImGui.Text("Fan Speed:");
+            ImGui.PushItemWidth(200);
+            ImGui.Combo("##fanSpeed", ref fanSpeed, fanSpeeds, fanSpeeds.Length);
+            ImGui.PopItemWidth();
+            m_config.FanSpeed = (byte)(fanSpeed * 10);
 
             string[] udmaModes = new string[] { "UDMA 2", "UDMA 3", "UDMA 4", "UDMA 5" };
-
             var udmaMode = (int)m_config.UDMAMode - 2;
             ImGui.Text("UDMA Mode:");
             ImGui.PushItemWidth(200);
             ImGui.Combo("##udmaMode", ref udmaMode, udmaModes, udmaModes.Length);            
             ImGui.PopItemWidth();
-            m_config.UDMAMode = (uint)udmaMode + 2;
+            m_config.UDMAMode = (byte)(udmaMode + 2);
 
             var splashBackground = Config.RGBToVector3(m_config.SplashBackground);
             ImGui.Text("Splash Background:");
@@ -268,12 +427,21 @@ namespace RepackinatorUI
             ImGui.PopItemWidth();
             m_config.SplashLogo3 = Config.Vector3ToRGB(splashLogo3);
 
+            var splashLogo4 = Config.RGBToVector3(m_config.SplashLogo4);
+            ImGui.Text("Splash Logo4:");
+            ImGui.PushItemWidth(200);
+            ImGui.ColorEdit3("##splashLogo4", ref splashLogo4, ImGuiColorEditFlags.DisplayHex);
+            ImGui.PopItemWidth();
+            m_config.SplashLogo4 = Config.Vector3ToRGB(splashLogo4);
+
             if (!m_biosLoaded)
             {
                 ImGui.EndDisabled();
             }
 
-            var startPos = new Vector2(220, 26);
+            ImGui.EndChild();
+
+            var startPos = new Vector2(250, 10);
             var size = new Vector2(640, 480);
             var drawList = ImGui.GetWindowDrawList();
             drawList.AddRectFilled(startPos, startPos + size, ImGui.ColorConvertFloat4ToU32(Config.RGBToVector4(m_config.SplashBackground)));
@@ -284,6 +452,8 @@ namespace RepackinatorUI
             ImGui.Image(m_controller.Logo2Texture, size, Vector2.Zero, Vector2.One, Config.RGBToVector4(m_config.SplashLogo2));
             ImGui.SetCursorPos(startPos);
             ImGui.Image(m_controller.Logo3Texture, size, Vector2.Zero, Vector2.One, Config.RGBToVector4(m_config.SplashLogo3));
+            ImGui.SetCursorPos(startPos);
+            ImGui.Image(m_controller.Logo4Texture, size, Vector2.Zero, Vector2.One, Config.RGBToVector4(m_config.SplashLogo4));
             ImGui.SetCursorPos(startPos);
             ImGui.Image(m_controller.CerbiosTextTexture, size, Vector2.Zero, Vector2.One, Config.RGBToVector4(m_config.SplashCerbiosText));
             ImGui.SetCursorPos(startPos);

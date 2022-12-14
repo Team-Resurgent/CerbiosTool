@@ -32,6 +32,7 @@ namespace RepackinatorUI
         private IntPtr _logo1Texture;
         private IntPtr _logo2Texture;
         private IntPtr _logo3Texture;
+        private IntPtr _logo4Texture;
 
         private IntPtr _fontAtlasID = (IntPtr)1;
         private IntPtr _iniNamePtr = IntPtr.Zero;
@@ -55,8 +56,7 @@ namespace RepackinatorUI
         public IntPtr Logo1Texture => _logo1Texture;
         public IntPtr Logo2Texture => _logo2Texture;
         public IntPtr Logo3Texture => _logo3Texture;
-
-
+        public IntPtr Logo4Texture => _logo4Texture;
 
         //private static IntPtr ImportResolver(string libraryName, Assembly assembly, DllImportSearchPath? searchPath)
         //{
@@ -141,7 +141,8 @@ namespace RepackinatorUI
             _safeModeTextTexture = CreateTextureFromResource("CerbiosTool.Shared.Resources.SafeModeText.png");
             _logo1Texture = CreateTextureFromResource("CerbiosTool.Shared.Resources.Logo1.png");
             _logo2Texture = CreateTextureFromResource("CerbiosTool.Shared.Resources.Logo2.png");
-            _logo3Texture = CreateTextureFromResource("CerbiosTool.Shared.Resources.Logo3.png");         
+            _logo3Texture = CreateTextureFromResource("CerbiosTool.Shared.Resources.Logo3.png");
+            _logo4Texture = CreateTextureFromResource("CerbiosTool.Shared.Resources.Logo4.png");
         }
 
         public unsafe ImGuiController(GraphicsDevice gd, OutputDescription outputDescription, int width, int height)
