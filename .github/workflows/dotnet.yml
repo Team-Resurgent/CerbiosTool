@@ -1,4 +1,4 @@
-name: .NET
+name: BuildCerbiosTool
 
 on:
   push:
@@ -56,9 +56,9 @@ jobs:
           ${{ github.workspace }}/CerbiosTool.nfo
           ${{ github.workspace }}/README.md
           ${{ github.workspace }}/${{ matrix.project }}-${{ matrix.os_flavor }}.${{ matrix.archive_ext }}
-    - name: Create Release
+    - name: Create Draft Release
       uses: softprops/action-gh-release@v1
-      if: startsWith(github.ref, 'refs/tags/')
+      if: startsWith(github.ref, 'refs/heads/main')
       with:
         files: |
           ${{ github.workspace }}/CerbiosTool.nfo
