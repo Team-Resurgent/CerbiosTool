@@ -12,7 +12,7 @@ permissions:
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     strategy:
       matrix:
@@ -40,8 +40,6 @@ jobs:
       run: chmod +x ${{ github.workspace }}/${{ matrix.project }}/bin/${{ matrix.arch }}/Release/net6.0/${{ matrix.os_flavor }}/publish/${{ matrix.project }}
     - name: Compress binaries
       run: 7z a ${{ github.workspace }}/${{ matrix.project }}-${{ matrix.os_flavor }}.${{ matrix.archive_ext }} ${{ github.workspace }}/${{ matrix.project }}/bin/${{ matrix.arch }}/Release/net6.0/${{ matrix.os_flavor }}/publish/*
-    - name: List directories and files
-      run: find .
     - name: Upload Build Artifact
       uses: actions/upload-artifact@v3
       with:
