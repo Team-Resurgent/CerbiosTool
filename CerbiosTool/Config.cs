@@ -57,6 +57,8 @@ namespace CerbiosTool
 
         public uint SplashLogo4 { get; set; }
 
+        public byte SplashScale { get; set; }
+
         public Config()
         {
             LoadConfig = 1;
@@ -85,6 +87,7 @@ namespace CerbiosTool
             SplashLogo2 = 0x1C00C9;
             SplashLogo3 = 0x4F92F9;
             SplashLogo4 = 0x800000;
+            SplashScale = 1;
         }
 
         public void SetDefaults()
@@ -115,6 +118,7 @@ namespace CerbiosTool
             SplashLogo2 = 0x1C00C9;
             SplashLogo3 = 0x4F92F9;
             SplashLogo4 = 0x800000;
+            SplashScale = 1;
         }
 
         public static Vector3 RGBToVector3(uint color)

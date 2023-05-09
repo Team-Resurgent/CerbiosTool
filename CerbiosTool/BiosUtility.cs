@@ -110,42 +110,55 @@ namespace CerbiosTool
 
             biosData = File.ReadAllBytes(tempOutFile);
 
-            var searchPattern = new byte[] { 0x43, 0x45, 0x52, 0x42, 0x49, 0x4f, 0x53, 0x21, 0x21, 0x21 };
-            var configOffset = SearchData(biosData, searchPattern);
-            if (configOffset >= 0)
+            var searchPatternMain = new byte[] { (byte)'C', (byte)'E', (byte)'R', (byte)'B', (byte)'I', (byte)'O', (byte)'S', (byte)'-', (byte)'M', (byte)'A', (byte)'I', (byte)'N', (byte)'-', (byte)'-' };
+            var configOffsetMain = SearchData(biosData, searchPatternMain);
+            if (configOffsetMain >= 0)
             {                
-                var version = biosData[configOffset + 10];                
-                if (version != 1)
+                var version = new string(new char[] { (char)biosData[configOffsetMain + 14], (char)biosData[configOffsetMain + 15] });                
+                if (version != "01")
                 {
                     return false;
                 }
 
-                config.LoadConfig = biosData[configOffset + 11];
-                config.DriveSetup = biosData[configOffset + 12];
-                config.AVCheck = biosData[configOffset + 13];
-                config.Debug = biosData[configOffset + 14];
-                config.CdPath1 = GetString(biosData, configOffset + 15, 100);
-                config.CdPath2 = GetString(biosData, configOffset + 115, 100);
-                config.CdPath3 = GetString(biosData, configOffset + 215, 100);
-                config.DashPath1 = GetString(biosData, configOffset + 315, 100);
-                config.DashPath2 = GetString(biosData, configOffset + 415, 100);
-                config.DashPath3 = GetString(biosData, configOffset + 515, 100);
-                config.BootAnimPath = GetString(biosData, configOffset + 615, 100);
-                config.FrontLed = GetString(biosData, configOffset + 715, 4);
-                config.IGRMasterPort = biosData[configOffset + 719];
-                config.IGRDash = ShortToIGR((ushort)((biosData[configOffset + 720] << 8) | biosData[configOffset + 721]));
-                config.IGRGame = ShortToIGR((ushort)((biosData[configOffset + 722] << 8) | biosData[configOffset + 723]));
-                config.IGRFull = ShortToIGR((ushort)((biosData[configOffset + 724] << 8) | biosData[configOffset + 725]));
-                config.IGRShutdown = ShortToIGR((ushort)((biosData[configOffset + 726] << 8) | biosData[configOffset + 727]));
-                config.FanSpeed = biosData[configOffset + 728];
-                config.UDMAMode = biosData[configOffset + 729];
-                config.SplashBackground = (uint)((biosData[configOffset + 730] << 16) | (biosData[configOffset + 731] << 8) | biosData[configOffset + 732]);
-                config.SplashCerbiosText = (uint)((biosData[configOffset + 733] << 16) | (biosData[configOffset + 734] << 8) | biosData[configOffset + 735]);
-                config.SplashSafeModeText = (uint)((biosData[configOffset + 736] << 16) | (biosData[configOffset + 737] << 8) | biosData[configOffset + 738]);
-                config.SplashLogo1 = (uint)((biosData[configOffset + 739] << 16) | (biosData[configOffset + 740] << 8) | biosData[configOffset + 741]);
-                config.SplashLogo2 = (uint)((biosData[configOffset + 742] << 16) | (biosData[configOffset + 743] << 8) | biosData[configOffset + 744]);
-                config.SplashLogo3 = (uint)((biosData[configOffset + 745] << 16) | (biosData[configOffset + 746] << 8) | biosData[configOffset + 747]);
-                config.SplashLogo4 = (uint)((biosData[configOffset + 748] << 16) | (biosData[configOffset + 749] << 8) | biosData[configOffset + 750]);
+                config.LoadConfig = biosData[configOffsetMain + 16];
+                config.AVCheck = biosData[configOffsetMain + 17];
+                config.Debug = biosData[configOffsetMain + 18];
+                config.DriveSetup = biosData[configOffsetMain + 19];
+                config.CdPath1 = GetString(biosData, configOffsetMain + 20, 100);
+                config.CdPath2 = GetString(biosData, configOffsetMain + 120, 100);
+                config.CdPath3 = GetString(biosData, configOffsetMain + 220, 100);
+                config.DashPath1 = GetString(biosData, configOffsetMain + 320, 100);
+                config.DashPath2 = GetString(biosData, configOffsetMain + 420, 100);
+                config.DashPath3 = GetString(biosData, configOffsetMain + 520, 100);
+                config.BootAnimPath = GetString(biosData, configOffsetMain + 620, 100);
+                config.FrontLed = GetString(biosData, configOffsetMain + 720, 5);
+                config.FanSpeed = biosData[configOffsetMain + 725];
+                config.UDMAMode = biosData[configOffsetMain + 726];
+                config.SplashBackground = (uint)((biosData[configOffsetMain + 727]) | (biosData[configOffsetMain + 728] << 8) | biosData[configOffsetMain + 729] << 16);
+                config.SplashCerbiosText = (uint)((biosData[configOffsetMain + 731]) | (biosData[configOffsetMain + 732] << 8) | biosData[configOffsetMain + 733] << 16);
+                config.SplashSafeModeText = (uint)((biosData[configOffsetMain + 735]) | (biosData[configOffsetMain + 736] << 8) | biosData[configOffsetMain + 737] << 16);
+                config.SplashLogo1 = (uint)((biosData[configOffsetMain + 739]) | (biosData[configOffsetMain + 740] << 8) | biosData[configOffsetMain + 741] << 16);
+                config.SplashLogo2 = (uint)((biosData[configOffsetMain + 743]) | (biosData[configOffsetMain + 744] << 8) | biosData[configOffsetMain + 745] << 16);
+                config.SplashLogo3 = (uint)((biosData[configOffsetMain + 747]) | (biosData[configOffsetMain + 748] << 8) | biosData[configOffsetMain + 749] << 16);
+                config.SplashLogo4 = (uint)((biosData[configOffsetMain + 751]) | (biosData[configOffsetMain + 752] << 8) | biosData[configOffsetMain + 753] << 16);
+                config.SplashScale = biosData[configOffsetMain + 755];
+            }
+
+            var searchPatternIGR = new byte[] { (byte)'C', (byte)'E', (byte)'R', (byte)'B', (byte)'I', (byte)'O', (byte)'S', (byte)'-', (byte)'I', (byte)'G', (byte)'R', (byte)'-', (byte)'-', (byte)'-' };
+            var configOffsetIGR = SearchData(biosData, searchPatternIGR);
+            if (configOffsetIGR >= 0)
+            {
+                var version = new string(new char[] { (char)biosData[configOffsetIGR + 14], (char)biosData[configOffsetIGR + 15] });
+                if (version != "01")
+                {
+                    return false;
+                }
+
+                config.IGRMasterPort = biosData[configOffsetIGR + 16];
+                config.IGRDash = ShortToIGR((ushort)((biosData[configOffsetIGR + 17] << 8) | biosData[configOffsetIGR + 18]));
+                config.IGRGame = ShortToIGR((ushort)((biosData[configOffsetIGR + 20] << 8) | biosData[configOffsetIGR + 21]));
+                config.IGRFull = ShortToIGR((ushort)((biosData[configOffsetIGR + 23] << 8) | biosData[configOffsetIGR + 24]));
+                config.IGRShutdown = ShortToIGR((ushort)((biosData[configOffsetIGR + 26] << 8) | biosData[configOffsetIGR + 27]));
             }
 
             return true;
@@ -157,64 +170,82 @@ namespace CerbiosTool
             var tempFile = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
             File.WriteAllBytes(tempFile, packer);
 
-            var searchPattern = new byte[] { 0x43, 0x45, 0x52, 0x42, 0x49, 0x4f, 0x53, 0x21, 0x21, 0x21 };
-            var configOffset = SearchData(biosData, searchPattern);
-            if (configOffset >= 0)
+            var searchPatternMain = new byte[] { (byte)'C', (byte)'E', (byte)'R', (byte)'B', (byte)'I', (byte)'O', (byte)'S', (byte)'-', (byte)'M', (byte)'A', (byte)'I', (byte)'N', (byte)'-', (byte)'-' };
+            var configOffsetMain = SearchData(biosData, searchPatternMain);
+            if (configOffsetMain >= 0)
             {
-                var version = biosData[configOffset + 10];
-                if (version != 1)
+                var version = new string(new char[] { (char)biosData[configOffsetMain + 14], (char)biosData[configOffsetMain + 15] });
+                if (version != "01")
                 {
                     return;
                 }
 
-                biosData[configOffset + 11] = config.LoadConfig;
-                biosData[configOffset + 12] = config.DriveSetup;
-                biosData[configOffset + 13] = config.AVCheck;
-                biosData[configOffset + 14] = config.Debug;
-                SetString(config.CdPath1, biosData, configOffset + 15, 100);
-                SetString(config.CdPath2, biosData, configOffset + 115, 100);
-                SetString(config.CdPath3, biosData, configOffset + 215, 100);
-                SetString(config.DashPath1, biosData, configOffset + 315, 100);
-                SetString(config.DashPath2, biosData, configOffset + 415, 100);
-                SetString(config.DashPath3, biosData, configOffset + 515, 100);
-                SetString(config.BootAnimPath, biosData, configOffset + 615, 100);
-                SetString(config.FrontLed.PadRight(4, 'O'), biosData, configOffset + 715, 4);
-                biosData[configOffset + 719] = config.IGRMasterPort;
+                config.CdPath1 = GetString(biosData, configOffsetMain + 20, 100);
+                config.CdPath2 = GetString(biosData, configOffsetMain + 120, 100);
+                config.CdPath3 = GetString(biosData, configOffsetMain + 220, 100);
+                config.DashPath1 = GetString(biosData, configOffsetMain + 320, 100);
+                config.DashPath2 = GetString(biosData, configOffsetMain + 420, 100);
+                config.DashPath3 = GetString(biosData, configOffsetMain + 520, 100);
+                config.BootAnimPath = GetString(biosData, configOffsetMain + 620, 100);
+                config.FrontLed = GetString(biosData, configOffsetMain + 720, 5);
+                config.FanSpeed = biosData[configOffsetMain + 725];
+                SetString(config.CdPath1, biosData, configOffsetMain + 20, 100);
+                SetString(config.CdPath2, biosData, configOffsetMain + 120, 100);
+                SetString(config.CdPath3, biosData, configOffsetMain + 220, 100);
+                SetString(config.DashPath1, biosData, configOffsetMain + 320, 100);
+                SetString(config.DashPath2, biosData, configOffsetMain + 420, 100);
+                SetString(config.DashPath3, biosData, configOffsetMain + 520, 100);
+                SetString(config.BootAnimPath, biosData, configOffsetMain + 620, 100);
+                SetString(config.FrontLed.PadRight(4, 'O'), biosData, configOffsetMain + 720, 5);
+                biosData[configOffsetMain + 725] = config.FanSpeed;
+                biosData[configOffsetMain + 726] = config.UDMAMode;
+                biosData[configOffsetMain + 726] = (byte)((config.SplashBackground) & 0xff);
+                biosData[configOffsetMain + 728] = (byte)((config.SplashBackground >> 8) & 0xff);
+                biosData[configOffsetMain + 729] = (byte)((config.SplashBackground >> 16) & 0xff);
+                biosData[configOffsetMain + 731] = (byte)((config.SplashCerbiosText) & 0xff);
+                biosData[configOffsetMain + 732] = (byte)((config.SplashCerbiosText >> 8) & 0xff);
+                biosData[configOffsetMain + 733] = (byte)((config.SplashCerbiosText >> 16) & 0xff);
+                biosData[configOffsetMain + 735] = (byte)((config.SplashSafeModeText) & 0xff);
+                biosData[configOffsetMain + 736] = (byte)((config.SplashSafeModeText >> 8) & 0xff);
+                biosData[configOffsetMain + 737] = (byte)((config.SplashSafeModeText >> 16) & 0xff);
+                biosData[configOffsetMain + 739] = (byte)((config.SplashLogo1) & 0xff);
+                biosData[configOffsetMain + 740] = (byte)((config.SplashLogo1 >> 8) & 0xff);
+                biosData[configOffsetMain + 741] = (byte)((config.SplashLogo1 >> 16) & 0xff);
+                biosData[configOffsetMain + 743] = (byte)((config.SplashLogo2) & 0xff);
+                biosData[configOffsetMain + 744] = (byte)((config.SplashLogo2 >> 8) & 0xff);
+                biosData[configOffsetMain + 745] = (byte)((config.SplashLogo2 >> 16) & 0xff);
+                biosData[configOffsetMain + 747] = (byte)((config.SplashLogo3) & 0xff);
+                biosData[configOffsetMain + 748] = (byte)((config.SplashLogo3 >> 8) & 0xff);
+                biosData[configOffsetMain + 749] = (byte)((config.SplashLogo3 >> 16) & 0xff);
+                biosData[configOffsetMain + 751] = (byte)((config.SplashLogo4) & 0xff);
+                biosData[configOffsetMain + 752] = (byte)((config.SplashLogo4 >> 8) & 0xff);
+                biosData[configOffsetMain + 753] = (byte)((config.SplashLogo4 >> 16) & 0xff);
+                biosData[configOffsetMain + 754] = config.SplashScale;
+            }
+
+            var searchPatternIGR = new byte[] { (byte)'C', (byte)'E', (byte)'R', (byte)'B', (byte)'I', (byte)'O', (byte)'S', (byte)'-', (byte)'I', (byte)'G', (byte)'R', (byte)'-', (byte)'-', (byte)'-' };
+            var configOffsetIGR = SearchData(biosData, searchPatternIGR);
+            if (configOffsetIGR >= 0)
+            {
+                var version = new string(new char[] { (char)biosData[configOffsetIGR + 14], (char)biosData[configOffsetIGR + 15] });
+                if (version != "01")
+                {
+                    return;
+                }
+
+                biosData[configOffsetIGR + 16] = config.IGRMasterPort;
                 var tempIgrDash = IGRToUshort(config.IGRDash);
-                biosData[configOffset + 720] = (byte)((tempIgrDash >> 8) & 0xff);
-                biosData[configOffset + 721] = (byte)(tempIgrDash & 0xff);
+                biosData[configOffsetIGR + 17] = (byte)((tempIgrDash >> 8) & 0xff);
+                biosData[configOffsetIGR + 18] = (byte)(tempIgrDash & 0xff);
                 var tempIgrGame = IGRToUshort(config.IGRGame);
-                biosData[configOffset + 722] = (byte)((tempIgrGame >> 8) & 0xff);
-                biosData[configOffset + 723] = (byte)(tempIgrGame & 0xff);
+                biosData[configOffsetIGR + 20] = (byte)((tempIgrGame >> 8) & 0xff);
+                biosData[configOffsetIGR + 21] = (byte)(tempIgrGame & 0xff);
                 var tempIgrFull = IGRToUshort(config.IGRFull);
-                biosData[configOffset + 724] = (byte)((tempIgrFull >> 8) & 0xff);
-                biosData[configOffset + 725] = (byte)(tempIgrFull & 0xff);
+                biosData[configOffsetIGR + 23] = (byte)((tempIgrFull >> 8) & 0xff);
+                biosData[configOffsetIGR + 24] = (byte)(tempIgrFull & 0xff);
                 var tempIgrShutdown = IGRToUshort(config.IGRShutdown);
-                biosData[configOffset + 726] = (byte)((tempIgrShutdown >> 8) & 0xff);
-                biosData[configOffset + 727] = (byte)(tempIgrShutdown & 0xff);
-                biosData[configOffset + 728] = config.FanSpeed;
-                biosData[configOffset + 729] = (byte)config.UDMAMode;
-                biosData[configOffset + 730] = (byte)((config.SplashBackground >> 16) & 0xff);
-                biosData[configOffset + 731] = (byte)((config.SplashBackground >> 8) & 0xff);
-                biosData[configOffset + 732] = (byte)(config.SplashBackground & 0xff);
-                biosData[configOffset + 733] = (byte)((config.SplashCerbiosText >> 16) & 0xff);
-                biosData[configOffset + 734] = (byte)((config.SplashCerbiosText >> 8) & 0xff);
-                biosData[configOffset + 735] = (byte)(config.SplashCerbiosText & 0xff);
-                biosData[configOffset + 736] = (byte)((config.SplashSafeModeText >> 16) & 0xff);
-                biosData[configOffset + 737] = (byte)((config.SplashSafeModeText >> 8) & 0xff);
-                biosData[configOffset + 738] = (byte)(config.SplashSafeModeText & 0xff);
-                biosData[configOffset + 739] = (byte)((config.SplashLogo1 >> 16) & 0xff);
-                biosData[configOffset + 740] = (byte)((config.SplashLogo1 >> 8) & 0xff);
-                biosData[configOffset + 741] = (byte)(config.SplashLogo1 & 0xff);
-                biosData[configOffset + 742] = (byte)((config.SplashLogo2 >> 16) & 0xff);
-                biosData[configOffset + 743] = (byte)((config.SplashLogo2 >> 8) & 0xff);
-                biosData[configOffset + 744] = (byte)(config.SplashLogo2 & 0xff);
-                biosData[configOffset + 745] = (byte)((config.SplashLogo3 >> 16) & 0xff);
-                biosData[configOffset + 746] = (byte)((config.SplashLogo3 >> 8) & 0xff);
-                biosData[configOffset + 747] = (byte)(config.SplashLogo3 & 0xff);
-                biosData[configOffset + 748] = (byte)((config.SplashLogo4 >> 16) & 0xff);
-                biosData[configOffset + 749] = (byte)((config.SplashLogo4 >> 8) & 0xff);
-                biosData[configOffset + 750] = (byte)(config.SplashLogo4 & 0xff);
+                biosData[configOffsetIGR + 26] = (byte)((tempIgrShutdown >> 8) & 0xff);
+                biosData[configOffsetIGR + 27] = (byte)(tempIgrShutdown & 0xff);
             }
 
             var tempInFile = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
