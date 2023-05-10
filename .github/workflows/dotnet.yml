@@ -12,7 +12,7 @@ permissions:
 jobs:
   build:
 
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     strategy:
       matrix:
@@ -53,14 +53,14 @@ jobs:
         tag_name: latest
         draft: true
         files: |
-          ${{ github.workspace }}\CerbiosTool.nfo
-          ${{ github.workspace }}\README.md
-          ${{ github.workspace }}\${{ matrix.project }}-${{ matrix.os_flavor }}.${{ matrix.archive_ext }}
+          ${{ github.workspace }}/CerbiosTool.nfo
+          ${{ github.workspace }}/README.md
+          ${{ github.workspace }}/${{ matrix.project }}-${{ matrix.os_flavor }}.${{ matrix.archive_ext }}
     - name: Create Release
       uses: softprops/action-gh-release@v1
       if: startsWith(github.ref, 'refs/tags/')
       with:
         files: |
-          ${{ github.workspace }}\CerbiosTool.nfo
-          ${{ github.workspace }}\README.md
-          ${{ github.workspace }}\${{ matrix.project }}-${{ matrix.os_flavor }}.${{ matrix.archive_ext }}
+          ${{ github.workspace }}/CerbiosTool.nfo
+          ${{ github.workspace }}/README.md
+          ${{ github.workspace }}/${{ matrix.project }}-${{ matrix.os_flavor }}.${{ matrix.archive_ext }}
