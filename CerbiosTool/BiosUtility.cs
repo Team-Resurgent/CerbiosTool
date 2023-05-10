@@ -180,6 +180,10 @@ namespace CerbiosTool
                     return;
                 }
 
+                biosData[configOffsetMain + 16] = config.LoadConfig;
+                biosData[configOffsetMain + 17] = config.AVCheck;
+                biosData[configOffsetMain + 18] = config.Debug;
+                biosData[configOffsetMain + 19] = config.DriveSetup;
                 config.CdPath1 = GetString(biosData, configOffsetMain + 20, 100);
                 config.CdPath2 = GetString(biosData, configOffsetMain + 120, 100);
                 config.CdPath3 = GetString(biosData, configOffsetMain + 220, 100);
