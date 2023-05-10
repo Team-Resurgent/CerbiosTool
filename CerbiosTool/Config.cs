@@ -131,6 +131,42 @@ namespace CerbiosTool
             SplashScale = 1;
         }
 
+        public void SetBlueTheme()
+        {
+            SplashBackground = 0x000000;
+            SplashCerbiosText = 0xFFFFFF;
+            SplashSafeModeText = 0xFFFFFF;
+            SplashLogo1 = 0x00018D;
+            SplashLogo2 = 0x1C00C9;
+            SplashLogo3 = 0x4F92F9;
+            SplashLogo4 = 0x800000;
+            SplashScale = 1;
+        }
+
+        public void SetRedTheme()
+        {
+            SplashBackground = 0x000000;
+            SplashCerbiosText = 0xFFFFFF;
+            SplashSafeModeText = 0xFFFFFF;
+            SplashLogo1 = 0x8D0001;
+            SplashLogo2 = 0xC9001C;
+            SplashLogo3 = 0xF9924F;
+            SplashLogo4 = 0x000080;
+            SplashScale = 1;
+        }
+
+        public void SetGreenTheme()
+        {
+            SplashBackground = 0x000000;
+            SplashCerbiosText = 0xFFFFFF;
+            SplashSafeModeText = 0xFFFFFF;
+            SplashLogo1 = 0x008D01;
+            SplashLogo2 = 0x00C91C;
+            SplashLogo3 = 0x92F94F;
+            SplashLogo4 = 0x000080;
+            SplashScale = 1;
+        }
+
         public static Vector3 RGBToVector3(uint color)
         {
             var r = ((color >> 16) & 0xff) / 255.0f;

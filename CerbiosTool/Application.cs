@@ -22,7 +22,6 @@ namespace CerbiosTool
         private Settings m_settings = new();
         private bool m_biosLoaded = false;
         private byte[] m_biosData = Array.Empty<byte>();
-        private int m_theme;
 
         private readonly string m_version;
 
@@ -436,7 +435,7 @@ namespace CerbiosTool
             ImGui.PopItemWidth();
 
             string[] fanSpeeds = new string[] { "Auto", "10", "20", "30", "40", "50", "60", "70", "80", "90", "100" };
-            var fanSpeed = (int)m_config.FanSpeed / 10;
+            var fanSpeed = m_config.FanSpeed / 10;
             ImGui.Text("Fan Speed:");
             ImGui.PushItemWidth(200);
             ImGui.Combo("##fanSpeed", ref fanSpeed, fanSpeeds, fanSpeeds.Length);
@@ -444,7 +443,7 @@ namespace CerbiosTool
             m_config.FanSpeed = (byte)(fanSpeed * 10);
 
             string[] udmaModes = new string[] { "UDMA 2", "UDMA 3", "UDMA 4", "UDMA 5" };
-            var udmaMode = (int)m_config.UDMAMode - 2;
+            var udmaMode = m_config.UDMAMode - 2;
             ImGui.Text("UDMA Mode:");
             ImGui.PushItemWidth(200);
             ImGui.Combo("##udmaMode", ref udmaMode, udmaModes, udmaModes.Length);            
@@ -452,14 +451,25 @@ namespace CerbiosTool
             m_config.UDMAMode = (byte)(udmaMode + 2);
 
             string[] themes = new string[] { "Current", "Red", "Green", "Blue" };
+            int theme = 0;
             ImGui.Text("Theme:");
             ImGui.PushItemWidth(200);
-            ImGui.Combo("##theme", ref m_theme, themes, themes.Length);
+            ImGui.Combo("##theme", ref theme, themes, themes.Length);
             ImGui.PopItemWidth();
-            if (m_theme > 0)
+            if (theme > 0)
             {
-                // set theme
-                m_theme = 0;
+                if (theme == 1)
+                {
+                    m_config.SetRedTheme();
+                }
+                else if (theme == 2)
+                {
+                    m_config.SetGreenTheme();
+                }
+                else if (theme == 3)
+                {
+                    m_config.SetBlueTheme();
+                }
             }
 
             var splashBackground = Config.RGBToVector3(m_config.SplashBackground);
