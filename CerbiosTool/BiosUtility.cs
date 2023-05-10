@@ -215,7 +215,7 @@ namespace CerbiosTool
                 biosData[configOffsetMain + 751] = (byte)((config.SplashLogo4) & 0xff);
                 biosData[configOffsetMain + 752] = (byte)((config.SplashLogo4 >> 8) & 0xff);
                 biosData[configOffsetMain + 753] = (byte)((config.SplashLogo4 >> 16) & 0xff);
-                biosData[configOffsetMain + 754] = config.SplashScale;
+                biosData[configOffsetMain + 755] = config.SplashScale;
             }
 
             var searchPatternIGR = new byte[] { (byte)'C', (byte)'E', (byte)'R', (byte)'B', (byte)'I', (byte)'O', (byte)'S', (byte)'-', (byte)'I', (byte)'G', (byte)'R', (byte)'-', (byte)'-', (byte)'-' };
