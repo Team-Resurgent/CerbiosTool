@@ -247,7 +247,7 @@ namespace CerbiosTool
             }
 
             var loadConfig = m_config.LoadConfig == 1;
-            ImGui.Text("Load Config:");
+            ImGui.Text("Load Config From Harddrive:");
             Toggle("##loadConfig", ref loadConfig, new Vector2(38, 20));
             m_config.LoadConfig = (byte)(loadConfig ? 1 : 0);
 
@@ -450,6 +450,17 @@ namespace CerbiosTool
             ImGui.Combo("##udmaMode", ref udmaMode, udmaModes, udmaModes.Length);            
             ImGui.PopItemWidth();
             m_config.UDMAMode = (byte)(udmaMode + 2);
+
+            string[] themes = new string[] { "Current", "Red", "Green", "Blue", "40", "50", "60", "70", "80", "90", "100" };
+            var theme = 0;
+            ImGui.Text("Theme:");
+            ImGui.PushItemWidth(200);
+            ImGui.Combo("##fanSpeed", ref theme, themes, themes.Length);
+            ImGui.PopItemWidth();
+            if (theme > 0)
+            {
+                // set theme
+            }
 
             var splashBackground = Config.RGBToVector3(m_config.SplashBackground);
             ImGui.Text("Splash Background:");

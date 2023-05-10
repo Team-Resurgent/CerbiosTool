@@ -155,10 +155,10 @@ namespace CerbiosTool
                 }
 
                 config.IGRMasterPort = biosData[configOffsetIGR + 16];
-                config.IGRDash = ShortToIGR((ushort)((biosData[configOffsetIGR + 17] << 8) | biosData[configOffsetIGR + 18]));
-                config.IGRGame = ShortToIGR((ushort)((biosData[configOffsetIGR + 20] << 8) | biosData[configOffsetIGR + 21]));
-                config.IGRFull = ShortToIGR((ushort)((biosData[configOffsetIGR + 23] << 8) | biosData[configOffsetIGR + 24]));
-                config.IGRShutdown = ShortToIGR((ushort)((biosData[configOffsetIGR + 26] << 8) | biosData[configOffsetIGR + 27]));
+                config.IGRDash = ShortToIGR((ushort)((biosData[configOffsetIGR + 17]) | (biosData[configOffsetIGR + 18] << 8)));
+                config.IGRGame = ShortToIGR((ushort)((biosData[configOffsetIGR + 20]) | (biosData[configOffsetIGR + 21] << 8)));
+                config.IGRFull = ShortToIGR((ushort)((biosData[configOffsetIGR + 23]) | (biosData[configOffsetIGR + 24] << 8)));
+                config.IGRShutdown = ShortToIGR((ushort)((biosData[configOffsetIGR + 26]) | (biosData[configOffsetIGR + 27] << 8)));
             }
 
             return true;
@@ -235,17 +235,17 @@ namespace CerbiosTool
 
                 biosData[configOffsetIGR + 16] = config.IGRMasterPort;
                 var tempIgrDash = IGRToUshort(config.IGRDash);
-                biosData[configOffsetIGR + 17] = (byte)((tempIgrDash >> 8) & 0xff);
-                biosData[configOffsetIGR + 18] = (byte)(tempIgrDash & 0xff);
+                biosData[configOffsetIGR + 17] = (byte)((tempIgrDash) & 0xff);
+                biosData[configOffsetIGR + 18] = (byte)((tempIgrDash >> 8) & 0xff);
                 var tempIgrGame = IGRToUshort(config.IGRGame);
-                biosData[configOffsetIGR + 20] = (byte)((tempIgrGame >> 8) & 0xff);
-                biosData[configOffsetIGR + 21] = (byte)(tempIgrGame & 0xff);
+                biosData[configOffsetIGR + 20] = (byte)((tempIgrGame) & 0xff);
+                biosData[configOffsetIGR + 21] = (byte)((tempIgrGame >> 8) & 0xff);
                 var tempIgrFull = IGRToUshort(config.IGRFull);
-                biosData[configOffsetIGR + 23] = (byte)((tempIgrFull >> 8) & 0xff);
-                biosData[configOffsetIGR + 24] = (byte)(tempIgrFull & 0xff);
+                biosData[configOffsetIGR + 23] = (byte)((tempIgrFull) & 0xff);
+                biosData[configOffsetIGR + 24] = (byte)((tempIgrFull >> 8) & 0xff);
                 var tempIgrShutdown = IGRToUshort(config.IGRShutdown);
-                biosData[configOffsetIGR + 26] = (byte)((tempIgrShutdown >> 8) & 0xff);
-                biosData[configOffsetIGR + 27] = (byte)(tempIgrShutdown & 0xff);
+                biosData[configOffsetIGR + 26] = (byte)((tempIgrShutdown) & 0xff);
+                biosData[configOffsetIGR + 27] = (byte)((tempIgrShutdown >> 8) & 0xff);
             }
 
             var tempInFile = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
