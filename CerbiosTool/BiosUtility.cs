@@ -184,15 +184,6 @@ namespace CerbiosTool
                 biosData[configOffsetMain + 17] = config.AVCheck;
                 biosData[configOffsetMain + 18] = config.Debug;
                 biosData[configOffsetMain + 19] = config.DriveSetup;
-                config.CdPath1 = GetString(biosData, configOffsetMain + 20, 100);
-                config.CdPath2 = GetString(biosData, configOffsetMain + 120, 100);
-                config.CdPath3 = GetString(biosData, configOffsetMain + 220, 100);
-                config.DashPath1 = GetString(biosData, configOffsetMain + 320, 100);
-                config.DashPath2 = GetString(biosData, configOffsetMain + 420, 100);
-                config.DashPath3 = GetString(biosData, configOffsetMain + 520, 100);
-                config.BootAnimPath = GetString(biosData, configOffsetMain + 620, 100);
-                config.FrontLed = GetString(biosData, configOffsetMain + 720, 5);
-                config.FanSpeed = biosData[configOffsetMain + 725];
                 SetString(config.CdPath1, biosData, configOffsetMain + 20, 100);
                 SetString(config.CdPath2, biosData, configOffsetMain + 120, 100);
                 SetString(config.CdPath3, biosData, configOffsetMain + 220, 100);
@@ -203,7 +194,7 @@ namespace CerbiosTool
                 SetString(config.FrontLed.PadRight(4, 'O'), biosData, configOffsetMain + 720, 5);
                 biosData[configOffsetMain + 725] = config.FanSpeed;
                 biosData[configOffsetMain + 726] = config.UDMAMode;
-                biosData[configOffsetMain + 726] = (byte)((config.SplashBackground) & 0xff);
+                biosData[configOffsetMain + 727] = (byte)((config.SplashBackground) & 0xff);
                 biosData[configOffsetMain + 728] = (byte)((config.SplashBackground >> 8) & 0xff);
                 biosData[configOffsetMain + 729] = (byte)((config.SplashBackground >> 16) & 0xff);
                 biosData[configOffsetMain + 731] = (byte)((config.SplashCerbiosText) & 0xff);
