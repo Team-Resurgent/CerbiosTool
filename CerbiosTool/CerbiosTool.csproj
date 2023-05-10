@@ -76,4 +76,8 @@
 		<PackageReference Include="Veldrid.StartupUtilities" Version="4.8.0" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Properties\" />
+	</ItemGroup>
+
 </Project>

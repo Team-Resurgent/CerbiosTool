@@ -19,9 +19,10 @@ namespace CerbiosTool
         private PathPicker? m_biosFileSavePicker;
         private OkDialog? m_okDialog;
         private Config m_config = new();
+        private Settings m_settings = new();
         private bool m_biosLoaded = false;
         private byte[] m_biosData = Array.Empty<byte>();
-        private string? m_biosPath;
+        private int m_theme;
 
         private readonly string m_version;
 
@@ -137,8 +138,6 @@ namespace CerbiosTool
 
         public void Run()
         {
-            m_biosPath = string.Empty;
-
             VeldridStartup.CreateWindowAndGraphicsDevice(new WindowCreateInfo(50, 50, 556 + 340, 410 + 130, WindowState.Normal, $"CerbiosTool - {m_version}"), new GraphicsDeviceOptions(true, null, true, ResourceBindingModel.Improved, true, true), VeldridStartup.GetPlatformDefaultBackend(), out m_window, out m_graphicsDevice);
            
             m_window.Resizable = false;
@@ -153,6 +152,8 @@ namespace CerbiosTool
             }
 
             SetXboxTheme();
+
+            m_settings = Config.LoadSettings();
 
             m_biosFileOpenPicker = new PathPicker
             {
@@ -170,8 +171,6 @@ namespace CerbiosTool
             };
 
             m_okDialog = new();
-
-            m_config = Config.LoadConfiguration();
 
             m_window.Resized += () =>
             {
@@ -220,14 +219,15 @@ namespace CerbiosTool
 
             if (m_biosFileOpenPicker.Render() && !m_biosFileOpenPicker.Cancelled)
             {
-                m_biosPath = Path.Combine(m_biosFileOpenPicker.SelectedFolder, m_biosFileOpenPicker.SelectedFile);
-                m_biosLoaded = BiosUtility.LoadBiosComfig(m_biosPath, ref m_config, ref m_biosData); 
+                m_settings.BiosPath = Path.Combine(m_biosFileOpenPicker.SelectedFolder, m_biosFileOpenPicker.SelectedFile);
+                m_biosLoaded = BiosUtility.LoadBiosComfig(m_settings.BiosPath, ref m_config, ref m_biosData);
+                Config.SaveSattings(m_settings);
             }
 
-            if (m_biosFileSavePicker.Render() && !m_biosFileSavePicker.Cancelled && m_biosPath != null)
+            if (m_biosFileSavePicker.Render() && !m_biosFileSavePicker.Cancelled && string.IsNullOrEmpty( m_settings.BiosPath) == false)
             {
                 var savePath = Path.Combine(m_biosFileSavePicker.SelectedFolder, m_biosFileSavePicker.SaveName);
-                BiosUtility.SaveBiosConfig(m_config, m_biosPath, savePath, m_biosData);
+                BiosUtility.SaveBiosConfig(m_config, m_settings.BiosPath, savePath, m_biosData);
             }
 
             m_okDialog.Render();
@@ -451,15 +451,15 @@ namespace CerbiosTool
             ImGui.PopItemWidth();
             m_config.UDMAMode = (byte)(udmaMode + 2);
 
-            string[] themes = new string[] { "Current", "Red", "Green", "Blue", "40", "50", "60", "70", "80", "90", "100" };
-            var theme = 0;
+            string[] themes = new string[] { "Current", "Red", "Green", "Blue" };
             ImGui.Text("Theme:");
             ImGui.PushItemWidth(200);
-            ImGui.Combo("##fanSpeed", ref theme, themes, themes.Length);
+            ImGui.Combo("##theme", ref m_theme, themes, themes.Length);
             ImGui.PopItemWidth();
-            if (theme > 0)
+            if (m_theme > 0)
             {
                 // set theme
+                m_theme = 0;
             }
 
             var splashBackground = Config.RGBToVector3(m_config.SplashBackground);
@@ -559,10 +559,15 @@ namespace CerbiosTool
 
             if (ImGui.Button("Open", new Vector2(75, 30)))
             {
-                m_biosFileOpenPicker.ShowModal(Directory.GetCurrentDirectory());
+                var path = Path.GetDirectoryName(m_settings.BiosPath) ?? Directory.GetCurrentDirectory();
+                if (Directory.Exists(path) == false)
+                {
+                    path = Directory.GetCurrentDirectory();
+                }
+                m_biosFileOpenPicker.ShowModal(path);
             }
 
-            if (File.Exists(m_biosPath))
+            if (File.Exists(m_settings.BiosPath))
             {
                 ImGui.SameLine();
 
@@ -575,7 +580,12 @@ namespace CerbiosTool
 
                 if (ImGui.Button("Save", new Vector2(75, 30)))
                 {
-                    m_biosFileSavePicker.ShowModal(Directory.GetCurrentDirectory());
+                    var path = Path.GetDirectoryName(m_settings.BiosPath) ?? Directory.GetCurrentDirectory();
+                    if (Directory.Exists(path) == false)
+                    {
+                        path = Directory.GetCurrentDirectory();
+                    }
+                    m_biosFileSavePicker.ShowModal(path);
                 }
             }
 

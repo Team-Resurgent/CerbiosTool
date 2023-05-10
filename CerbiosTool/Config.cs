@@ -3,6 +3,16 @@ using System.Text.Json;
 
 namespace CerbiosTool
 {
+    public struct Settings
+    {
+        public string BiosPath { get; set; }
+
+        public Settings()
+        {
+            BiosPath = string.Empty;
+        }
+    }
+
     public struct Config
     {
         public byte LoadConfig { get; set; }
@@ -145,31 +155,31 @@ namespace CerbiosTool
             return (uint)((r << 16) | (g << 8) | b);
         }
 
-        public static Config LoadConfiguration(string path)
+        public static Settings LoadSettings(string settingsPath)
         {
-            var configJson = File.ReadAllText(path);
-            var result = JsonSerializer.Deserialize<Config>(configJson);
+            var settingsJson = File.ReadAllText(settingsPath);
+            var result = JsonSerializer.Deserialize<Settings>(settingsJson);
             return result;
         }
 
-        public static Config LoadConfiguration()
+        public static Settings LoadSettings()
         {
             var applicationPath = Utility.GetApplicationPath();
             if (applicationPath == null)
             {
-                return new Config();
+                return new Settings();
             }
 
-            var configPath = Path.Combine(applicationPath, "config.json");
-            if (!File.Exists(configPath))
+            var settingsPath = Path.Combine(applicationPath, "settings.json");
+            if (!File.Exists(settingsPath))
             {
-                return new Config();
+                return new Settings();
             }
 
-            return LoadConfiguration(configPath);
+            return LoadSettings(settingsPath);
         }
 
-        public static void SaveConfiguration(string path, Config? config)
+        public static void SaveSattings(string path, Settings? config)
         {
             if (config == null)
             {
@@ -180,7 +190,7 @@ namespace CerbiosTool
             File.WriteAllText(path, result);
         }
 
-        public static void SaveConfiguration(Config? config)
+        public static void SaveSattings(Settings? settings)
         {
             var applicationPath = Utility.GetApplicationPath();
             if (applicationPath == null)
@@ -188,8 +198,8 @@ namespace CerbiosTool
                 return;
             }
 
-            var configPath = Path.Combine(applicationPath, "config.json");
-            SaveConfiguration(configPath, config);
+            var settingsPath = Path.Combine(applicationPath, "settings.json");
+            SaveSattings(settingsPath, settings);
         }
 
     }

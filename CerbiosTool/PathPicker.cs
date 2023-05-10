@@ -226,8 +226,8 @@ namespace CerbiosTool
                 var isSelected = SelectedFile == fse;
                 if (ImGui.Selectable(name, isSelected, ImGuiSelectableFlags.DontClosePopups | ImGuiSelectableFlags.AllowDoubleClick))
                 {
-                    SelectedFile = fse;
-                    SaveName = fse;
+                    SelectedFile = Path.GetFileName(fse);
+                    SaveName = Path.GetFileName(fse);
                     if (ImGui.IsMouseDoubleClicked(0))
                     {
                         Cancelled = false;
