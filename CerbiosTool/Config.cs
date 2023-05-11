@@ -7,9 +7,59 @@ namespace CerbiosTool
     {
         public string BiosPath { get; set; }
 
+        public string ConfigPath { get; set; }
+
         public Settings()
         {
             BiosPath = string.Empty;
+            ConfigPath = string.Empty;
+        }
+
+        public static Settings LoadSettings(string settingsPath)
+        {
+            var settingsJson = File.ReadAllText(settingsPath);
+            var result = JsonSerializer.Deserialize<Settings>(settingsJson);
+            return result;
+        }
+
+        public static Settings LoadSettings()
+        {
+            var applicationPath = Utility.GetApplicationPath();
+            if (applicationPath == null)
+            {
+                return new Settings();
+            }
+
+            var settingsPath = Path.Combine(applicationPath, "settings.json");
+            if (!File.Exists(settingsPath))
+            {
+                return new Settings();
+            }
+
+            return LoadSettings(settingsPath);
+        }
+
+        public static void SaveSattings(string settingsPath, Settings? settings)
+        {
+            if (settings == null)
+            {
+                return;
+            }
+
+            var result = JsonSerializer.Serialize(settings, new JsonSerializerOptions { WriteIndented = true });
+            File.WriteAllText(settingsPath, result);
+        }
+
+        public static void SaveSattings(Settings? settings)
+        {
+            var applicationPath = Utility.GetApplicationPath();
+            if (applicationPath == null)
+            {
+                return;
+            }
+
+            var settingsPath = Path.Combine(applicationPath, "settings.json");
+            SaveSattings(settingsPath, settings);
         }
     }
 
@@ -140,7 +190,6 @@ namespace CerbiosTool
             SplashLogo2 = 0x1C00C9;
             SplashLogo3 = 0x4F92F9;
             SplashLogo4 = 0x800000;
-            SplashScale = 1;
         }
 
         public void SetRedTheme()
@@ -152,7 +201,6 @@ namespace CerbiosTool
             SplashLogo2 = 0xC9001C;
             SplashLogo3 = 0xF9924F;
             SplashLogo4 = 0x000080;
-            SplashScale = 1;
         }
 
         public void SetGreenTheme()
@@ -164,7 +212,28 @@ namespace CerbiosTool
             SplashLogo2 = 0x00C91C;
             SplashLogo3 = 0x92F94F;
             SplashLogo4 = 0x000080;
-            SplashScale = 1;
+        }
+
+        public void SetTouchOfIndTheme()
+        {
+            SplashBackground = 0xFFFFFF;
+            SplashCerbiosText = 0x6FBD19;
+            SplashSafeModeText = 0x6FBD19;
+            SplashLogo1 = 0x125212;
+            SplashLogo2 = 0x7FC92A;
+            SplashLogo3 = 0xD3F134;
+            SplashLogo4 = 0x000080;
+        }
+
+        public void SetRedEyesWhite()
+        {
+            SplashBackground = 0x000000;
+            SplashCerbiosText = 0x00018D;
+            SplashSafeModeText = 0xA90000;
+            SplashLogo1 = 0x00018D;
+            SplashLogo2 = 0xD2D2D2;
+            SplashLogo3 = 0xADADAD;
+            SplashLogo4 = 0x800000;
         }
 
         public static Vector3 RGBToVector3(uint color)
@@ -191,31 +260,14 @@ namespace CerbiosTool
             return (uint)((r << 16) | (g << 8) | b);
         }
 
-        public static Settings LoadSettings(string settingsPath)
+        public static Config LoadConfiguration(string configPath)
         {
-            var settingsJson = File.ReadAllText(settingsPath);
-            var result = JsonSerializer.Deserialize<Settings>(settingsJson);
+            var configJson = File.ReadAllText(configPath);
+            var result = JsonSerializer.Deserialize<Config>(configJson);
             return result;
         }
 
-        public static Settings LoadSettings()
-        {
-            var applicationPath = Utility.GetApplicationPath();
-            if (applicationPath == null)
-            {
-                return new Settings();
-            }
-
-            var settingsPath = Path.Combine(applicationPath, "settings.json");
-            if (!File.Exists(settingsPath))
-            {
-                return new Settings();
-            }
-
-            return LoadSettings(settingsPath);
-        }
-
-        public static void SaveSattings(string path, Settings? config)
+        public static void SaveConfiguration(string configPath, Config? config)
         {
             if (config == null)
             {
@@ -223,20 +275,7 @@ namespace CerbiosTool
             }
 
             var result = JsonSerializer.Serialize(config, new JsonSerializerOptions { WriteIndented = true });
-            File.WriteAllText(path, result);
+            File.WriteAllText(configPath, result);
         }
-
-        public static void SaveSattings(Settings? settings)
-        {
-            var applicationPath = Utility.GetApplicationPath();
-            if (applicationPath == null)
-            {
-                return;
-            }
-
-            var settingsPath = Path.Combine(applicationPath, "settings.json");
-            SaveSattings(settingsPath, settings);
-        }
-
     }
 }

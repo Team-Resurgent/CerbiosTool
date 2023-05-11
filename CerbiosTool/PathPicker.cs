@@ -46,6 +46,7 @@ namespace CerbiosTool
             set => _saveName = value;
         }
 
+        public string Title { get; set; } = "Picker";
         public string SelectedFile { get; private set; } = string.Empty;
         public bool Cancelled { get; private set; } = false;
         public string[] AllowedFiles { get; set; } = Array.Empty<string>();
@@ -248,7 +249,7 @@ namespace CerbiosTool
             {
                 _showModal = false;
                 _open = true;
-                ImGui.OpenPopup($"{Mode} Browser");
+                ImGui.OpenPopup(Title);
             }
 
             if (!_open)
@@ -256,7 +257,7 @@ namespace CerbiosTool
                 return false;
             }
 
-            if (!ImGui.BeginPopupModal($"{Mode} Browser"))
+            if (!ImGui.BeginPopupModal(Title))
             {
                 return false;
             }
