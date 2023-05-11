@@ -18,23 +18,23 @@ CerbiosTool is designed for use with Cerbios 2.2.2beta or newer *ONLY*
 	
 </div>
 
-											[ Program ...................................... CerbiosTool V1.0.3 ]
-											[ Type .................................... Bios Configuration Tool ]
-											[ Platform ................................................ Windows ]
-											[ OS Architecture ............................................. X64 ]
-											[ By ............................................... Team Resurgent ]
-											[ Homepage .......... https://github.com/Team-Resurgent/CerbiosTool ]
-											[ Patreon ................... https://www.patreon.com/teamresurgent ]
-											[ Release date ......................................... 09.05.2023 ]
+						[ Program ...................................... CerbiosTool V1.0.3 ]
+						[ Type .................................... Bios Configuration Tool ]
+						[ Platform ................................................ Windows ]
+						[ OS Architecture ............................................. X64 ]
+						[ By ............................................... Team Resurgent ]
+						[ Homepage .......... https://github.com/Team-Resurgent/CerbiosTool ]
+						[ Patreon ................... https://www.patreon.com/teamresurgent ]
+						[ Release date ......................................... 09.05.2023 ]
 
-											[                          Team Members:                            ]
-											[ EqUiNoX ......................................... Lead Programmer ]
-											[ HoRnEyDvL ............................... Tester/ Project Manager ]
-											[ Hazeno ................................................... Tester ]
-											[ Dempsey_86 ............................................... Tester ]
-											[ Natetronn ................................................ Tester ] 
-											[ zatchbot ................................. Tester / Village Idiot ]
-											[ xXBeefyDjXx .............................................. Tester ]				
+						[                          Team Members:                            ]
+						[ EqUiNoX ......................................... Lead Programmer ]
+						[ HoRnEyDvL ............................... Tester/ Project Manager ]
+						[ Hazeno ................................................... Tester ]
+						[ Dempsey_86 ............................................... Tester ]
+						[ Natetronn ................................................ Tester ] 
+						[ zatchbot ................................. Tester / Village Idiot ]
+						[ xXBeefyDjXx .............................................. Tester ]				
 
 ## System Requirements
 ### Minimum
