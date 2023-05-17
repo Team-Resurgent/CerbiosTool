@@ -309,6 +309,11 @@ namespace CerbiosTool
                 ImGui.BeginDisabled();
             }
 
+
+            ImGui.Text("NOTE: If loading from config, the settings below\nwhere applicable will be overridden by the\ncerbios.ini file.");
+
+            ImGui.Spacing();
+
             var loadConfig = m_config.LoadConfig == 1;
             ImGui.Text("Load Config From Harddrive:");
             Toggle("##loadConfig", ref loadConfig, new Vector2(38, 20));
