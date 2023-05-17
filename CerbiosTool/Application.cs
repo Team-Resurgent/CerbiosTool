@@ -164,7 +164,7 @@ namespace CerbiosTool
 
         public void Run()
         {
-            VeldridStartup.CreateWindowAndGraphicsDevice(new WindowCreateInfo(50, 50, 556 + 340, 410 + 130, WindowState.Normal, $"Cerbios Tool - {m_version} (Team Resurgent)"), new GraphicsDeviceOptions(true, null, true, ResourceBindingModel.Improved, true, true), VeldridStartup.GetPlatformDefaultBackend(), out m_window, out m_graphicsDevice);
+            VeldridStartup.CreateWindowAndGraphicsDevice(new WindowCreateInfo(50, 50, 556 + 340 + 50, 410 + 130, WindowState.Normal, $"Cerbios Tool - {m_version} (Team Resurgent)"), new GraphicsDeviceOptions(true, null, true, ResourceBindingModel.Improved, true, true), VeldridStartup.GetPlatformDefaultBackend(), out m_window, out m_graphicsDevice);
            
             m_window.Resizable = false;
 
@@ -302,7 +302,7 @@ namespace CerbiosTool
             ImGui.Spacing();
 
             ImGui.SetCursorPosY(10);
-            ImGui.BeginChild(1, new Vector2(230, 480), true, ImGuiWindowFlags.AlwaysUseWindowPadding);
+            ImGui.BeginChild(1, new Vector2(230 + 50, 480), true, ImGuiWindowFlags.AlwaysUseWindowPadding);
 
             if (!m_biosLoaded)
             {
@@ -317,7 +317,7 @@ namespace CerbiosTool
             string[] driveSetupModes = new string[] { "HDD & DVD", "HDD & No DVD (Legacy Mode)", "HDD & No DVD (Modern Mode)", "Dual HDD" };
             var driveSetup = (int)m_config.DriveSetup;
             ImGui.Text("Drive Setup:");
-            ImGui.PushItemWidth(200);
+            ImGui.PushItemWidth(250);
             ImGui.Combo("##driveSetup", ref driveSetup, driveSetupModes, driveSetupModes.Length);
             ImGui.PopItemWidth();
             m_config.DriveSetup = (byte)driveSetup;
@@ -334,7 +334,7 @@ namespace CerbiosTool
 
             var cdPath1 = m_config.CdPath1;
             ImGui.Text("Cd Path 1:");
-            ImGui.PushItemWidth(200);
+            ImGui.PushItemWidth(250);
             if (ImGui.InputText("##cdPath1", ref cdPath1, 99))
             {
                 m_config.CdPath1 = cdPath1;
@@ -343,7 +343,7 @@ namespace CerbiosTool
 
             var cdPath2 = m_config.CdPath2;
             ImGui.Text("Cd Path 2:");
-            ImGui.PushItemWidth(200);
+            ImGui.PushItemWidth(250);
             if (ImGui.InputText("##cdPath2", ref cdPath2, 99))
             {
                 m_config.CdPath2 = cdPath2;
@@ -352,7 +352,7 @@ namespace CerbiosTool
 
             var cdPath3 = m_config.CdPath3;
             ImGui.Text("Cd Path 3:");
-            ImGui.PushItemWidth(200);
+            ImGui.PushItemWidth(250);
             if (ImGui.InputText("##cdPath3", ref cdPath3, 99))
             {
                 m_config.CdPath3 = cdPath3;
@@ -361,7 +361,7 @@ namespace CerbiosTool
 
             var dashPath1 = m_config.DashPath1;
             ImGui.Text("Dash Path 1:");
-            ImGui.PushItemWidth(200);
+            ImGui.PushItemWidth(250);
             if (ImGui.InputText("##dashPath1", ref dashPath1, 99))
             {
                 m_config.DashPath1 = dashPath1;
@@ -370,7 +370,7 @@ namespace CerbiosTool
 
             var dashPath2 = m_config.DashPath2;
             ImGui.Text("Dash Path 2:");
-            ImGui.PushItemWidth(200);
+            ImGui.PushItemWidth(250);
             if (ImGui.InputText("##dashPath2", ref dashPath2, 99))
             {
                 m_config.DashPath2 = dashPath2;
@@ -379,7 +379,7 @@ namespace CerbiosTool
 
             var dashPath3 = m_config.DashPath3;
             ImGui.Text("Dash Path 3:");
-            ImGui.PushItemWidth(200);
+            ImGui.PushItemWidth(250);
             if (ImGui.InputText("##dashPath3", ref dashPath3, 99))
             {
                 m_config.DashPath3 = dashPath3;
@@ -388,7 +388,7 @@ namespace CerbiosTool
 
             var bootAnimPath = m_config.BootAnimPath;
             ImGui.Text("Boot Anim Path:");
-            ImGui.PushItemWidth(200);
+            ImGui.PushItemWidth(250);
             if (ImGui.InputText("##bootAnimPath", ref bootAnimPath, 99))
             {
                 m_config.BootAnimPath = bootAnimPath;
@@ -405,7 +405,7 @@ namespace CerbiosTool
                 ImGui.PopTextWrapPos();
                 ImGui.EndTooltip();
             }
-            ImGui.PushItemWidth(200);
+            ImGui.PushItemWidth(250);
             if (ImGui.InputText("##frontLed", ref frontLed, 4))
             {
                 var result = string.Empty;
@@ -425,7 +425,7 @@ namespace CerbiosTool
             string[] igrMasterPorts = new string[] { "All", "1", "2", "3", "4" };
             var igrMasterPort = (int)m_config.IGRMasterPort;
             ImGui.Text("IGR Master Port:");
-            ImGui.PushItemWidth(200);
+            ImGui.PushItemWidth(250);
             ImGui.Combo("##igrMasterPort", ref igrMasterPort, igrMasterPorts, igrMasterPorts.Length);
             ImGui.PopItemWidth();
             m_config.IGRMasterPort = (byte)igrMasterPort;
@@ -440,7 +440,7 @@ namespace CerbiosTool
                 ImGui.PopTextWrapPos();
                 ImGui.EndTooltip();
             }
-            ImGui.PushItemWidth(200);
+            ImGui.PushItemWidth(250);
             if (ImGui.InputText("##igrDash", ref igrDash, 4, ImGuiInputTextFlags.CharsHexadecimal))
             {
                 m_config.IGRDash = igrDash;
@@ -457,7 +457,7 @@ namespace CerbiosTool
                 ImGui.PopTextWrapPos();
                 ImGui.EndTooltip();
             }
-            ImGui.PushItemWidth(200);
+            ImGui.PushItemWidth(250);
             if (ImGui.InputText("##igrGame", ref igrGame, 4, ImGuiInputTextFlags.CharsHexadecimal))
             {
                 m_config.IGRGame = igrGame;
@@ -491,7 +491,7 @@ namespace CerbiosTool
                 ImGui.PopTextWrapPos();
                 ImGui.EndTooltip();
             }
-            ImGui.PushItemWidth(200);
+            ImGui.PushItemWidth(250);
             if (ImGui.InputText("##igrFull", ref igrShutdown, 4, ImGuiInputTextFlags.CharsHexadecimal))
             {
                 m_config.IGRShutdown = igrShutdown;
@@ -501,7 +501,7 @@ namespace CerbiosTool
             string[] fanSpeeds = new string[] { "Auto", "10", "20", "30", "40", "50", "60", "70", "80", "90", "100" };
             var fanSpeed = m_config.FanSpeed / 10;
             ImGui.Text("Fan Speed:");
-            ImGui.PushItemWidth(200);
+            ImGui.PushItemWidth(250);
             ImGui.Combo("##fanSpeed", ref fanSpeed, fanSpeeds, fanSpeeds.Length);
             ImGui.PopItemWidth();
             m_config.FanSpeed = (byte)(fanSpeed * 10);
@@ -509,7 +509,7 @@ namespace CerbiosTool
             string[] udmaModes = new string[] { "Auto", "UDMA 1", "UDMA 2", "UDMA 3", "UDMA 4", "UDMA 5", "UDMA 6" };
             var udmaMode = (int)m_config.UDMAMode;
             ImGui.Text("UDMA Mode:");
-            ImGui.PushItemWidth(200);
+            ImGui.PushItemWidth(250);
             ImGui.Combo("##udmaMode", ref udmaMode, udmaModes, udmaModes.Length);            
             ImGui.PopItemWidth();
             m_config.UDMAMode = (byte)(udmaMode);
@@ -517,7 +517,7 @@ namespace CerbiosTool
             string[] themes = new string[] { "Current", "Red", "Green", "Blue", "Touch of IND", "Red Eyes, White" };
             int theme = 0;
             ImGui.Text("Theme:");
-            ImGui.PushItemWidth(200);
+            ImGui.PushItemWidth(250);
             ImGui.Combo("##theme", ref theme, themes, themes.Length);
             ImGui.PopItemWidth();
             if (theme > 0)
@@ -546,49 +546,49 @@ namespace CerbiosTool
 
             var splashBackground = Config.RGBToVector3(m_config.SplashBackground);
             ImGui.Text("Splash Background:");
-            ImGui.PushItemWidth(200);
+            ImGui.PushItemWidth(250);
             ImGui.ColorEdit3("##splashBackground", ref splashBackground, ImGuiColorEditFlags.DisplayHex);
             ImGui.PopItemWidth();
             m_config.SplashBackground = Config.Vector3ToRGB(splashBackground);
 
             var splashCerbiosText = Config.RGBToVector3(m_config.SplashCerbiosText);
             ImGui.Text("Splash Cerbios Text:");
-            ImGui.PushItemWidth(200);
+            ImGui.PushItemWidth(250);
             ImGui.ColorEdit3("##splashCerbiosText", ref splashCerbiosText, ImGuiColorEditFlags.DisplayHex);
             ImGui.PopItemWidth();
             m_config.SplashCerbiosText = Config.Vector3ToRGB(splashCerbiosText);
 
             var splashSafeModeText = Config.RGBToVector3(m_config.SplashSafeModeText);
             ImGui.Text("Splash SafeMode Text:");
-            ImGui.PushItemWidth(200);
+            ImGui.PushItemWidth(250);
             ImGui.ColorEdit3("##splashSafeModeText", ref splashSafeModeText, ImGuiColorEditFlags.DisplayHex);
             ImGui.PopItemWidth();
             m_config.SplashSafeModeText = Config.Vector3ToRGB(splashSafeModeText);
 
             var splashLogo1 = Config.RGBToVector3(m_config.SplashLogo1);
             ImGui.Text("Splash Logo1:");
-            ImGui.PushItemWidth(200);
+            ImGui.PushItemWidth(250);
             ImGui.ColorEdit3("##splashLogo1", ref splashLogo1, ImGuiColorEditFlags.DisplayHex);
             ImGui.PopItemWidth();
             m_config.SplashLogo1 = Config.Vector3ToRGB(splashLogo1);
 
             var splashLogo2 = Config.RGBToVector3(m_config.SplashLogo2);
             ImGui.Text("Splash Logo2:");
-            ImGui.PushItemWidth(200);
+            ImGui.PushItemWidth(250);
             ImGui.ColorEdit3("##splashLogo2", ref splashLogo2, ImGuiColorEditFlags.DisplayHex);
             ImGui.PopItemWidth();
             m_config.SplashLogo2 = Config.Vector3ToRGB(splashLogo2);
 
             var splashLogo3 = Config.RGBToVector3(m_config.SplashLogo3);
             ImGui.Text("Splash Logo3:");
-            ImGui.PushItemWidth(200);
+            ImGui.PushItemWidth(250);
             ImGui.ColorEdit3("##splashLogo3", ref splashLogo3, ImGuiColorEditFlags.DisplayHex);
             ImGui.PopItemWidth();
             m_config.SplashLogo3 = Config.Vector3ToRGB(splashLogo3);
 
             var splashLogo4 = Config.RGBToVector3(m_config.SplashLogo4);
             ImGui.Text("Splash Logo4:");
-            ImGui.PushItemWidth(200);
+            ImGui.PushItemWidth(250);
             ImGui.ColorEdit3("##splashLogo4", ref splashLogo4, ImGuiColorEditFlags.DisplayHex);
             ImGui.PopItemWidth();
             m_config.SplashLogo4 = Config.Vector3ToRGB(splashLogo4);
@@ -596,7 +596,7 @@ namespace CerbiosTool
             string[] splashScales = new string[] { "Hide", "Large", "Medium", "Small" };
             var splashScale = (int)m_config.SplashScale;
             ImGui.Text("Splash Scale:");
-            ImGui.PushItemWidth(200);
+            ImGui.PushItemWidth(250);
             ImGui.Combo("##splashScale", ref splashScale, splashScales, splashScales.Length);
             ImGui.PopItemWidth();
             m_config.SplashScale = (byte)splashScale;
@@ -608,7 +608,7 @@ namespace CerbiosTool
 
             ImGui.EndChild();
 
-            var startPos = new Vector2(250, 10);
+            var startPos = new Vector2(250 + 48, 10);
             var size = new Vector2(640, 480);
             var drawList = ImGui.GetWindowDrawList();
             drawList.AddRectFilled(startPos, startPos + size, ImGui.ColorConvertFloat4ToU32(Config.RGBToVector4(m_config.SplashBackground)));
