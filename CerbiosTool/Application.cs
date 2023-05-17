@@ -511,6 +511,14 @@ namespace CerbiosTool
             ImGui.PopItemWidth();
             m_config.FanSpeed = (byte)(fanSpeed * 10);
 
+            ImGui.Spacing();
+            ImGui.Separator();
+            ImGui.Spacing();
+
+            ImGui.Text("NOTE: The following settings are not applicable\nin the cerbios.ini as used before loading stage.");
+
+            ImGui.Spacing();
+
             string[] udmaModes = new string[] { "Auto", "UDMA 1", "UDMA 2", "UDMA 3", "UDMA 4", "UDMA 5", "UDMA 6" };
             var udmaMode = (int)m_config.UDMAMode;
             ImGui.Text("UDMA Mode:");
