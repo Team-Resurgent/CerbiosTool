@@ -427,6 +427,23 @@ namespace CerbiosTool
             }
             ImGui.PopItemWidth();
 
+            string[] fanSpeeds = new string[] { "Auto", "10", "20", "30", "40", "50", "60", "70", "80", "90", "100" };
+            var fanSpeed = m_config.FanSpeed / 10;
+            ImGui.Text("Fan Speed:");
+            ImGui.PushItemWidth(250);
+            ImGui.Combo("##fanSpeed", ref fanSpeed, fanSpeeds, fanSpeeds.Length);
+            ImGui.PopItemWidth();
+            m_config.FanSpeed = (byte)(fanSpeed * 10);
+
+            ImGui.Spacing();
+            ImGui.Separator();
+            ImGui.Spacing();
+
+            ImGui.Text("NOTE: The following settings are not applicable\nin the cerbios.ini as used before loading stage.");
+
+            ImGui.Spacing();
+
+
             string[] igrMasterPorts = new string[] { "All", "1", "2", "3", "4" };
             var igrMasterPort = (int)m_config.IGRMasterPort;
             ImGui.Text("IGR Master Port:");
@@ -479,7 +496,7 @@ namespace CerbiosTool
                 ImGui.PopTextWrapPos();
                 ImGui.EndTooltip();
             }
-            ImGui.PushItemWidth(200);
+            ImGui.PushItemWidth(250);
             if (ImGui.InputText("##igrFull", ref igrFull, 4, ImGuiInputTextFlags.CharsHexadecimal))
             {
                 m_config.IGRFull = igrFull;
@@ -502,22 +519,6 @@ namespace CerbiosTool
                 m_config.IGRShutdown = igrShutdown;
             }
             ImGui.PopItemWidth();
-
-            string[] fanSpeeds = new string[] { "Auto", "10", "20", "30", "40", "50", "60", "70", "80", "90", "100" };
-            var fanSpeed = m_config.FanSpeed / 10;
-            ImGui.Text("Fan Speed:");
-            ImGui.PushItemWidth(250);
-            ImGui.Combo("##fanSpeed", ref fanSpeed, fanSpeeds, fanSpeeds.Length);
-            ImGui.PopItemWidth();
-            m_config.FanSpeed = (byte)(fanSpeed * 10);
-
-            ImGui.Spacing();
-            ImGui.Separator();
-            ImGui.Spacing();
-
-            ImGui.Text("NOTE: The following settings are not applicable\nin the cerbios.ini as used before loading stage.");
-
-            ImGui.Spacing();
 
             string[] udmaModes = new string[] { "Auto", "UDMA 1", "UDMA 2", "UDMA 3", "UDMA 4", "UDMA 5", "UDMA 6" };
             var udmaMode = (int)m_config.UDMAMode;
