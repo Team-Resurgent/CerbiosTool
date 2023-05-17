@@ -480,13 +480,13 @@ namespace CerbiosTool
             ImGui.PopItemWidth();
             m_config.FanSpeed = (byte)(fanSpeed * 10);
 
-            string[] udmaModes = new string[] { "UDMA 2", "UDMA 3", "UDMA 4", "UDMA 5" };
-            var udmaMode = m_config.UDMAMode - 2;
+            string[] udmaModes = new string[] { "Auto", "UDMA 1", "UDMA 2", "UDMA 3", "UDMA 4", "UDMA 5", "UDMA 6" };
+            var udmaMode = (int)m_config.UDMAMode;
             ImGui.Text("UDMA Mode:");
             ImGui.PushItemWidth(200);
             ImGui.Combo("##udmaMode", ref udmaMode, udmaModes, udmaModes.Length);            
             ImGui.PopItemWidth();
-            m_config.UDMAMode = (byte)(udmaMode + 2);
+            m_config.UDMAMode = (byte)(udmaMode);
 
             string[] themes = new string[] { "Current", "Red", "Green", "Blue", "Touch of IND", "Red Eyes, White" };
             int theme = 0;
