@@ -1,5 +1,6 @@
 ﻿using ImGuiNET;
 using SharpDX.DXGI;
+using System.Diagnostics;
 using System.Numerics;
 using System.Runtime;
 using System.Runtime.InteropServices;
@@ -138,9 +139,32 @@ namespace CerbiosTool
         [DllImport("dwmapi.dll", PreserveSig = true)]
         public static extern int DwmSetWindowAttribute(IntPtr hwnd, uint attr, ref int attrValue, int attrSize);
 
+        public void OpenUrl(string url)
+        {
+            try
+            {
+                if (OperatingSystem.IsWindows())
+                {
+                    Process.Start("cmd", "/C start" + " " + url);
+                }
+                else if (OperatingSystem.IsLinux())
+                {
+                    Process.Start("xdg-open", url);
+                }
+                else if (OperatingSystem.IsMacOS())
+                {
+                    Process.Start("open", url);
+                }
+            }
+            catch
+            {
+                // do nothing
+            }
+        }
+
         public void Run()
         {
-            VeldridStartup.CreateWindowAndGraphicsDevice(new WindowCreateInfo(50, 50, 556 + 340, 410 + 130, WindowState.Normal, $"CerbiosTool - {m_version}"), new GraphicsDeviceOptions(true, null, true, ResourceBindingModel.Improved, true, true), VeldridStartup.GetPlatformDefaultBackend(), out m_window, out m_graphicsDevice);
+            VeldridStartup.CreateWindowAndGraphicsDevice(new WindowCreateInfo(50, 50, 556 + 340, 410 + 130, WindowState.Normal, $"Cerbios Tool - {m_version} (Team Resurgent)"), new GraphicsDeviceOptions(true, null, true, ResourceBindingModel.Improved, true, true), VeldridStartup.GetPlatformDefaultBackend(), out m_window, out m_graphicsDevice);
            
             m_window.Resizable = false;
 
@@ -655,14 +679,27 @@ namespace CerbiosTool
                 }
             }
 
-            var message = "Coded by EqUiNoX - Team Resurgent";
-            var messageSize = ImGui.CalcTextSize(message);
-            ImGui.SetCursorPos(new Vector2(m_window.Width - messageSize.X - 10, m_window.Height - messageSize.Y - 10));
-            ImGui.Text(message);
-            ImGui.SetCursorPos(new Vector2(m_window.Width - messageSize.X - 10, m_window.Height - messageSize.Y - 10));
-            if (ImGui.InvisibleButton("##credits", messageSize))
+            ImGui.SameLine();
+
+            ImGui.SetCursorPosX(m_window.Width - 374);
+
+            if (ImGui.Button("Patreon", new Vector2(100, 30)))
             {
-                // do nothing for now
+                OpenUrl("https://www.patreon.com/teamresurgent");
+            }
+
+            ImGui.SameLine();
+
+            if (ImGui.Button("Ko-Fi", new Vector2(100, 30)))
+            {
+                OpenUrl("https://ko-fi.com/teamresurgent");
+            }
+
+            ImGui.SameLine();
+
+            if (ImGui.Button("Coded by EqUiNoX", new Vector2(150, 30)))
+            {
+                OpenUrl("https://github.com/Team-Resurgent/CerbiosTool");
             }
 
             ImGui.End();
