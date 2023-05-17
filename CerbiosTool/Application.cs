@@ -1,6 +1,7 @@
 ﻿using ImGuiNET;
 using SharpDX.DXGI;
 using System.Numerics;
+using System.Runtime;
 using System.Runtime.InteropServices;
 using System.Text;
 using Veldrid;
@@ -242,6 +243,7 @@ namespace CerbiosTool
             if (m_biosFileOpenPicker.Render() && !m_biosFileOpenPicker.Cancelled)
             {
                 m_settings.BiosPath = m_biosFileOpenPicker.SelectedFolder;
+                m_settings.BiosFile = m_biosFileOpenPicker.SelectedFile;
                 m_biosLoaded = BiosUtility.LoadBiosComfig(Path.Combine(m_biosFileOpenPicker.SelectedFolder, m_biosFileOpenPicker.SelectedFile), ref m_config, ref m_biosData);
                 Settings.SaveSattings(m_settings);
             }
@@ -249,7 +251,7 @@ namespace CerbiosTool
             if (m_biosFileSavePicker.Render() && !m_biosFileSavePicker.Cancelled && string.IsNullOrEmpty(m_settings.BiosPath) == false)
             {
                 var savePath = Path.Combine(m_biosFileSavePicker.SelectedFolder, m_biosFileSavePicker.SaveName);
-                BiosUtility.SaveBiosConfig(m_config, m_settings.BiosPath, savePath, m_biosData);
+                BiosUtility.SaveBiosConfig(m_config, Path.Combine(m_settings.BiosPath, m_settings.BiosFile), savePath, m_biosData);
             }
 
             if (m_configFileOpenPicker.Render() && !m_configFileOpenPicker.Cancelled)

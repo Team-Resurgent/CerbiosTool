@@ -279,7 +279,7 @@ namespace CerbiosTool
             if (Mode == PickerMode.FileSave)
             {
                 ImGui.PushItemWidth(size.X - 16);
-                ImGui.InputText("###file-name", ref _saveName, 300, ImGuiInputTextFlags.ReadOnly);
+                ImGui.InputText("###file-name", ref _saveName, 300);
                 ImGui.Spacing();
             }
 

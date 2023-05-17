@@ -7,11 +7,14 @@ namespace CerbiosTool
     {
         public string BiosPath { get; set; }
 
+        public string BiosFile { get; set; }
+
         public string ConfigPath { get; set; }
 
         public Settings()
         {
             BiosPath = string.Empty;
+            BiosFile = string.Empty;
             ConfigPath = string.Empty;
         }
 
