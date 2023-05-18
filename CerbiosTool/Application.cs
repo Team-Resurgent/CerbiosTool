@@ -540,7 +540,7 @@ namespace CerbiosTool
                 if (udmaMode < 2)
                 {
                     m_okDialog.Title = "WARNING";
-                    m_okDialog.Message = "Auto modes assume you have a 80 conductot IDE cable\ninstalled. Using without can cause XBOX not to boot,\nhowever Safe Mode will allow you to boot with UDMA 2.";
+                    m_okDialog.Message = "Auto modes assume you have a 80 conductor IDE cable\ninstalled. Using without can cause XBOX not to boot.\nSafe Mode will allow you to boot with UDMA 2 and perform\na reflash.";
                     m_okDialog.ShowModal();
                 }
             }
