@@ -84,22 +84,16 @@ namespace CerbiosTool
             fontConfig.PixelSnapH = true;
             fontConfig.OversampleH = 3;
             fontConfig.OversampleV = 3;
-            fontConfig.RasterizerMultiply = 1f;
+            fontConfig.RasterizerMultiply = 2f;
             fontConfig.MergeMode = false;
 
             var glyphRangeHandle1 = GCHandle.Alloc(new ushort[] {
                 0x0020, 0x00FF, // Basic Latin + Latin Supplement
-                0x2000, 0x206F, // General Punctuation
-                0x2100, 0x214f, // Letter Like Symbols
-                0x3000, 0x30FF, // CJK Symbols and Punctuations, Hiragana, Katakana
-                0x31F0, 0x31FF, // Katakana Phonetic Extensions
-                0xFF00, 0xFFEF, // Half-width characters
-                0xFFFD, 0xFFFD, // Invalid
-                0x4e00, 0x9FAF, // CJK Ideograms
+                0x2000, 0x206F, // General Punctuation      
                 0
             }, GCHandleType.Pinned);
 
-            ImGui.GetIO().Fonts.AddFontFromMemoryTTF(addressFontData, fontData.Length, 15, null, glyphRangeHandle1.AddrOfPinnedObject());
+            ImGui.GetIO().Fonts.AddFontFromMemoryTTF(addressFontData, fontData.Length, 18, null, glyphRangeHandle1.AddrOfPinnedObject());
 
             var glyphRangeHandle2 = GCHandle.Alloc(new ushort[] {
                 0x0020, 0x00FF, // Basic Latin + Latin Supplement
@@ -107,7 +101,7 @@ namespace CerbiosTool
                 0
             }, GCHandleType.Pinned);
 
-            ImGui.GetIO().Fonts.AddFontFromMemoryTTF(addressFontData, fontData.Length, 30, fontConfig, glyphRangeHandle2.AddrOfPinnedObject());
+            ImGui.GetIO().Fonts.AddFontFromMemoryTTF(addressFontData, fontData.Length, 20, fontConfig, glyphRangeHandle2.AddrOfPinnedObject());
 
             ImGui.GetIO().Fonts.Build();
 

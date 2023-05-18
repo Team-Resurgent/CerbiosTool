@@ -1,5 +1,6 @@
 ﻿using ImGuiNET;
 using SharpDX.DXGI;
+using SixLabors.Fonts;
 using System.Diagnostics;
 using System.Numerics;
 using System.Runtime;
@@ -309,8 +310,15 @@ namespace CerbiosTool
                 ImGui.BeginDisabled();
             }
 
+            var fontAtlas = ImGui.GetIO().Fonts;
+            var largeFont = fontAtlas.Fonts[1];
 
-            ImGui.Text("NOTE: If loading from config, the settings below\nwhere applicable will be overridden by the\ncerbios.ini file.");
+            ImGui.PushStyleColor(ImGuiCol.Text, ImGui.ColorConvertFloat4ToU32(new Vector4(1.0f, 0.25f, 0.5f, 1.0f)));
+            ImGui.PushFont(largeFont);
+            ImGui.Text("NOTE: If loading from config, the\nsettings below where applicable will be\noverridden by the cerbios.ini file.");
+            ImGui.PopFont();
+            ImGui.PopStyleColor();
+
 
             ImGui.Spacing();
 
@@ -439,10 +447,13 @@ namespace CerbiosTool
             ImGui.Separator();
             ImGui.Spacing();
 
-            ImGui.Text("NOTE: The following settings are not applicable\nin the cerbios.ini as used before loading stage.");
+            ImGui.PushStyleColor(ImGuiCol.Text, ImGui.ColorConvertFloat4ToU32(new Vector4(1.0f, 0.25f, 0.5f, 1.0f)));
+            ImGui.PushFont(largeFont);
+            ImGui.Text("NOTE: The following settings are not\napplicable in the cerbios.ini as used\nbefore loading stage.");
+            ImGui.PopFont();
+            ImGui.PopStyleColor();
 
             ImGui.Spacing();
-
 
             string[] igrMasterPorts = new string[] { "All", "1", "2", "3", "4" };
             var igrMasterPort = (int)m_config.IGRMasterPort;
@@ -524,7 +535,15 @@ namespace CerbiosTool
             var udmaMode = (int)m_config.UDMAMode;
             ImGui.Text("UDMA Mode:");
             ImGui.PushItemWidth(250);
-            ImGui.Combo("##udmaMode", ref udmaMode, udmaModes, udmaModes.Length);            
+            if (ImGui.Combo("##udmaMode", ref udmaMode, udmaModes, udmaModes.Length))
+            {
+                if (udmaMode < 2)
+                {
+                    m_okDialog.Title = "WARNING";
+                    m_okDialog.Message = "Auto modes assume you have a 80 conductot IDE cable\ninstalled. Using without can cause XBOX not to boot,\nhowever Safe Mode will allow you to boot with UDMA 2.";
+                    m_okDialog.ShowModal();
+                }
+            }
             ImGui.PopItemWidth();
             m_config.UDMAMode = (byte)(udmaMode);
 

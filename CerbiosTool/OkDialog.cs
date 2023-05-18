@@ -47,10 +47,18 @@ namespace CerbiosTool
 
             if (ImGui.IsWindowAppearing())
             {
-                ImGui.SetWindowSize(new Vector2(200, 90));
+                ImGui.SetWindowSize(new Vector2(400, 140));
             }
 
+            var fontAtlas = ImGui.GetIO().Fonts;
+            var largeFont = fontAtlas.Fonts[1];
+
+            ImGui.PushStyleColor(ImGuiCol.Text, ImGui.ColorConvertFloat4ToU32(new Vector4(1.0f, 0.25f, 0.5f, 1.0f)));
+            ImGui.PushFont(largeFont);
             ImGui.Text(Message);
+            ImGui.PopFont();
+            ImGui.PopStyleColor();
+
             ImGui.Spacing();
             if (ImGui.Button("Ok", new Vector2(100, 30)))
             {
