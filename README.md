@@ -2,14 +2,15 @@
                               # Team Resurgent   
                                                                              
                                                                           
-      [ Program ...................................... CerbiosTool V1.0.3 ]
+      [ Program ...................................... CerbiosTool V1.0.9 ]
       [ Type .................................... Bios Configuration Tool ]
       [ Platform ................................................ Windows ]
       [ OS Architecture ............................................. X64 ]
       [ By ............................................... Team Resurgent ]
       [ Homepage .......... https://github.com/Team-Resurgent/CerbiosTool ]
       [ Patreon ................... https://www.patreon.com/teamresurgent ]
-      [ Release date ......................................... 09.05.2023 ]
+      [ Ko-Fi ........................... https://ko-fi.com/teamresurgent ]
+      [ Release date ......................................... 18.05.2023 ]
 	  
       [                          Team Members:                            ]
       [ EqUiNoX ......................................... Lead Programmer ]
