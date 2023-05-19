@@ -167,7 +167,7 @@ namespace CerbiosTool
 
         public void Run()
         {
-            VeldridStartup.CreateWindowAndGraphicsDevice(new WindowCreateInfo(50, 50, 556 + 340 + 50, 410 + 130, WindowState.Normal, $"Cerbios Tool - {m_version} (Team Resurgent)"), new GraphicsDeviceOptions(true, null, true, ResourceBindingModel.Improved, true, true), VeldridStartup.GetPlatformDefaultBackend(), out m_window, out m_graphicsDevice);
+            VeldridStartup.CreateWindowAndGraphicsDevice(new WindowCreateInfo(50, 50, 1240, 540, WindowState.Normal, $"Cerbios Tool - {m_version} (Team Resurgent)"), new GraphicsDeviceOptions(true, null, true, ResourceBindingModel.Improved, true, true), VeldridStartup.GetPlatformDefaultBackend(), out m_window, out m_graphicsDevice);
            
             m_window.Resizable = false;
 
@@ -276,6 +276,7 @@ namespace CerbiosTool
                 m_settings.BiosFile = m_biosFileOpenPicker.SelectedFile;
                 m_biosLoaded = BiosUtility.LoadBiosComfig(Path.Combine(m_biosFileOpenPicker.SelectedFolder, m_biosFileOpenPicker.SelectedFile), ref m_config, ref m_biosData);
                 Settings.SaveSattings(m_settings);
+                m_themeNames[0] = "Current";
             }
 
             if (m_biosFileSavePicker.Render() && !m_biosFileSavePicker.Cancelled && string.IsNullOrEmpty(m_settings.BiosPath) == false)
@@ -323,7 +324,6 @@ namespace CerbiosTool
             ImGui.Text("NOTE: If loading from config, the\nsettings below where applicable will be\noverridden by the cerbios.ini file.");
             ImGui.PopFont();
             ImGui.PopStyleColor();
-
 
             ImGui.Spacing();
 
@@ -552,6 +552,50 @@ namespace CerbiosTool
             ImGui.PopItemWidth();
             m_config.UDMAMode = (byte)(udmaMode);
 
+            if (!m_biosLoaded)
+            {
+                ImGui.EndDisabled();
+            }
+
+            ImGui.EndChild();
+
+            var startPos = new Vector2(250 + 48, 10);
+            var size = new Vector2(640, 480);
+            var drawList = ImGui.GetWindowDrawList();
+            drawList.AddRectFilled(startPos, startPos + size, ImGui.ColorConvertFloat4ToU32(Config.RGBToVector4(m_config.SplashBackground)));
+            drawList.AddRect(startPos, startPos + size, ImGui.ColorConvertFloat4ToU32(new Vector4(0.5f, 0.5f, 0.5f, 0.5f)));
+
+            if (m_config.SplashScale > 0)
+            {
+                var scaledSize = size / m_config.SplashScale;
+                var scaleOffset = (size - scaledSize) / 2;
+                ImGui.SetCursorPos(startPos + scaleOffset);
+                ImGui.Image(m_controller.Logo1Texture, scaledSize, Vector2.Zero, Vector2.One, Config.RGBToVector4(m_config.SplashLogo1));
+                ImGui.SetCursorPos(startPos + scaleOffset);
+                ImGui.Image(m_controller.Logo2Texture, scaledSize, Vector2.Zero, Vector2.One, Config.RGBToVector4(m_config.SplashLogo2));
+                ImGui.SetCursorPos(startPos + scaleOffset);
+                ImGui.Image(m_controller.Logo3Texture, scaledSize, Vector2.Zero, Vector2.One, Config.RGBToVector4(m_config.SplashLogo3));
+                ImGui.SetCursorPos(startPos + scaleOffset);
+                ImGui.Image(m_controller.Logo4Texture, scaledSize, Vector2.Zero, Vector2.One, Config.RGBToVector4(m_config.SplashLogo4));
+                ImGui.SetCursorPos(startPos + scaleOffset);
+                ImGui.Image(m_controller.CerbiosTextTexture, scaledSize, Vector2.Zero, Vector2.One, Config.RGBToVector4(m_config.SplashCerbiosText));
+                ImGui.SetCursorPos(startPos + scaleOffset);
+                ImGui.Image(m_controller.SafeModeTextTexture, scaledSize, Vector2.Zero, Vector2.One, Config.RGBToVector4(m_config.SplashSafeModeText));
+            }
+            else 
+            {
+                ImGui.SetCursorPos(startPos);
+                ImGui.Image(m_controller.SafeModeTextTexture, size, Vector2.Zero, Vector2.One, Config.RGBToVector4(m_config.SplashSafeModeText));
+            }
+
+            ImGui.SetCursorPos(new Vector2(950, 10));
+            ImGui.BeginChild(2, new Vector2(280, 480), true, ImGuiWindowFlags.AlwaysUseWindowPadding);
+
+            if (!m_biosLoaded)
+            {
+                ImGui.BeginDisabled();
+            }
+
             int theme = 0;
             ImGui.Text("Theme:");
             ImGui.PushItemWidth(250);
@@ -560,6 +604,7 @@ namespace CerbiosTool
             if (theme > 0)
             {
                 m_config.SetTheme(m_themes[theme - 1]);
+                m_themeNames[0] = m_themeNames[theme];
             }
 
             var splashBackground = Config.RGBToVector3(m_config.SplashBackground);
@@ -625,35 +670,6 @@ namespace CerbiosTool
             }
 
             ImGui.EndChild();
-
-            var startPos = new Vector2(250 + 48, 10);
-            var size = new Vector2(640, 480);
-            var drawList = ImGui.GetWindowDrawList();
-            drawList.AddRectFilled(startPos, startPos + size, ImGui.ColorConvertFloat4ToU32(Config.RGBToVector4(m_config.SplashBackground)));
-            drawList.AddRect(startPos, startPos + size, ImGui.ColorConvertFloat4ToU32(new Vector4(0.5f, 0.5f, 0.5f, 0.5f)));
-
-            if (m_config.SplashScale > 0)
-            {
-                var scaledSize = size / m_config.SplashScale;
-                var scaleOffset = (size - scaledSize) / 2;
-                ImGui.SetCursorPos(startPos + scaleOffset);
-                ImGui.Image(m_controller.Logo1Texture, scaledSize, Vector2.Zero, Vector2.One, Config.RGBToVector4(m_config.SplashLogo1));
-                ImGui.SetCursorPos(startPos + scaleOffset);
-                ImGui.Image(m_controller.Logo2Texture, scaledSize, Vector2.Zero, Vector2.One, Config.RGBToVector4(m_config.SplashLogo2));
-                ImGui.SetCursorPos(startPos + scaleOffset);
-                ImGui.Image(m_controller.Logo3Texture, scaledSize, Vector2.Zero, Vector2.One, Config.RGBToVector4(m_config.SplashLogo3));
-                ImGui.SetCursorPos(startPos + scaleOffset);
-                ImGui.Image(m_controller.Logo4Texture, scaledSize, Vector2.Zero, Vector2.One, Config.RGBToVector4(m_config.SplashLogo4));
-                ImGui.SetCursorPos(startPos + scaleOffset);
-                ImGui.Image(m_controller.CerbiosTextTexture, scaledSize, Vector2.Zero, Vector2.One, Config.RGBToVector4(m_config.SplashCerbiosText));
-                ImGui.SetCursorPos(startPos + scaleOffset);
-                ImGui.Image(m_controller.SafeModeTextTexture, scaledSize, Vector2.Zero, Vector2.One, Config.RGBToVector4(m_config.SplashSafeModeText));
-            }
-            else 
-            {
-                ImGui.SetCursorPos(startPos);
-                ImGui.Image(m_controller.SafeModeTextTexture, size, Vector2.Zero, Vector2.One, Config.RGBToVector4(m_config.SplashSafeModeText));
-            }
 
             ImGui.SetCursorPosY(m_window.Height - 40);
 
