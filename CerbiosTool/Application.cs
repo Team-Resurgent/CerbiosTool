@@ -711,6 +711,24 @@ namespace CerbiosTool
                     var path = Directory.Exists(m_settings.ConfigPath) ? m_settings.ConfigPath : Directory.GetCurrentDirectory();
                     m_configFileSavePicker.ShowModal(path);
                 }
+
+                ImGui.SameLine();
+
+                if (ImGui.Button("Copy Theme JSON", new Vector2(150, 30)))
+                {
+                    var themeJson = new StringBuilder();
+                    themeJson.AppendLine("{");
+                    themeJson.AppendLine("    \"Name\":\"Theme Name\",");
+                    themeJson.AppendLine($"    \"SplashBackground\":\"{m_config.SplashBackground.ToString("X6")}\",");
+                    themeJson.AppendLine($"    \"SplashCerbiosText\":\"{m_config.SplashCerbiosText.ToString("X6")}\",");
+                    themeJson.AppendLine($"    \"SplashSafeModeText\":\"{m_config.SplashSafeModeText.ToString("X6")}\",");
+                    themeJson.AppendLine($"    \"SplashLogo1\":\"{m_config.SplashLogo1.ToString("X6")}\",");
+                    themeJson.AppendLine($"    \"SplashLogo2\":\"{m_config.SplashLogo2.ToString("X6")}\",");
+                    themeJson.AppendLine($"    \"SplashLogo3\":\"{m_config.SplashLogo3.ToString("X6")}\",");
+                    themeJson.AppendLine($"    \"SplashLogo4\":\"{m_config.SplashLogo4.ToString("X6")}\"");
+                    themeJson.AppendLine("}");
+                    ImGui.SetClipboardText(themeJson.ToString());
+                }
             }
 
             ImGui.SameLine();
