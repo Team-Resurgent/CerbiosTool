@@ -56,9 +56,9 @@ Time for some doggy style!!!!
 * Remembers your last loaded / saved bios paths so you dont have to keep searching.
 * Ability to set config to defaults.
 * Ability to enter paths either as ?:\ etc or \Device\ formats.
-	*Note:? = Drive letter
+	* Note:? = Drive letter
 * Ability to disable Load Config From Hardrive. This will default to settings stored in bios. 
-	*Note: If Load Config From Hardrive is enabled then Cerbios.ini will only override settings in bios that the ini contains.
+	* Note: If Load Config From Hardrive is enabled then Cerbios.ini will only override settings in bios that the ini contains.
 * IGR combos are now only set in bios using Cerbios Tool. They will be ignored if found inside the cerbios.ini file.
 * IGR KEYS = A = 0, B = 1, X = 2, Y = 3, BLACK = 4, WHITE = 5, LEFT_TRIGGER = 6, RIGHT_TRIGGER = 7, DPAD_UP = 8, DPAD_DOWN = 9, DPAD_LEFT = A, DPAD_RIGHT = B, START = C, BACK = D, LEFT_THUMB = E, RIGHT_THUMB = F
 
