@@ -536,7 +536,7 @@ namespace CerbiosTool
             }
             ImGui.PopItemWidth();
 
-            string[] udmaModes = new string[] { "Auto (Startek)", "Auto (Other)", "UDMA 2 (Default)", "UDMA 3", "UDMA 4", "UDMA 5", "UDMA 6" };
+            string[] udmaModes = new string[] { "Auto (Startech Adapter)", "Auto (Generic Adapter)", "UDMA 2 (Default)", "UDMA 3", "UDMA 4", "UDMA 5", "UDMA 6" };
             var udmaMode = (int)m_config.UDMAMode;
             ImGui.Text("UDMA Mode:");
             ImGui.PushItemWidth(250);
