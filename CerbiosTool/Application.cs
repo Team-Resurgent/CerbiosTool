@@ -726,6 +726,7 @@ namespace CerbiosTool
                     themeJson.AppendLine($"    \"SplashLogo2\":\"{m_config.SplashLogo2.ToString("X6")}\",");
                     themeJson.AppendLine($"    \"SplashLogo3\":\"{m_config.SplashLogo3.ToString("X6")}\",");
                     themeJson.AppendLine($"    \"SplashLogo4\":\"{m_config.SplashLogo4.ToString("X6")}\"");
+                    themeJson.AppendLine($"    \"SplashScale\":{m_config.SplashScale}");
                     themeJson.AppendLine("}");
                     ImGui.SetClipboardText(themeJson.ToString());
                 }

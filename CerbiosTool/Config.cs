@@ -130,6 +130,7 @@ namespace CerbiosTool
             SplashLogo2 = Convert.ToUInt32(theme.SplashLogo2, 16);
             SplashLogo3 = Convert.ToUInt32(theme.SplashLogo3, 16);
             SplashLogo4 = Convert.ToUInt32(theme.SplashLogo4, 16);
+            SplashScale = theme.SplashScale;
         }
 
         public static Vector3 RGBToVector3(uint color)

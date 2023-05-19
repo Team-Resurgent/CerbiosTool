@@ -22,7 +22,7 @@ namespace CerbiosTool
 
         public string SplashLogo4 { get; set; }
 
-        public string SplashScale { get; set; }
+        public byte SplashScale { get; set; }
 
         private static Theme[] DefaultThemes()
         {
@@ -36,7 +36,8 @@ namespace CerbiosTool
                 SplashLogo1 = "00018D",
                 SplashLogo2 = "1C00C9",
                 SplashLogo3 = "4F92F9",
-                SplashLogo4 = "800000"
+                SplashLogo4 = "800000",
+                SplashScale = 1
             });
             themes.Add(new Theme
             {
@@ -47,7 +48,8 @@ namespace CerbiosTool
                 SplashLogo1 = "8D0001",
                 SplashLogo2 = "C9001C",
                 SplashLogo3 = "F9924F",
-                SplashLogo4 = "000080"
+                SplashLogo4 = "000080",
+                SplashScale = 1
             });
             themes.Add(new Theme
             {
@@ -58,7 +60,8 @@ namespace CerbiosTool
                 SplashLogo1 = "008D01",
                 SplashLogo2 = "00C91C",
                 SplashLogo3 = "92F94F",
-                SplashLogo4 = "000080"
+                SplashLogo4 = "000080",
+                SplashScale = 1
             });
             themes.Add(new Theme
             {
@@ -69,7 +72,8 @@ namespace CerbiosTool
                 SplashLogo1 = "125212",
                 SplashLogo2 = "7FC92A",
                 SplashLogo3 = "D3F134",
-                SplashLogo4 = "000080"
+                SplashLogo4 = "000080",
+                SplashScale = 1
             });
             themes.Add(new Theme
             {
@@ -80,7 +84,8 @@ namespace CerbiosTool
                 SplashLogo1 = "00018D",
                 SplashLogo2 = "D2D2D2",
                 SplashLogo3 = "ADADAD",
-                SplashLogo4 = "800000"
+                SplashLogo4 = "800000",
+                SplashScale = 1
             });
             return themes.OrderBy(n => n.Name).ToArray();
         }
