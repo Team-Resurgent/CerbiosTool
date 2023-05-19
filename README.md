@@ -77,7 +77,7 @@ Time for some doggy style!!!!
 ## GUI Functionality
 <div align="center">
 
-![GUI](https://github.com/Team-Resurgent/CerbiosTool/blob/main/readmeStuff/Gui1.jpg?raw=true)</div>
+![GUI](https://github.com/Team-Resurgent/CerbiosTool/blob/main/readmeStuff/Gui1.JPG?raw=true)</div>
 * Load the latest Cerbios Bios Binary file & customise away.
 
 
