@@ -27,6 +27,8 @@ namespace CerbiosTool
         private Settings m_settings = new();
         private bool m_biosLoaded = false;
         private byte[] m_biosData = Array.Empty<byte>();
+        private Theme[] m_themes = Array.Empty<Theme>();
+        private string[] m_themeNames = Array.Empty<string>();
 
         private readonly string m_version;
 
@@ -225,6 +227,9 @@ namespace CerbiosTool
             };
 
             m_commandList = m_graphicsDevice.ResourceFactory.CreateCommandList();
+
+            m_themes = Theme.LoadThemes();
+            m_themeNames = Theme.BuildThemeDropDownList(m_themes);
 
             while (m_window.Exists)
             {
@@ -547,34 +552,14 @@ namespace CerbiosTool
             ImGui.PopItemWidth();
             m_config.UDMAMode = (byte)(udmaMode);
 
-            string[] themes = new string[] { "Current", "Red", "Green", "Blue", "Touch of IND", "Red Eyes, White" };
             int theme = 0;
             ImGui.Text("Theme:");
             ImGui.PushItemWidth(250);
-            ImGui.Combo("##theme", ref theme, themes, themes.Length);
+            ImGui.Combo("##theme", ref theme, m_themeNames, m_themeNames.Length);
             ImGui.PopItemWidth();
             if (theme > 0)
             {
-                if (theme == 1)
-                {
-                    m_config.SetRedTheme();
-                }
-                else if (theme == 2)
-                {
-                    m_config.SetGreenTheme();
-                }
-                else if (theme == 3)
-                {
-                    m_config.SetBlueTheme();
-                }
-                else if (theme == 4)
-                {
-                    m_config.SetTouchOfIndTheme();
-                }
-                else if (theme == 5)
-                {
-                    m_config.SetRedEyesWhite();
-                }
+                m_config.SetTheme(m_themes[theme - 1]);
             }
 
             var splashBackground = Config.RGBToVector3(m_config.SplashBackground);

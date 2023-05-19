@@ -3,69 +3,6 @@ using System.Text.Json;
 
 namespace CerbiosTool
 {
-    public struct Settings
-    {
-        public string BiosPath { get; set; }
-
-        public string BiosFile { get; set; }
-
-        public string ConfigPath { get; set; }
-
-        public Settings()
-        {
-            BiosPath = string.Empty;
-            BiosFile = string.Empty;
-            ConfigPath = string.Empty;
-        }
-
-        public static Settings LoadSettings(string settingsPath)
-        {
-            var settingsJson = File.ReadAllText(settingsPath);
-            var result = JsonSerializer.Deserialize<Settings>(settingsJson);
-            return result;
-        }
-
-        public static Settings LoadSettings()
-        {
-            var applicationPath = Utility.GetApplicationPath();
-            if (applicationPath == null)
-            {
-                return new Settings();
-            }
-
-            var settingsPath = Path.Combine(applicationPath, "settings.json");
-            if (!File.Exists(settingsPath))
-            {
-                return new Settings();
-            }
-
-            return LoadSettings(settingsPath);
-        }
-
-        public static void SaveSattings(string settingsPath, Settings? settings)
-        {
-            if (settings == null)
-            {
-                return;
-            }
-
-            var result = JsonSerializer.Serialize(settings, new JsonSerializerOptions { WriteIndented = true });
-            File.WriteAllText(settingsPath, result);
-        }
-
-        public static void SaveSattings(Settings? settings)
-        {
-            var applicationPath = Utility.GetApplicationPath();
-            if (applicationPath == null)
-            {
-                return;
-            }
-
-            var settingsPath = Path.Combine(applicationPath, "settings.json");
-            SaveSattings(settingsPath, settings);
-        }
-    }
-
     public struct Config
     {
         public byte LoadConfig { get; set; }
@@ -184,59 +121,15 @@ namespace CerbiosTool
             SplashScale = 1;
         }
 
-        public void SetBlueTheme()
+        public void SetTheme(Theme theme)
         {
-            SplashBackground = 0x000000;
-            SplashCerbiosText = 0xFFFFFF;
-            SplashSafeModeText = 0xFFFFFF;
-            SplashLogo1 = 0x00018D;
-            SplashLogo2 = 0x1C00C9;
-            SplashLogo3 = 0x4F92F9;
-            SplashLogo4 = 0x800000;
-        }
-
-        public void SetRedTheme()
-        {
-            SplashBackground = 0x000000;
-            SplashCerbiosText = 0xFFFFFF;
-            SplashSafeModeText = 0xFFFFFF;
-            SplashLogo1 = 0x8D0001;
-            SplashLogo2 = 0xC9001C;
-            SplashLogo3 = 0xF9924F;
-            SplashLogo4 = 0x000080;
-        }
-
-        public void SetGreenTheme()
-        {
-            SplashBackground = 0x000000;
-            SplashCerbiosText = 0xFFFFFF;
-            SplashSafeModeText = 0xFFFFFF;
-            SplashLogo1 = 0x008D01;
-            SplashLogo2 = 0x00C91C;
-            SplashLogo3 = 0x92F94F;
-            SplashLogo4 = 0x000080;
-        }
-
-        public void SetTouchOfIndTheme()
-        {
-            SplashBackground = 0xFFFFFF;
-            SplashCerbiosText = 0x6FBD19;
-            SplashSafeModeText = 0x6FBD19;
-            SplashLogo1 = 0x125212;
-            SplashLogo2 = 0x7FC92A;
-            SplashLogo3 = 0xD3F134;
-            SplashLogo4 = 0x000080;
-        }
-
-        public void SetRedEyesWhite()
-        {
-            SplashBackground = 0x000000;
-            SplashCerbiosText = 0x00018D;
-            SplashSafeModeText = 0xA90000;
-            SplashLogo1 = 0x00018D;
-            SplashLogo2 = 0xD2D2D2;
-            SplashLogo3 = 0xADADAD;
-            SplashLogo4 = 0x800000;
+            SplashBackground = theme.SplashBackground;
+            SplashCerbiosText = theme.SplashCerbiosText;
+            SplashSafeModeText = theme.SplashSafeModeText;
+            SplashLogo1 = theme.SplashLogo1;
+            SplashLogo2 = theme.SplashLogo2;
+            SplashLogo3 = theme.SplashLogo3;
+            SplashLogo4 = theme.SplashLogo4;
         }
 
         public static Vector3 RGBToVector3(uint color)
