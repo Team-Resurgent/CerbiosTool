@@ -53,6 +53,18 @@ namespace CerbiosTool
             });
             themes.Add(new Theme
             {
+                Name = "Golden Shower",
+                SplashBackground = "000000",
+                SplashCerbiosText = "965A24",
+                SplashSafeModeText = "D40000",
+                SplashLogo1 = "965A24",
+                SplashLogo2 = "D3AF37",
+                SplashLogo3 = "A28328",
+                SplashLogo4 = "930000",
+                SplashScale = 1
+            });
+            themes.Add(new Theme
+            {
                 Name = "Green",
                 SplashBackground = "000000",
                 SplashCerbiosText = "FFFFFF",
@@ -61,6 +73,18 @@ namespace CerbiosTool
                 SplashLogo2 = "00C91C",
                 SplashLogo3 = "92F94F",
                 SplashLogo4 = "000080",
+                SplashScale = 1
+            });
+            themes.Add(new Theme
+            {
+                Name = "Silver Fox",
+                SplashBackground = "FFFFFF",
+                SplashCerbiosText = "000000",
+                SplashSafeModeText = "000000",
+                SplashLogo1 = "4C4C4C",
+                SplashLogo2 = "8C8C8C",
+                SplashLogo3 = "DADADA",
+                SplashLogo4 = "404040",
                 SplashScale = 1
             });
             themes.Add(new Theme

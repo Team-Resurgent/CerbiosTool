@@ -47,7 +47,7 @@ namespace CerbiosTool
 
             if (ImGui.IsWindowAppearing())
             {
-                ImGui.SetWindowSize(new Vector2(400, 160));
+                ImGui.SetWindowSize(new Vector2(450, 180));
             }
 
             var fontAtlas = ImGui.GetIO().Fonts;

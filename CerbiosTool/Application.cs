@@ -536,7 +536,7 @@ namespace CerbiosTool
             }
             ImGui.PopItemWidth();
 
-            string[] udmaModes = new string[] { "Auto (Startech Adapter)", "Auto (Generic Adapter)", "UDMA 2 (Default)", "UDMA 3", "UDMA 4", "UDMA 5", "UDMA 6" };
+            string[] udmaModes = new string[] { "Auto (Startech Adapter)", "Auto (Generic Adapter)", "UDMA 2 (Default / Stock)", "UDMA 3 (Ultra DMA 80-Conductor)", "UDMA 4 (Ultra DMA 80-Conductor)", "UDMA 5 (Ultra DMA 80-Conductor)", "UDMA 6 (Experimental)" };
             var udmaMode = (int)m_config.UDMAMode;
             ImGui.Text("UDMA Mode:");
             ImGui.PushItemWidth(250);
@@ -545,10 +545,17 @@ namespace CerbiosTool
                 if (udmaMode < 2)
                 {
                     m_okDialog.Title = "WARNING";
-                    m_okDialog.Message = "Auto modes assume you have a 80 conductor IDE cable\ninstalled. Using without can cause XBOX not to boot.\nSafe Mode will allow you to boot with UDMA 2 and perform\na reflash.";
-                    m_okDialog.ShowModal();
+                    m_okDialog.Message = "Auto modes require a Ultra DMA (80-Conductor) IDE/ATA Cable\nto be installed. Using this mode without one can cause your\nXBOX not to boot.\nSafe Mode (Boot with Eject), will allow you to boot using UDMA 2 \nto perform a reflash if required.";
+					m_okDialog.ShowModal();
                 }
-            }
+				else if (udmaMode == 6)
+				{
+					m_okDialog.Title = "WARNING";
+					m_okDialog.Message = "UDMA Mode 6 is EXPERIMENTAL and requires a Ultra DMA\n(80-Conductor) IDE/ATA Cable to be installed.\nThis has ONLY been tested with Startech Adapter.\nSafe Mode (Boot with Eject), will allow you to boot using UDMA 2 \nto perform a reflash if required.\n";
+					m_okDialog.ShowModal();
+				}
+				
+			}
             ImGui.PopItemWidth();
             m_config.UDMAMode = (byte)(udmaMode);
 
