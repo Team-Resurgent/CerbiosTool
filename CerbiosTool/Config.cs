@@ -123,13 +123,13 @@ namespace CerbiosTool
 
         public void SetTheme(Theme theme)
         {
-            SplashBackground = theme.SplashBackground;
-            SplashCerbiosText = theme.SplashCerbiosText;
-            SplashSafeModeText = theme.SplashSafeModeText;
-            SplashLogo1 = theme.SplashLogo1;
-            SplashLogo2 = theme.SplashLogo2;
-            SplashLogo3 = theme.SplashLogo3;
-            SplashLogo4 = theme.SplashLogo4;
+            SplashBackground = Convert.ToUInt32(theme.SplashBackground, 16);
+            SplashCerbiosText = Convert.ToUInt32(theme.SplashCerbiosText, 16);
+            SplashSafeModeText = Convert.ToUInt32(theme.SplashSafeModeText, 16);
+            SplashLogo1 = Convert.ToUInt32(theme.SplashLogo1, 16);
+            SplashLogo2 = Convert.ToUInt32(theme.SplashLogo2, 16);
+            SplashLogo3 = Convert.ToUInt32(theme.SplashLogo3, 16);
+            SplashLogo4 = Convert.ToUInt32(theme.SplashLogo4, 16);
         }
 
         public static Vector3 RGBToVector3(uint color)

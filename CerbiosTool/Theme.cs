@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿using System.ComponentModel;
+using System.Numerics;
 using System.Text.Json;
 
 namespace CerbiosTool
@@ -7,78 +8,79 @@ namespace CerbiosTool
     {
         public string Name { get; set; }
 
-        public uint SplashBackground { get; set; }
+        public string SplashBackground { get; set; }
 
-        public uint SplashCerbiosText { get; set; }
+        public string SplashCerbiosText { get; set; }
 
-        public uint SplashSafeModeText { get; set; }
+        public string SplashSafeModeText { get; set; }
 
-        public uint SplashLogo1 { get; set; }
+        public string SplashLogo1 { get; set; }
 
-        public uint SplashLogo2 { get; set; }
+        public string SplashLogo2 { get; set; }
 
-        public uint SplashLogo3 { get; set; }
+        public string SplashLogo3 { get; set; }
 
-        public uint SplashLogo4 { get; set; }
+        public string SplashLogo4 { get; set; }
 
-        public byte SplashScale { get; set; }
+        public string SplashScale { get; set; }
 
         private static Theme[] DefaultThemes()
         {
             var themes = new List<Theme>();
-            themes.Add(new Theme {
+            themes.Add(new Theme
+            {
                 Name = "Blue",
-                SplashBackground = 0x000000,
-                SplashCerbiosText = 0xFFFFFF,
-                SplashSafeModeText = 0xFFFFFF,
-                SplashLogo1 = 0x00018D,
-                SplashLogo2 = 0x1C00C9,
-                SplashLogo3 = 0x4F92F9,
-                SplashLogo4 = 0x800000
+                SplashBackground = "000000",
+                SplashCerbiosText = "FFFFFF",
+                SplashSafeModeText = "FFFFFF",
+                SplashLogo1 = "00018D",
+                SplashLogo2 = "1C00C9",
+                SplashLogo3 = "4F92F9",
+                SplashLogo4 = "800000"
             });
             themes.Add(new Theme
             {
                 Name = "Red",
-                SplashBackground = 0x000000,
-                SplashCerbiosText = 0xFFFFFF,
-                SplashSafeModeText = 0xFFFFFF,
-                SplashLogo1 = 0x8D0001,
-                SplashLogo2 = 0xC9001C,
-                SplashLogo3 = 0xF9924F,
-                SplashLogo4 = 0x000080
+                SplashBackground = "000000",
+                SplashCerbiosText = "FFFFFF",
+                SplashSafeModeText = "FFFFFF",
+                SplashLogo1 = "8D0001",
+                SplashLogo2 = "C9001C",
+                SplashLogo3 = "F9924F",
+                SplashLogo4 = "000080"
             });
             themes.Add(new Theme
             {
                 Name = "Green",
-                SplashBackground = 0x000000,
-                SplashCerbiosText = 0xFFFFFF,
-                SplashSafeModeText = 0xFFFFFF,
-                SplashLogo1 = 0x008D01,
-                SplashLogo2 = 0x00C91C,
-                SplashLogo3 = 0x92F94F,
-                SplashLogo4 = 0x000080
+                SplashBackground = "000000",
+                SplashCerbiosText = "FFFFFF",
+                SplashSafeModeText = "FFFFFF",
+                SplashLogo1 = "008D01",
+                SplashLogo2 = "00C91C",
+                SplashLogo3 = "92F94F",
+                SplashLogo4 = "000080"
             });
             themes.Add(new Theme
             {
                 Name = "Touch of IND",
-                SplashBackground = 0xFFFFFF,
-                SplashCerbiosText = 0x6FBD19,
-                SplashSafeModeText = 0x6FBD19,
-                SplashLogo1 = 0x125212,
-                SplashLogo2 = 0x7FC92A,
-                SplashLogo3 = 0xD3F134,
-                SplashLogo4 = 0x000080
+                SplashBackground = "FFFFFF",
+                SplashCerbiosText = "6FBD19",
+                SplashSafeModeText = "6FBD19",
+                SplashLogo1 = "125212",
+                SplashLogo2 = "7FC92A",
+                SplashLogo3 = "D3F134",
+                SplashLogo4 = "000080"
             });
             themes.Add(new Theme
             {
                 Name = "Red Eyes, White",
-                SplashBackground = 0x000000,
-                SplashCerbiosText = 0x00018D,
-                SplashSafeModeText = 0xA90000,
-                SplashLogo1 = 0x00018D,
-                SplashLogo2 = 0xD2D2D2,
-                SplashLogo3 = 0xADADAD,
-                SplashLogo4 = 0x800000
+                SplashBackground = "000000",
+                SplashCerbiosText = "00018D",
+                SplashSafeModeText = "A90000",
+                SplashLogo1 = "00018D",
+                SplashLogo2 = "D2D2D2",
+                SplashLogo3 = "ADADAD",
+                SplashLogo4 = "800000"
             });
             return themes.OrderBy(n => n.Name).ToArray();
         }
