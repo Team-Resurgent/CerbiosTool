@@ -224,7 +224,7 @@ namespace CerbiosTool
                 var lineHeight = ImGui.GetTextLineHeight();
                 ImGui.SetCursorPosX(lineHeight * 2);
 
-                var isSelected = SelectedFile == fse;
+                var isSelected = SelectedFile == Path.GetFileName(fse);
                 if (ImGui.Selectable(name, isSelected, ImGuiSelectableFlags.DontClosePopups | ImGuiSelectableFlags.AllowDoubleClick))
                 {
                     SelectedFile = Path.GetFileName(fse);
