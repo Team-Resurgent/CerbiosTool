@@ -99,10 +99,10 @@ namespace CerbiosTool
             CdPath1 = string.Empty;
             CdPath2 = string.Empty;
             CdPath3 = string.Empty;
-            DashPath1 = @"\Device\Harddisk0\Partition2\evoxdash.xbe";
-            DashPath2 = @"\Device\Harddisk0\Partition2\avalaunch.xbe";
-            DashPath3 = @"\Device\Harddisk0\Partition2\nexgen.xbe";
-            BootAnimPath = @"\Device\Harddisk0\Partition2\BootAnims\Xbox\bootanim.xbe";
+            DashPath1 = @"C:\evoxdash.xbe";
+            DashPath2 = @"C:\avalaunch.xbe";
+            DashPath3 = @"C:\nexgen.xbe";
+            BootAnimPath = @"C:\BootAnims\Xbox\bootanim.xbe";
             FrontLed = "GGGG";
             IGRMasterPort = 0;
             IGRDash = "67CD";

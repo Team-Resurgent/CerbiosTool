@@ -22,6 +22,7 @@ namespace CerbiosTool
         private PathPicker? m_biosFileSavePicker;
         private PathPicker? m_configFileOpenPicker;
         private PathPicker? m_configFileSavePicker;
+        private PathPicker? m_iniFileSavePicker;
         private OkDialog? m_okDialog;
         private Config m_config = new();
         private Settings m_settings = new();
@@ -167,7 +168,7 @@ namespace CerbiosTool
 
         public void Run()
         {
-            VeldridStartup.CreateWindowAndGraphicsDevice(new WindowCreateInfo(50, 50, 1240, 540, WindowState.Normal, $"Cerbios Tool - {m_version} (Team Resurgent)"), new GraphicsDeviceOptions(true, null, true, ResourceBindingModel.Improved, true, true), VeldridStartup.GetPlatformDefaultBackend(), out m_window, out m_graphicsDevice);
+            VeldridStartup.CreateWindowAndGraphicsDevice(new WindowCreateInfo(50, 50, 1240, 564, WindowState.Normal, $"Cerbios Tool - {m_version} (Team Resurgent)"), new GraphicsDeviceOptions(true, null, true, ResourceBindingModel.Improved, true, true), VeldridStartup.GetPlatformDefaultBackend(), out m_window, out m_graphicsDevice);
            
             m_window.Resizable = false;
 
@@ -183,6 +184,9 @@ namespace CerbiosTool
             SetXboxTheme();
 
             m_settings = Settings.LoadSettings();
+
+            m_themes = Theme.LoadThemes();
+            m_themeNames = Theme.BuildThemeDropDownList(m_themes);
 
             m_biosFileOpenPicker = new PathPicker
             {
@@ -218,6 +222,15 @@ namespace CerbiosTool
                 ButtonName = "Save"
             };
 
+            m_iniFileSavePicker = new PathPicker
+            {
+                Title = "Save Ini",
+                Mode = PathPicker.PickerMode.FileSave,
+                AllowedFiles = new[] { "*.init" },
+                SaveName = "cerbios.ini",
+                ButtonName = "Save"
+            };
+
             m_okDialog = new();
 
             m_window.Resized += () =>
@@ -227,9 +240,6 @@ namespace CerbiosTool
             };
 
             m_commandList = m_graphicsDevice.ResourceFactory.CreateCommandList();
-
-            m_themes = Theme.LoadThemes();
-            m_themeNames = Theme.BuildThemeDropDownList(m_themes);
 
             while (m_window.Exists)
             {
@@ -265,6 +275,7 @@ namespace CerbiosTool
                 m_biosFileSavePicker == null ||
                 m_configFileOpenPicker == null ||
                 m_configFileSavePicker == null ||
+                m_iniFileSavePicker == null ||
                 m_okDialog == null)
             {
                 return;
@@ -300,11 +311,94 @@ namespace CerbiosTool
                 Settings.SaveSattings(m_settings);
             }
 
+            if (m_iniFileSavePicker.Render() && !m_iniFileSavePicker.Cancelled)
+            {
+                var iniFile = new StringBuilder();
+                iniFile.AppendLine("; Cerbios Config");
+                iniFile.AppendLine();
+
+                iniFile.AppendLine("; Check For AV Pack");
+                iniFile.AppendLine($"AVCheck = {(m_config.AVCheck == 1 ? "true" : "false")}");
+                iniFile.AppendLine();
+
+                iniFile.AppendLine("; LED Ring Color, G = Green, R = Red, A = Amber, O = Off");
+                iniFile.AppendLine($"FrontLed = {m_config.FrontLed}");
+                iniFile.AppendLine();
+
+                iniFile.AppendLine("; Drive Setup");
+                iniFile.AppendLine("; 0 = HDD & DVD,  1 = HDD & No DVD (Legacy Mode), 2 = HDD & No DVD (Modern Mode), 3 = Dual HDD");
+                iniFile.AppendLine($"DriveSetup = {m_config.DriveSetup}");
+                iniFile.AppendLine();
+
+                iniFile.AppendLine("; Load XDK Launcher/XBDM if it exists (Debug Bios Only)");
+                iniFile.AppendLine($"Debug = {(m_config.Debug == 1 ? "true" : "false")}");
+                iniFile.AppendLine();
+
+                iniFile.AppendLine("; CD Paths (always falls back to D:\\default.xbe)");
+                iniFile.AppendLine($"CdPath1 = {m_config.CdPath1}");
+                iniFile.AppendLine($"CdPath2 = {m_config.CdPath2}");
+                iniFile.AppendLine($"CdPath3 = {m_config.CdPath3}");
+                iniFile.AppendLine();
+
+                iniFile.AppendLine("; Dash Paths (always falls back to C:\xboxdash.xbe)");
+                iniFile.AppendLine($"DashPath1 = {m_config.DashPath1}");
+                iniFile.AppendLine($"DashPath2 = {m_config.DashPath2}");
+                iniFile.AppendLine($"DashPath3 = {m_config.DashPath3}");
+                iniFile.AppendLine();
+
+                iniFile.AppendLine("; Boot Animation Path (always falls back to C:\\BootAnims\\Xbox\\bootanim.xbe)");
+                iniFile.AppendLine($"BootAnimPath = {m_config.BootAnimPath}");
+
+                var iniPath = Path.Combine(m_iniFileSavePicker.SelectedFolder, m_iniFileSavePicker.SaveName);
+                File.WriteAllText(iniPath, iniFile.ToString()); 
+            }
+
             m_okDialog.Render();
 
+
             ImGui.Begin("Main", ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoTitleBar | ImGuiWindowFlags.NoResize);
-            ImGui.SetWindowSize(new Vector2(m_window.Width, m_window.Height));
-            ImGui.SetWindowPos(new Vector2(0, 0), ImGuiCond.Always);
+            ImGui.SetWindowSize(new Vector2(m_window.Width, m_window.Height - 24));
+            ImGui.SetWindowPos(new Vector2(0, 24), ImGuiCond.Always);
+
+            if (ImGui.BeginMainMenuBar())
+            {
+                if (ImGui.BeginMenu("File"))
+                {
+                    if (ImGui.MenuItem("Load Bios", "CTRL+L")) 
+                    {
+                        var path = Directory.Exists(m_settings.BiosPath) ? m_settings.BiosPath : Directory.GetCurrentDirectory();
+                        m_biosFileOpenPicker.ShowModal(path);
+                    }
+
+                    if (ImGui.MenuItem("Save Bios", "CTRL+S", false, m_biosLoaded))
+                    {
+                        var path = Directory.Exists(m_settings.BiosPath) ? m_settings.BiosPath : Directory.GetCurrentDirectory();
+                        m_biosFileSavePicker.ShowModal(path);
+                    }
+
+                    ImGui.EndMenu();
+                }
+
+                if (ImGui.BeginMenu("Config"))
+                {
+                    if (ImGui.MenuItem("Load Config", "ALT+L", false, m_biosLoaded))
+                    {
+                        var path = Directory.Exists(m_settings.ConfigPath) ? m_settings.ConfigPath : Directory.GetCurrentDirectory();
+                        m_configFileOpenPicker.ShowModal(path);
+                    }
+
+
+                    if (ImGui.MenuItem("Save Config", "ALT+S", false, m_biosLoaded))
+                    {
+                        var path = Directory.Exists(m_settings.ConfigPath) ? m_settings.ConfigPath : Directory.GetCurrentDirectory();
+                        m_configFileSavePicker.ShowModal(path);
+                    }
+
+                    ImGui.EndMenu();
+                }
+
+                ImGui.EndMainMenuBar();
+            }
 
             ImGui.Spacing();
 
@@ -566,7 +660,7 @@ namespace CerbiosTool
 
             ImGui.EndChild();
 
-            var startPos = new Vector2(250 + 48, 10);
+            var startPos = new Vector2(250 + 48, 34);
             var size = new Vector2(640, 480);
             var drawList = ImGui.GetWindowDrawList();
             drawList.AddRectFilled(startPos, startPos + size, ImGui.ColorConvertFloat4ToU32(Config.RGBToVector4(m_config.SplashBackground)));
@@ -678,45 +772,13 @@ namespace CerbiosTool
 
             ImGui.EndChild();
 
-            ImGui.SetCursorPosY(m_window.Height - 40);
-
-            if (ImGui.Button("Load Bios", new Vector2(100, 30)))
-            {
-                var path = Directory.Exists(m_settings.BiosPath) ? m_settings.BiosPath : Directory.GetCurrentDirectory();
-                m_biosFileOpenPicker.ShowModal(path);
-            }
+            ImGui.SetCursorPosY(m_window.Height - 64);
 
             if (m_biosLoaded)
             {
-                ImGui.SameLine();
-
-                if (ImGui.Button("Save Bios", new Vector2(100, 30)))
-                {
-                    var path = Directory.Exists(m_settings.BiosPath) ? m_settings.BiosPath : Directory.GetCurrentDirectory();
-                    m_biosFileSavePicker.ShowModal(path);
-                }
-
-                ImGui.SameLine();
-
                 if (ImGui.Button("Default Config", new Vector2(100, 30)))
                 {
                     m_config.SetDefaults();
-                }
-
-                ImGui.SameLine();
-
-                if (ImGui.Button("Load Config", new Vector2(100, 30)))
-                {
-                    var path = Directory.Exists(m_settings.ConfigPath) ? m_settings.ConfigPath : Directory.GetCurrentDirectory();
-                    m_configFileOpenPicker.ShowModal(path);
-                }
-
-                ImGui.SameLine();
-
-                if (ImGui.Button("Save Config", new Vector2(100, 30)))
-                {
-                    var path = Directory.Exists(m_settings.ConfigPath) ? m_settings.ConfigPath : Directory.GetCurrentDirectory();
-                    m_configFileSavePicker.ShowModal(path);
                 }
 
                 ImGui.SameLine();
@@ -737,9 +799,16 @@ namespace CerbiosTool
                     themeJson.AppendLine("}");
                     ImGui.SetClipboardText(themeJson.ToString());
                 }
-            }
 
-            ImGui.SameLine();
+                ImGui.SameLine();
+
+                if (ImGui.Button("Export cerbios.ini", new Vector2(150, 30)))
+                {
+                    m_iniFileSavePicker.ShowModal(Directory.GetCurrentDirectory());
+                }
+
+                ImGui.SameLine();
+            }
 
             ImGui.SetCursorPosX(m_window.Width - 374);
 
