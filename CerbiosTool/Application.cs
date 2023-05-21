@@ -661,6 +661,7 @@ namespace CerbiosTool
             ImGui.EndChild();
 
             var startPos = new Vector2(250 + 48, 34);
+            var imagePos = new Vector2(startPos.X, 10);
             var size = new Vector2(640, 480);
             var drawList = ImGui.GetWindowDrawList();
             drawList.AddRectFilled(startPos, startPos + size, ImGui.ColorConvertFloat4ToU32(Config.RGBToVector4(m_config.SplashBackground)));
@@ -668,24 +669,25 @@ namespace CerbiosTool
 
             if (m_config.SplashScale > 0)
             {
+                
                 var scaledSize = size / m_config.SplashScale;
                 var scaleOffset = (size - scaledSize) / 2;
-                ImGui.SetCursorPos(startPos + scaleOffset);
+                ImGui.SetCursorPos(imagePos + scaleOffset);
                 ImGui.Image(m_controller.Logo1Texture, scaledSize, Vector2.Zero, Vector2.One, Config.RGBToVector4(m_config.SplashLogo1));
-                ImGui.SetCursorPos(startPos + scaleOffset);
+                ImGui.SetCursorPos(imagePos + scaleOffset);
                 ImGui.Image(m_controller.Logo2Texture, scaledSize, Vector2.Zero, Vector2.One, Config.RGBToVector4(m_config.SplashLogo2));
-                ImGui.SetCursorPos(startPos + scaleOffset);
+                ImGui.SetCursorPos(imagePos + scaleOffset);
                 ImGui.Image(m_controller.Logo3Texture, scaledSize, Vector2.Zero, Vector2.One, Config.RGBToVector4(m_config.SplashLogo3));
-                ImGui.SetCursorPos(startPos + scaleOffset);
+                ImGui.SetCursorPos(imagePos + scaleOffset);
                 ImGui.Image(m_controller.Logo4Texture, scaledSize, Vector2.Zero, Vector2.One, Config.RGBToVector4(m_config.SplashLogo4));
-                ImGui.SetCursorPos(startPos + scaleOffset);
+                ImGui.SetCursorPos(imagePos + scaleOffset);
                 ImGui.Image(m_controller.CerbiosTextTexture, scaledSize, Vector2.Zero, Vector2.One, Config.RGBToVector4(m_config.SplashCerbiosText));
-                ImGui.SetCursorPos(startPos + scaleOffset);
+                ImGui.SetCursorPos(imagePos + scaleOffset);
                 ImGui.Image(m_controller.SafeModeTextTexture, scaledSize, Vector2.Zero, Vector2.One, Config.RGBToVector4(m_config.SplashSafeModeText));
             }
             else 
             {
-                ImGui.SetCursorPos(startPos);
+                ImGui.SetCursorPos(imagePos);
                 ImGui.Image(m_controller.SafeModeTextTexture, size, Vector2.Zero, Vector2.One, Config.RGBToVector4(m_config.SplashSafeModeText));
             }
 
