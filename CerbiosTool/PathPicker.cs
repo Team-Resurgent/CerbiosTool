@@ -273,7 +273,7 @@ namespace CerbiosTool
             var size = ImGui.GetWindowSize();
 
             ImGui.PushItemWidth(size.X - 16);
-            ImGui.InputText("###file-path", ref _selectedFolder, 300, ImGuiInputTextFlags.ReadOnly);
+            ImGui.InputText("###file-path", ref _selectedFolder, 300);
             ImGui.Spacing();
 
             if (Mode == PickerMode.FileSave)
@@ -303,22 +303,25 @@ namespace CerbiosTool
 
             if (ImGui.BeginChildFrame(2, new Vector2(size.X - 224, size.Y - (46 + frameYOffset)), ImGuiWindowFlags.None))
             {
-                var directoryInfo = new DirectoryInfo(_selectedFolder);
-                if (directoryInfo.Parent != null)
+                if (Directory.Exists(_selectedFolder))
                 {
-                    if (ImGui.Selectable("..", false, ImGuiSelectableFlags.DontClosePopups))
+                    var directoryInfo = new DirectoryInfo(_selectedFolder);
+                    if (directoryInfo.Parent != null)
                     {
-                        _selectedFolder = directoryInfo.Parent.FullName;
+                        if (ImGui.Selectable("..", false, ImGuiSelectableFlags.DontClosePopups))
+                        {
+                            _selectedFolder = directoryInfo.Parent.FullName;
+                        }
                     }
-                }
-                try
-                {
-                    result |= ProcessChildFolders(directoryInfo.FullName);
-                    result |= ProcessChildFiles(directoryInfo.FullName);
-                }
-                catch
-                {
-                    Debug.Print($"Unable to process path '{directoryInfo.FullName}'.");
+                    try
+                    {
+                        result |= ProcessChildFolders(directoryInfo.FullName);
+                        result |= ProcessChildFiles(directoryInfo.FullName);
+                    }
+                    catch
+                    {
+                        Debug.Print($"Unable to process path '{directoryInfo.FullName}'.");
+                    }
                 }
                 ImGui.EndChildFrame();
             }

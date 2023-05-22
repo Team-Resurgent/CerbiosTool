@@ -51,7 +51,7 @@ Time for some doggy style!!!!
 * Ability to copy your favourite theme settings and paste to your friends using "Copy Theme JSON" Button.
 * Ability to load saved themes files from Themes.JSON file.
 * Ability to resize / scale Cerbios logo including ability to hide entirely apart from Safe Mode notice.
-* Ability to set UDMA modes 1-6 including Auto Modes for Startech & Generic Adapters. A Ultra DMA (80-Conductor) IDE/ATA Cable is REQUIRED for modes higher than Default/Stock.
+* Ability to set UDMA modes 2-6 including Auto Modes for Startech & Generic Adapters. A Ultra DMA (80-Conductor) IDE/ATA Cable is REQUIRED for modes higher than Default/Stock.
 * Ability to save your favourite cofigs to re-use later on.
 * Remembers your last loaded / saved bios paths so you dont have to keep searching.
 * Ability to set config to defaults.
