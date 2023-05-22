@@ -19,9 +19,9 @@ Time for some doggy style!!!!
 
 </div>
 
-				[ Program ..................................... Cerbios Tool V1.0.9 ]
+				[ Program .................................... Cerbios Tool V1.0.11 ]
 				[ Type ................................. Cerbios Configuration Tool ]
-				[ OS Architecture .......................................... Windows]
+				[ OS Architecture ......................................... Windows ]
 				[ Patreon ....................https://www.patreon.com/teamresurgent ]
 				[ Ko-Fi ........................... https://ko-fi.com/teamresurgent ]
 
