@@ -111,6 +111,18 @@ namespace CerbiosTool
                 SplashLogo4 = "800000",
                 SplashScale = 1
             });
+            themes.Add(new Theme
+            {
+                Name = "Resurgent",
+                SplashBackground = "000000",
+                SplashCerbiosText = "9EDAF9",
+                SplashSafeModeText = "FB9E9E",
+                SplashLogo1 = "781244",
+                SplashLogo2 = "EB2F75",
+                SplashLogo3 = "CD0000",
+                SplashLogo4 = "6E006E",
+                SplashScale = 1
+            });
             return themes.OrderBy(n => n.Name).ToArray();
         }
 
