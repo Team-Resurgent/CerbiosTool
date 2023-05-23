@@ -19,6 +19,7 @@ namespace CerbiosTool
         private PathPicker? m_configFileOpenPicker;
         private PathPicker? m_configFileSavePicker;
         private PathPicker? m_iniFileSavePicker;
+        private SplashDialog m_splashDialog = new();
         private OkDialog? m_okDialog;
         private Config m_config = new();
         private Settings m_settings = new();
@@ -26,6 +27,7 @@ namespace CerbiosTool
         private byte[] m_biosData = Array.Empty<byte>();
         private Theme[] m_themes = Array.Empty<Theme>();
         private string[] m_themeNames = Array.Empty<string>();
+        private bool m_showSplash = true;
 
         private static void SetXboxTheme()
         {
@@ -348,6 +350,14 @@ namespace CerbiosTool
             }
 
             m_okDialog.Render();
+
+            m_splashDialog.Render();
+
+            if (m_showSplash)
+            {
+                m_showSplash = false;
+                m_splashDialog.ShowdDialog(m_controller.SplashTexture);
+            }
 
 
             ImGui.Begin("Main", ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoTitleBar | ImGuiWindowFlags.NoResize);

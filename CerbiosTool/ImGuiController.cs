@@ -36,7 +36,7 @@ namespace CerbiosTool
         private int _logo2Texture;
         private int _logo3Texture;
         private int _logo4Texture;
-
+        private int _splashTexture;
 
         private bool _controlDown;
         private bool _shiftDown;
@@ -53,6 +53,8 @@ namespace CerbiosTool
         public int Logo2Texture => _logo2Texture;
         public int Logo3Texture => _logo3Texture;
         public int Logo4Texture => _logo4Texture;
+
+        public int SplashTexture => _splashTexture;
 
         private IntPtr _iniNamePtr = IntPtr.Zero;
         private List<int> _ownedTextures = new List<int>();
@@ -139,6 +141,7 @@ namespace CerbiosTool
             _logo2Texture = CreateTextureFromResource("CerbiosTool.Resources.Logo2.png");
             _logo3Texture = CreateTextureFromResource("CerbiosTool.Resources.Logo3.png");
             _logo4Texture = CreateTextureFromResource("CerbiosTool.Resources.Logo4.png");
+            _splashTexture = CreateTextureFromResource("CerbiosTool.Resources.TeamResurgent.jpg");
         }
 
         public unsafe ImGuiController(int width, int height)

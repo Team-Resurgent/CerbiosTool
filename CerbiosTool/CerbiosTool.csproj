@@ -25,6 +25,7 @@
 	  <None Remove="Resources\Logo4.png" />
 	  <None Remove="Resources\pack.exe" />
 	  <None Remove="Resources\SafeModeText.png" />
+	  <None Remove="Resources\TeamResurgent.jpg" />
 	  <None Remove="Resources\unpack.exe" />
 	  <None Remove="Resources\imgui-vertex.glsl" />
 	  <None Remove="Resources\imgui-frag.glsl" />
@@ -55,6 +56,7 @@
 		<EmbeddedResource Include="Resources\SafeModeText.png">
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</EmbeddedResource>
+		<EmbeddedResource Include="Resources\TeamResurgent.jpg" />
 		<EmbeddedResource Include="Resources\unpack.exe">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</EmbeddedResource>
