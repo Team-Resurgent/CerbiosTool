@@ -12,7 +12,7 @@
 		<RuntimeIdentifier>win-x64</RuntimeIdentifier>
 		<PublishReadyToRun>true</PublishReadyToRun>
 		<EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
-		<OutputType>WinExe</OutputType>
+		<OutputType>exe</OutputType>
 		<AssemblyName>cerbiostool</AssemblyName>
 	</PropertyGroup>
 
