@@ -1,22 +1,19 @@
 ﻿using ImGuiNET;
-using SharpDX.DXGI;
+using OpenTK.Graphics;
 using SixLabors.Fonts;
 using System.Diagnostics;
 using System.Numerics;
-using System.Runtime;
 using System.Runtime.InteropServices;
 using System.Text;
+using OpenTK.Graphics.OpenGL;
 using Veldrid;
 using Veldrid.Sdl2;
-using Veldrid.StartupUtilities;
 
 namespace CerbiosTool
 {
     public class Application
     {
         private Sdl2Window? m_window;
-        private GraphicsDevice? m_graphicsDevice;
-        private CommandList? m_commandList;
         private ImGuiController? m_controller;
         private PathPicker? m_biosFileOpenPicker;
         private PathPicker? m_biosFileSavePicker;
@@ -168,17 +165,21 @@ namespace CerbiosTool
 
         public void Run()
         {
-            VeldridStartup.CreateWindowAndGraphicsDevice(new WindowCreateInfo(50, 50, 1240, 564, WindowState.Normal, $"Cerbios Tool - {m_version} (Team Resurgent)"), new GraphicsDeviceOptions(true, null, true, ResourceBindingModel.Improved, true, true), VeldridStartup.GetPlatformDefaultBackend(), out m_window, out m_graphicsDevice);
-           
+            m_window = new Sdl2Window($"Cerbios Tool - {m_version} (Team Resurgent)", 50, 50, 1240, 564, SDL_WindowFlags.Shown | SDL_WindowFlags.OpenGL, true); 
             m_window.Resizable = false;
 
-            m_controller = new ImGuiController(m_graphicsDevice, m_graphicsDevice.MainSwapchain.Framebuffer.OutputDescription, m_window.Width, m_window.Height);
+            var windowInfo = OpenTK.Platform.Utilities.CreateSdl2WindowInfo(m_window.SdlWindowHandle);
+            var graphicsContext = new GraphicsContext(GraphicsMode.Default, windowInfo);
+            graphicsContext.LoadAll();
+            graphicsContext.MakeCurrent(windowInfo);
+
+            m_controller = new ImGuiController(m_window.Width, m_window.Height);
 
             if (OperatingSystem.IsWindowsVersionAtLeast(10, 0, 22000, 0))
             {
                 int value = -1;
                 uint DWMWA_USE_IMMERSIVE_DARK_MODE = 20;
-                DwmSetWindowAttribute(m_window.Handle, DWMWA_USE_IMMERSIVE_DARK_MODE, ref value, sizeof(int));
+                _ = DwmSetWindowAttribute(m_window.Handle, DWMWA_USE_IMMERSIVE_DARK_MODE, ref value, sizeof(int));
             }
 
             SetXboxTheme();
@@ -235,12 +236,12 @@ namespace CerbiosTool
 
             m_window.Resized += () =>
             {
-                m_graphicsDevice.MainSwapchain.Resize((uint)m_window.Width, (uint)m_window.Height);
                 m_controller.WindowResized(m_window.Width, m_window.Height);
             };
 
-            m_commandList = m_graphicsDevice.ResourceFactory.CreateCommandList();
-
+            float previousPollTimeSeconds = 0;
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
             while (m_window.Exists)
             {
                 InputSnapshot snapshot = m_window.PumpEvents();
@@ -248,23 +249,24 @@ namespace CerbiosTool
                 {
                     break;
                 }
-                m_controller.Update(1f / 60f, snapshot);
+
+                float currentTimeSeconds = (float)(stopwatch.ElapsedMilliseconds / 1000.0f);
+                m_controller.Update(currentTimeSeconds, snapshot);
 
                 RenderUI();
 
-                m_commandList.Begin();
-                m_commandList.SetFramebuffer(m_graphicsDevice.MainSwapchain.Framebuffer);
-                m_commandList.ClearColorTarget(0, new RgbaFloat(0.0f, 0.0f, 0.0f, 1f));
-                m_controller.Render(m_graphicsDevice, m_commandList);
-                m_commandList.End();
-                m_graphicsDevice.SubmitCommands(m_commandList);
-                m_graphicsDevice.SwapBuffers(m_graphicsDevice.MainSwapchain);
+                GL.Viewport(0, 0, m_window.Width, m_window.Height);
+                GL.ClearColor(new Color4(0, 0, 0, 255));
+                GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
+
+                m_controller.Render();
+
+                Sdl2Native.SDL_GL_SwapWindow(m_window.SdlWindowHandle);
+
+                previousPollTimeSeconds = currentTimeSeconds;
             }
 
-            m_graphicsDevice.WaitForIdle();
             m_controller.Dispose();
-            m_commandList.Dispose();
-            m_graphicsDevice.Dispose();
         }
 
         private void RenderUI()
