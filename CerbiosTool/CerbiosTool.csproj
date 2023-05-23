@@ -10,7 +10,6 @@
 		<PublishSingleFile Condition="'$(Configuration)' == 'Release'">true</PublishSingleFile>
 		<SelfContained Condition="'$(Configuration)' == 'Release'">true</SelfContained>
 		<RuntimeIdentifier>win-x64</RuntimeIdentifier>
-		<RuntimeIdentifiers>win-x64;linux-x64;osx-x64</RuntimeIdentifiers>
 		<PublishReadyToRun>true</PublishReadyToRun>
 		<EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
 		<OutputType>WinExe</OutputType>

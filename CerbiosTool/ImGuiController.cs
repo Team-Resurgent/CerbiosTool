@@ -569,7 +569,7 @@ namespace CerbiosTool
             if (success == 0)
             {
                 string info = GL.GetProgramInfoLog(program);
-                Debug.WriteLine($"GL.LinkProgram had info log [{name}]:\n{info}");
+                Debug.Print($"GL.LinkProgram had info log [{name}]:\n{info}");
             }
 
             GL.DetachShader(program, vertex);
