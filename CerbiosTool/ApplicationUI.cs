@@ -236,7 +236,7 @@ namespace CerbiosTool
             float previousPollTimeSeconds = 0;
             var stopwatch = new Stopwatch();
             stopwatch.Start();
-            while (m_window.Exists)
+            while (true)
             {
                 InputSnapshot snapshot = m_window.PumpEvents();
                 if (!m_window.Exists)
@@ -390,7 +390,6 @@ namespace CerbiosTool
                         var path = Directory.Exists(m_settings.ConfigPath) ? m_settings.ConfigPath : Directory.GetCurrentDirectory();
                         m_configFileOpenPicker.ShowModal(path);
                     }
-
 
                     if (ImGui.MenuItem("Save Config", "ALT+S", false, m_biosLoaded))
                     {
