@@ -1,13 +1,13 @@
-#version 330 core
+#version 130
+precision mediump float;
+precision mediump int;
 
 uniform sampler2D in_fontTexture;
 
-in vec4 color;
-in vec2 texCoord;
-
-out vec4 outputColor;
+varying vec4 color;
+varying vec2 texCoord;
 
 void main()
 {
-    outputColor = color * texture(in_fontTexture, texCoord);
+    gl_FragColor = color * texture(in_fontTexture, texCoord);
 }

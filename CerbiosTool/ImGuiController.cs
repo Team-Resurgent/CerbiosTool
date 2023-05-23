@@ -97,10 +97,9 @@ namespace CerbiosTool
         private unsafe int CreateTextureFromResource(string resourceName)
         {
             var resourceBytes = ResourceLoader.GetEmbeddedResourceBytes(resourceName);
-            using var resourceImage = SixLabors.ImageSharp.Image.Load<Rgba32>(resourceBytes);
-            var pixelSpan = new Span<Rgba32>(new Rgba32[resourceImage.Width * resourceImage.Height]);
+            using var resourceImage = Image.Load<Bgra32>(resourceBytes);
+            var pixelSpan = new Span<Bgra32>(new Bgra32[resourceImage.Width * resourceImage.Height]);
             resourceImage.CopyPixelDataTo(pixelSpan);
-
 
             int mips = (int)Math.Floor(Math.Log(Math.Max(resourceImage.Width, resourceImage.Height), 2));
 
@@ -591,7 +590,7 @@ namespace CerbiosTool
             if (success == 0)
             {
                 string info = GL.GetShaderInfoLog(shader);
-                Debug.WriteLine($"GL.CompileShader for shader '{name}' [{type}] had info log:\n{info}");
+                Console.WriteLine($"Error: GL.CompileShader for shader '{name}' [{type}] had info log:\n{info}");
             }
 
             return shader;
@@ -603,7 +602,7 @@ namespace CerbiosTool
             int i = 1;
             while ((error = GL.GetError()) != ErrorCode.NoError)
             {
-                Debug.Print($"{title} ({i++}): {error}");
+                Console.WriteLine($"Error: {title} ({i++}) - {error}");
             }
         }
 

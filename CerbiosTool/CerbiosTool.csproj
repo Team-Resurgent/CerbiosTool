@@ -78,7 +78,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="ImGui.NET" Version="1.89.5" />
-		<PackageReference Include="SixLabors.ImageSharp.Drawing" Version="1.0.0-beta15" />
+		<PackageReference Include="SixLabors.ImageSharp" Version="3.0.1" />
 		<PackageReference Include="Veldrid.SDL2" Version="4.9.0" />
 	</ItemGroup>
 
@@ -88,7 +88,7 @@
 
 	<ItemGroup>
 	  <Reference Include="OpenTK">
-	    <HintPath>..\..\ImGui.NET_OpenTK_Sample\Dear ImGui Sample\OpenTK.dll</HintPath>
+	    <HintPath>..\..\OpenTK.dll</HintPath>
 	  </Reference>
 	</ItemGroup>
 

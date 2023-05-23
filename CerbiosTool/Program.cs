@@ -2,9 +2,9 @@
 
 try
 {
-    var version = "V1.1.0";
-    var application = new Application(version);
-    application.Run();
+    var version = "V1.1.1";
+    var application = new ApplicationUI();
+    application.Start(version);
 }
 catch (Exception ex)
 {

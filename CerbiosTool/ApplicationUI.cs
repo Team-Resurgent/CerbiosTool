@@ -1,6 +1,5 @@
 ﻿using ImGuiNET;
 using OpenTK.Graphics;
-using SixLabors.Fonts;
 using System.Diagnostics;
 using System.Numerics;
 using System.Runtime.InteropServices;
@@ -11,7 +10,7 @@ using Veldrid.Sdl2;
 
 namespace CerbiosTool
 {
-    public class Application
+    public class ApplicationUI
     {
         private Sdl2Window? m_window;
         private ImGuiController? m_controller;
@@ -27,13 +26,6 @@ namespace CerbiosTool
         private byte[] m_biosData = Array.Empty<byte>();
         private Theme[] m_themes = Array.Empty<Theme>();
         private string[] m_themeNames = Array.Empty<string>();
-
-        private readonly string m_version;
-
-        public Application(string version)
-        {
-            m_version = version;
-        }
 
         private static void SetXboxTheme()
         {
@@ -163,9 +155,9 @@ namespace CerbiosTool
             }
         }
 
-        public void Run()
+        public void Start(string version)
         {
-            m_window = new Sdl2Window($"Cerbios Tool - {m_version} (Team Resurgent)", 50, 50, 1240, 564, SDL_WindowFlags.Shown | SDL_WindowFlags.OpenGL, true); 
+            m_window = new Sdl2Window($"Cerbios Tool - {version} (Team Resurgent)", 50, 50, 1240, 564, SDL_WindowFlags.Shown | SDL_WindowFlags.OpenGL, true); 
             m_window.Resizable = false;
 
             var windowInfo = OpenTK.Platform.Utilities.CreateSdl2WindowInfo(m_window.SdlWindowHandle);
