@@ -336,7 +336,7 @@ namespace CerbiosTool
                 iniFile.AppendLine($"CdPath3 = {m_config.CdPath3}");
                 iniFile.AppendLine();
 
-                iniFile.AppendLine("; Dash Paths (always falls back to C:\xboxdash.xbe)");
+                iniFile.AppendLine("; Dash Paths (always falls back to C:\\xboxdash.xbe)");
                 iniFile.AppendLine($"DashPath1 = {m_config.DashPath1}");
                 iniFile.AppendLine($"DashPath2 = {m_config.DashPath2}");
                 iniFile.AppendLine($"DashPath3 = {m_config.DashPath3}");
