@@ -14,7 +14,7 @@
 		<EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
 		<OutputType>WinExe</OutputType>
 		<AssemblyName>cerbiostool</AssemblyName>
-		<Platforms>AnyCPU;x64</Platforms>
+		<Platforms>x64</Platforms>
 	</PropertyGroup>
 
 	<ItemGroup>
