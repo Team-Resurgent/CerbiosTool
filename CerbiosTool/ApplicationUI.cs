@@ -534,7 +534,7 @@ namespace CerbiosTool
                 ImGui.EndTooltip();
             }
             ImGui.PushItemWidth(250);
-            if (ImGui.InputText("##igrFull", ref igrShutdown, 4, ImGuiInputTextFlags.CharsHexadecimal))
+            if (ImGui.InputText("##igrShutdown", ref igrShutdown, 4, ImGuiInputTextFlags.CharsHexadecimal))
             {
                 m_config.IGRShutdown = igrShutdown;
             }
