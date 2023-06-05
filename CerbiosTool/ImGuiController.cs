@@ -198,7 +198,6 @@ namespace CerbiosTool
             style.PopupRounding = 6;
         }
 
-
         public unsafe ImGuiController(int width, int height)
         {
             _windowWidth = width;
@@ -351,7 +350,6 @@ namespace CerbiosTool
         }
 
         readonly List<char> PressedChars = new List<char>();
-
 
         internal void PressChar(char keyChar)
         {

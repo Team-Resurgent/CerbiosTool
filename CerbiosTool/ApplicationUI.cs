@@ -99,13 +99,7 @@ namespace CerbiosTool
             m_window = new Window();
             m_window.Title = $"Cerbios Tool - {version} (Team Resurgent)";
             m_window.Size = new OpenTK.Mathematics.Vector2i(1240, 564);
-
-            //m_window..Resizable = false;
-
-            //var windowInfo = OpenTK.Platform.Utilities.CreateSdl2WindowInfo(m_window.SdlWindowHandle);
-            //var graphicsContext = new GraphicsContext(GraphicsMode.Default, windowInfo);
-            //graphicsContext.LoadAll();
-            //graphicsContext.MakeCurrent(windowInfo);
+            m_window.WindowBorder = OpenTK.Windowing.Common.WindowBorder.Fixed;
 
             if (OperatingSystem.IsWindowsVersionAtLeast(10, 0, 22000, 0))
             {

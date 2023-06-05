@@ -1,15 +1,7 @@
-﻿using ImGuiNET;
-using OpenTK.Graphics.Egl;
-using OpenTK.Graphics.OpenGL;
+﻿using OpenTK.Graphics.OpenGL;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CerbiosTool
 {
@@ -52,7 +44,7 @@ namespace CerbiosTool
 
             Controller?.Update((float)e.Time, this);
 
-            GL.ClearColor(new Color4(0, 32, 48, 255));
+            GL.ClearColor(new Color4(0, 0, 0, 255));
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
 
             RenderUI?.Invoke();

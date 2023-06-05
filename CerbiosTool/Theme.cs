@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-using System.Numerics;
-using System.Text.Json;
+﻿using System.Text.Json;
 
 namespace CerbiosTool
 {
