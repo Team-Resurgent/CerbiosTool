@@ -1,19 +1,15 @@
 ﻿using ImGuiNET;
-using OpenTK.Graphics;
+using OpenTK.Windowing.GraphicsLibraryFramework;
 using System.Diagnostics;
 using System.Numerics;
 using System.Runtime.InteropServices;
 using System.Text;
-using OpenTK.Graphics.OpenGL;
-using Veldrid;
-using Veldrid.Sdl2;
 
 namespace CerbiosTool
 {
-    public class ApplicationUI
+    public unsafe class ApplicationUI
     {
-        private Sdl2Window? m_window;
-        private ImGuiController? m_controller;
+        private Window? m_window;
         private PathPicker? m_biosFileOpenPicker;
         private PathPicker? m_biosFileSavePicker;
         private PathPicker? m_configFileOpenPicker;
@@ -28,65 +24,6 @@ namespace CerbiosTool
         private Theme[] m_themes = Array.Empty<Theme>();
         private string[] m_themeNames = Array.Empty<string>();
         private bool m_showSplash = true;
-
-        private static void SetXboxTheme()
-        {
-            ImGui.StyleColorsDark();
-            var style = ImGui.GetStyle();
-            var colors = style.Colors;
-            colors[(int)ImGuiCol.Text] = new Vector4(0.94f, 0.94f, 0.94f, 1.00f);
-            colors[(int)ImGuiCol.TextDisabled] = new Vector4(0.86f, 0.93f, 0.89f, 0.28f);
-            colors[(int)ImGuiCol.WindowBg] = new Vector4(0.10f, 0.10f, 0.10f, 1.00f);
-            colors[(int)ImGuiCol.ChildBg] = new Vector4(0.06f, 0.06f, 0.06f, 0.98f);
-            colors[(int)ImGuiCol.PopupBg] = new Vector4(0.10f, 0.10f, 0.10f, 1.00f);
-            colors[(int)ImGuiCol.Border] = new Vector4(0.11f, 0.11f, 0.11f, 0.60f);
-            colors[(int)ImGuiCol.BorderShadow] = new Vector4(0.16f, 0.16f, 0.16f, 0.00f);
-            colors[(int)ImGuiCol.FrameBg] = new Vector4(0.18f, 0.18f, 0.18f, 1.00f);
-            colors[(int)ImGuiCol.FrameBgHovered] = new Vector4(0.30f, 0.30f, 0.30f, 1.00f);
-            colors[(int)ImGuiCol.FrameBgActive] = new Vector4(0.28f, 0.71f, 0.25f, 1.00f);
-            colors[(int)ImGuiCol.TitleBg] = new Vector4(0.20f, 0.51f, 0.18f, 1.00f);
-            colors[(int)ImGuiCol.TitleBgActive] = new Vector4(0.26f, 0.66f, 0.23f, 1.00f);
-            colors[(int)ImGuiCol.TitleBgCollapsed] = new Vector4(0.16f, 0.16f, 0.16f, 0.75f);
-            colors[(int)ImGuiCol.MenuBarBg] = new Vector4(0.14f, 0.14f, 0.14f, 0.00f);
-            colors[(int)ImGuiCol.ScrollbarBg] = new Vector4(0.16f, 0.16f, 0.16f, 0.00f);
-            colors[(int)ImGuiCol.ScrollbarGrab] = new Vector4(0.30f, 0.30f, 0.30f, 1.00f);
-            colors[(int)ImGuiCol.ScrollbarGrabHovered] = new Vector4(0.24f, 0.60f, 0.00f, 1.00f);
-            colors[(int)ImGuiCol.ScrollbarGrabActive] = new Vector4(0.24f, 0.60f, 0.00f, 1.00f);
-            colors[(int)ImGuiCol.CheckMark] = new Vector4(0.26f, 0.66f, 0.23f, 1.00f);
-            colors[(int)ImGuiCol.SliderGrab] = new Vector4(0.90f, 0.90f, 0.90f, 1.00f);
-            colors[(int)ImGuiCol.SliderGrabActive] = new Vector4(1.00f, 1.00f, 1.00f, 1.00f);
-            colors[(int)ImGuiCol.Button] = new Vector4(0.17f, 0.17f, 0.17f, 1.00f);
-            colors[(int)ImGuiCol.ButtonHovered] = new Vector4(0.24f, 0.60f, 0.00f, 1.00f);
-            colors[(int)ImGuiCol.ButtonActive] = new Vector4(0.26f, 0.66f, 0.23f, 1.00f);
-            colors[(int)ImGuiCol.Header] = new Vector4(0.24f, 0.60f, 0.00f, 1.00f);
-            colors[(int)ImGuiCol.HeaderHovered] = new Vector4(0.24f, 0.60f, 0.00f, 1.00f);
-            colors[(int)ImGuiCol.HeaderActive] = new Vector4(0.24f, 0.60f, 0.00f, 1.00f);
-            colors[(int)ImGuiCol.Separator] = new Vector4(1.00f, 1.00f, 1.00f, 0.25f);
-            colors[(int)ImGuiCol.SeparatorHovered] = new Vector4(0.13f, 0.87f, 0.16f, 0.78f);
-            colors[(int)ImGuiCol.SeparatorActive] = new Vector4(0.25f, 0.75f, 0.10f, 1.00f);
-            colors[(int)ImGuiCol.ResizeGrip] = new Vector4(0.47f, 0.83f, 0.49f, 0.04f);
-            colors[(int)ImGuiCol.ResizeGripHovered] = new Vector4(0.28f, 0.71f, 0.25f, 0.78f);
-            colors[(int)ImGuiCol.ResizeGripActive] = new Vector4(0.28f, 0.71f, 0.25f, 1.00f);
-            colors[(int)ImGuiCol.Tab] = new Vector4(0.26f, 0.67f, 0.23f, 0.95f);
-            colors[(int)ImGuiCol.TabHovered] = new Vector4(0.24f, 0.60f, 0.00f, 1.00f);
-            colors[(int)ImGuiCol.TabActive] = new Vector4(0.24f, 0.60f, 0.00f, 1.00f);
-            colors[(int)ImGuiCol.TabUnfocused] = new Vector4(0.21f, 0.54f, 0.19f, 0.99f);
-            colors[(int)ImGuiCol.TabUnfocusedActive] = new Vector4(0.24f, 0.60f, 0.21f, 1.00f);
-            colors[(int)ImGuiCol.PlotLines] = new Vector4(0.86f, 0.93f, 0.89f, 0.63f);
-            colors[(int)ImGuiCol.PlotLinesHovered] = new Vector4(0.28f, 0.71f, 0.25f, 1.00f);
-            colors[(int)ImGuiCol.PlotHistogram] = new Vector4(0.86f, 0.93f, 0.89f, 0.63f);
-            colors[(int)ImGuiCol.PlotHistogramHovered] = new Vector4(0.28f, 0.71f, 0.25f, 1.00f);
-            colors[(int)ImGuiCol.TextSelectedBg] = new Vector4(0.26f, 0.66f, 0.23f, 1.00f);
-            colors[(int)ImGuiCol.DragDropTarget] = new Vector4(1.00f, 1.00f, 0.00f, 0.90f);
-            colors[(int)ImGuiCol.NavHighlight] = new Vector4(0.28f, 0.71f, 0.25f, 1.00f);
-            colors[(int)ImGuiCol.NavWindowingHighlight] = new Vector4(1.00f, 1.00f, 1.00f, 0.70f);
-            colors[(int)ImGuiCol.NavWindowingDimBg] = new Vector4(0.80f, 0.80f, 0.80f, 0.20f);
-            colors[(int)ImGuiCol.ModalWindowDimBg] = new Vector4(0.16f, 0.16f, 0.16f, 0.73f);
-
-            style.WindowRounding = 6;
-            style.FrameRounding = 6;
-            style.PopupRounding = 6;
-        }
 
         private static void DrawToggle(bool enabled, bool hovered, Vector2 pos, Vector2 size)
         {
@@ -159,24 +96,23 @@ namespace CerbiosTool
 
         public void Start(string version)
         {
-            m_window = new Sdl2Window($"Cerbios Tool - {version} (Team Resurgent)", 50, 50, 1240, 564, SDL_WindowFlags.Shown | SDL_WindowFlags.OpenGL, true); 
-            m_window.Resizable = false;
+            m_window = new Window();
+            m_window.Title = $"Cerbios Tool - {version} (Team Resurgent)";
+            m_window.Size = new OpenTK.Mathematics.Vector2i(1240, 564);
 
-            var windowInfo = OpenTK.Platform.Utilities.CreateSdl2WindowInfo(m_window.SdlWindowHandle);
-            var graphicsContext = new GraphicsContext(GraphicsMode.Default, windowInfo);
-            graphicsContext.LoadAll();
-            graphicsContext.MakeCurrent(windowInfo);
+            //m_window..Resizable = false;
 
-            m_controller = new ImGuiController(m_window.Width, m_window.Height);
+            //var windowInfo = OpenTK.Platform.Utilities.CreateSdl2WindowInfo(m_window.SdlWindowHandle);
+            //var graphicsContext = new GraphicsContext(GraphicsMode.Default, windowInfo);
+            //graphicsContext.LoadAll();
+            //graphicsContext.MakeCurrent(windowInfo);
 
             if (OperatingSystem.IsWindowsVersionAtLeast(10, 0, 22000, 0))
             {
                 int value = -1;
                 uint DWMWA_USE_IMMERSIVE_DARK_MODE = 20;
-                _ = DwmSetWindowAttribute(m_window.Handle, DWMWA_USE_IMMERSIVE_DARK_MODE, ref value, sizeof(int));
+                _ = DwmSetWindowAttribute(GLFW.GetWin32Window(m_window.WindowPtr), DWMWA_USE_IMMERSIVE_DARK_MODE, ref value, sizeof(int));
             }
-
-            SetXboxTheme();
 
             m_settings = Settings.LoadSettings();
 
@@ -228,45 +164,14 @@ namespace CerbiosTool
 
             m_okDialog = new();
 
-            m_window.Resized += () =>
-            {
-                m_controller.WindowResized(m_window.Width, m_window.Height);
-            };
-
-            float previousPollTimeSeconds = 0;
-            var stopwatch = new Stopwatch();
-            stopwatch.Start();
-            while (true)
-            {
-                InputSnapshot snapshot = m_window.PumpEvents();
-                if (!m_window.Exists)
-                {
-                    break;
-                }
-
-                float currentTimeSeconds = (float)(stopwatch.ElapsedMilliseconds / 1000.0f);
-                m_controller.Update(currentTimeSeconds, snapshot);
-
-                RenderUI();
-
-                GL.Viewport(0, 0, m_window.Width, m_window.Height);
-                GL.ClearColor(new Color4(0, 0, 0, 255));
-                GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
-
-                m_controller.Render();
-
-                Sdl2Native.SDL_GL_SwapWindow(m_window.SdlWindowHandle);
-
-                previousPollTimeSeconds = currentTimeSeconds;
-            }
-
-            m_controller.Dispose();
+            m_window.RenderUI = RenderUI;
+            m_window.Run();
         }
 
         private void RenderUI()
         {
             if (m_window == null ||
-                m_controller == null ||
+                m_window.Controller == null ||
                 m_biosFileOpenPicker == null ||
                 m_biosFileSavePicker == null ||
                 m_configFileOpenPicker == null ||
@@ -356,7 +261,7 @@ namespace CerbiosTool
             if (m_showSplash)
             {
                 m_showSplash = false;
-                m_splashDialog.ShowdDialog(m_controller.SplashTexture);
+                m_splashDialog.ShowdDialog(m_window.Controller.SplashTexture);
             }
 
 
@@ -676,22 +581,22 @@ namespace CerbiosTool
                 var scaledSize = size / m_config.SplashScale;
                 var scaleOffset = (size - scaledSize) / 2;
                 ImGui.SetCursorPos(imagePos + scaleOffset);
-                ImGui.Image(m_controller.Logo1Texture, scaledSize, Vector2.Zero, Vector2.One, Config.RGBToVector4(m_config.SplashLogo1));
+                ImGui.Image(m_window.Controller.Logo1Texture, scaledSize, Vector2.Zero, Vector2.One, Config.RGBToVector4(m_config.SplashLogo1));
                 ImGui.SetCursorPos(imagePos + scaleOffset);
-                ImGui.Image(m_controller.Logo2Texture, scaledSize, Vector2.Zero, Vector2.One, Config.RGBToVector4(m_config.SplashLogo2));
+                ImGui.Image(m_window.Controller.Logo2Texture, scaledSize, Vector2.Zero, Vector2.One, Config.RGBToVector4(m_config.SplashLogo2));
                 ImGui.SetCursorPos(imagePos + scaleOffset);
-                ImGui.Image(m_controller.Logo3Texture, scaledSize, Vector2.Zero, Vector2.One, Config.RGBToVector4(m_config.SplashLogo3));
+                ImGui.Image(m_window.Controller.Logo3Texture, scaledSize, Vector2.Zero, Vector2.One, Config.RGBToVector4(m_config.SplashLogo3));
                 ImGui.SetCursorPos(imagePos + scaleOffset);
-                ImGui.Image(m_controller.Logo4Texture, scaledSize, Vector2.Zero, Vector2.One, Config.RGBToVector4(m_config.SplashLogo4));
+                ImGui.Image(m_window.Controller.Logo4Texture, scaledSize, Vector2.Zero, Vector2.One, Config.RGBToVector4(m_config.SplashLogo4));
                 ImGui.SetCursorPos(imagePos + scaleOffset);
-                ImGui.Image(m_controller.CerbiosTextTexture, scaledSize, Vector2.Zero, Vector2.One, Config.RGBToVector4(m_config.SplashCerbiosText));
+                ImGui.Image(m_window.Controller.CerbiosTextTexture, scaledSize, Vector2.Zero, Vector2.One, Config.RGBToVector4(m_config.SplashCerbiosText));
                 ImGui.SetCursorPos(imagePos + scaleOffset);
-                ImGui.Image(m_controller.SafeModeTextTexture, scaledSize, Vector2.Zero, Vector2.One, Config.RGBToVector4(m_config.SplashSafeModeText));
+                ImGui.Image(m_window.Controller.SafeModeTextTexture, scaledSize, Vector2.Zero, Vector2.One, Config.RGBToVector4(m_config.SplashSafeModeText));
             }
             else 
             {
                 ImGui.SetCursorPos(imagePos);
-                ImGui.Image(m_controller.SafeModeTextTexture, size, Vector2.Zero, Vector2.One, Config.RGBToVector4(m_config.SplashSafeModeText));
+                ImGui.Image(m_window.Controller.SafeModeTextTexture, size, Vector2.Zero, Vector2.One, Config.RGBToVector4(m_config.SplashSafeModeText));
             }
 
             ImGui.SetCursorPos(new Vector2(950, 10));

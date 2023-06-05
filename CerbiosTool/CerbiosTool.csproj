@@ -14,6 +14,7 @@
 		<EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
 		<OutputType>WinExe</OutputType>
 		<AssemblyName>cerbiostool</AssemblyName>
+		<Platforms>AnyCPU;x64</Platforms>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -80,18 +81,13 @@
 
 	<ItemGroup>
 		<PackageReference Include="ImGui.NET" Version="1.89.5" />
+		<PackageReference Include="OpenTK" Version="4.7.7" />
 		<PackageReference Include="SixLabors.ImageSharp" Version="3.0.1" />
-		<PackageReference Include="Veldrid.SDL2" Version="4.9.0" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <Folder Include="Properties\" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Reference Include="OpenTK">
-			<HintPath>OpenTK.dll</HintPath>
-		</Reference>
+	  <Folder Include="Properties\PublishProfiles\" />
 	</ItemGroup>
 
 </Project>
