@@ -101,6 +101,14 @@ namespace CerbiosTool
             m_window.Size = new OpenTK.Mathematics.Vector2i(1240, 564);
             m_window.WindowBorder = OpenTK.Windowing.Common.WindowBorder.Fixed;
 
+            var resourceBytes = ResourceLoader.GetEmbeddedResourceBytes("CerbiosTool.Resources.icon.png");
+            using var resourceImage = SixLabors.ImageSharp.Image.Load<Rgba32>(resourceBytes);
+            var pixelSpan = new Span<Rgba32>(new Rgba32[resourceImage.Width * resourceImage.Height]);
+            resourceImage.CopyPixelDataTo(pixelSpan);
+            var byteSpan = MemoryMarshal.AsBytes(pixelSpan);
+            var iconImage = new OpenTK.Windowing.Common.Input.Image(resourceImage.Width, resourceImage.Height, byteSpan.ToArray());
+            m_window.Icon = new OpenTK.Windowing.Common.Input.WindowIcon(iconImage);
+
             if (OperatingSystem.IsWindowsVersionAtLeast(10, 0, 22000, 0))
             {
                 int value = -1;

@@ -20,6 +20,7 @@
 	<ItemGroup>
 	  <None Remove="Resources\ARIALUNI.TTF" />
 	  <None Remove="Resources\CerbiosText.png" />
+	  <None Remove="Resources\icon.png" />
 	  <None Remove="Resources\Logo1.png" />
 	  <None Remove="Resources\Logo2.png" />
 	  <None Remove="Resources\Logo3.png" />
@@ -39,6 +40,7 @@
 		<EmbeddedResource Include="Resources\CerbiosText.png">
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</EmbeddedResource>
+		<EmbeddedResource Include="Resources\icon.png" />
 		<EmbeddedResource Include="Resources\Logo1.png">
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</EmbeddedResource>
