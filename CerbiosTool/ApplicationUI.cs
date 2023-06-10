@@ -100,6 +100,7 @@ namespace CerbiosTool
             m_window.Title = $"Cerbios Tool - {version} (Team Resurgent)";
             m_window.Size = new OpenTK.Mathematics.Vector2i(1240, 564);
             m_window.WindowBorder = OpenTK.Windowing.Common.WindowBorder.Fixed;
+            m_window.VSync = OpenTK.Windowing.Common.VSyncMode.On;
 
             var resourceBytes = ResourceLoader.GetEmbeddedResourceBytes("CerbiosTool.Resources.icon.png");
             using var resourceImage = SixLabors.ImageSharp.Image.Load<Rgba32>(resourceBytes);
