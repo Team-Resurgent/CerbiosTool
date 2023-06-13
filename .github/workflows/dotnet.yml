@@ -53,6 +53,7 @@ jobs:
         tag_name: latest
         draft: true
         files: |
+          ${{ github.workspace }}/PhoenixBiosLoader.zip
           ${{ github.workspace }}/CerbiosTool.nfo
           ${{ github.workspace }}/README.md
           ${{ github.workspace }}/${{ matrix.project }}-${{ matrix.os_flavor }}.${{ matrix.archive_ext }}
