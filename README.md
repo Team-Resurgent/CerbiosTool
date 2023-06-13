@@ -19,7 +19,7 @@ Time for some doggy style!!!!
 
 </div>
 
-				[ Program ..................................... Cerbios Tool V1.1.2 ]
+				[ Program ..................................... Cerbios Tool V1.2.0 ]
 				[ Type ................................. Cerbios Configuration Tool ]
 				[ OS Architecture ......................................... Windows ]
 				[ Patreon ....................https://www.patreon.com/teamresurgent ]
@@ -46,6 +46,8 @@ Time for some doggy style!!!!
 * [64-bit (x64) Visual C++ 2022 Redistributable](https://aka.ms/vs/17/release/vc_redist.x64.exe)
 
 ## Core Features & Functionality
+* BFM (Boot From Media) Support.
+* Legacy Machine Support down to OpenGL 3.3.
 * Ability to theme Cerbios logo.
 * Comes preloaded with a few themes to pick from.
 * Ability to copy your favourite theme settings and paste to your friends using "Copy Theme JSON" Button.
