@@ -158,7 +158,7 @@ namespace CerbiosTool
             return true;
         }
 
-        public static void SaveBiosConfig(Config config, string loadPath, string savePath, byte[] biosData)
+        public static void SaveBiosConfig(Config config, string loadPath, string savePath, byte[] biosData, bool bfm)
         {
             var packer = ResourceLoader.GetEmbeddedResourceBytes("CerbiosTool.Resources.pack.exe");
             var tempFile = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
@@ -247,6 +247,23 @@ namespace CerbiosTool
             };
             var process = Process.Start(processStartInfo);
             process?.WaitForExit();
+
+            var biosToPatchData = File.ReadAllBytes(savePath);
+            if (bfm == true)
+            {
+                for (var i = 0; i < BFM.PatchData.Length; i++)
+                {
+                    biosToPatchData[i + BFM.PatchOffset] = BFM.PatchData[i];
+                }
+            }
+            else
+            {
+                for (var i = 0; i < NonBFM.PatchData.Length; i++)
+                {
+                    biosToPatchData[i + NonBFM.PatchOffset] = NonBFM.PatchData[i];
+                }
+            }
+            File.WriteAllBytes(savePath, biosToPatchData);
         }
     }
 }

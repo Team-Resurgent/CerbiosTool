@@ -135,7 +135,7 @@ namespace CerbiosTool
                 Title = "Save Bios",
                 Mode = PathPicker.PickerMode.FileSave,
                 AllowedFiles = new[] { "*.bin" },
-                SaveName = "Bios.bin",
+                SaveName = "Cerbios.bin",
                 ButtonName = "Save"
             };
 
@@ -197,7 +197,7 @@ namespace CerbiosTool
             if (m_biosFileSavePicker.Render() && !m_biosFileSavePicker.Cancelled && string.IsNullOrEmpty(m_settings.BiosPath) == false)
             {
                 var savePath = Path.Combine(m_biosFileSavePicker.SelectedFolder, m_biosFileSavePicker.SaveName);
-                BiosUtility.SaveBiosConfig(m_config, Path.Combine(m_settings.BiosPath, m_settings.BiosFile), savePath, m_biosData);
+                BiosUtility.SaveBiosConfig(m_config, Path.Combine(m_settings.BiosPath, m_settings.BiosFile), savePath, m_biosData, true);
             }
 
             if (m_configFileOpenPicker.Render() && !m_configFileOpenPicker.Cancelled)
