@@ -1,5 +1,6 @@
 ﻿using ImGuiNET;
 using OpenTK.Windowing.GraphicsLibraryFramework;
+using System;
 using System.Diagnostics;
 using System.Numerics;
 using System.Runtime.InteropServices;
@@ -9,7 +10,7 @@ namespace CerbiosTool
 {
     public unsafe class ApplicationUI
     {
-        private Window? m_window;
+        private Window m_window;
         private PathPicker? m_biosFileOpenPicker;
         private PathPicker? m_biosFileSavePicker;
         private PathPicker? m_configFileOpenPicker;
@@ -24,6 +25,7 @@ namespace CerbiosTool
         private Theme[] m_themes = Array.Empty<Theme>();
         private string[] m_themeNames = Array.Empty<string>();
         private bool m_showSplash = true;
+        private string m_version;
 
         private static void DrawToggle(bool enabled, bool hovered, Vector2 pos, Vector2 size)
         {
@@ -71,6 +73,17 @@ namespace CerbiosTool
         [DllImport("dwmapi.dll", PreserveSig = true)]
         public static extern int DwmSetWindowAttribute(IntPtr hwnd, uint attr, ref int attrValue, int attrSize);
 
+        public ApplicationUI(string version)
+        {
+            m_window = new Window();
+            m_version = version;
+        }
+
+        private Vector2 GetScaledWindowSize()
+        {
+            return new Vector2(m_window.Size.X, m_window.Size.Y) / m_window.Controller.GetScaleFactor();
+        }
+
         public void OpenUrl(string url)
         {
             try
@@ -94,11 +107,14 @@ namespace CerbiosTool
             }
         }
 
-        public void Start(string version)
+        public void Run()
         {
-            m_window = new Window();
-            m_window.Title = $"Cerbios Tool - {version} (Team Resurgent)";
-            m_window.Size = new OpenTK.Mathematics.Vector2i(1240, 564);
+            var horizontalScale = 1.0f;
+            var verticalScale = 1.0f;
+            m_window.TryGetCurrentMonitorScale(out horizontalScale, out verticalScale);
+
+            m_window.Title = $"Cerbios Tool - {m_version} (Team Resurgent)";
+            m_window.Size = new OpenTK.Mathematics.Vector2i((int)(1240 * horizontalScale), (int)(564 * verticalScale));
             m_window.WindowBorder = OpenTK.Windowing.Common.WindowBorder.Fixed;
             m_window.VSync = OpenTK.Windowing.Common.VSyncMode.On;
 
@@ -173,9 +189,7 @@ namespace CerbiosTool
 
         private void RenderUI()
         {
-            if (m_window == null ||
-                m_window.Controller == null ||
-                m_biosFileOpenPicker == null ||
+            if (m_biosFileOpenPicker == null ||
                 m_biosFileSavePicker == null ||
                 m_configFileOpenPicker == null ||
                 m_configFileSavePicker == null ||
@@ -269,7 +283,7 @@ namespace CerbiosTool
 
 
             ImGui.Begin("Main", ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoTitleBar | ImGuiWindowFlags.NoResize);
-            ImGui.SetWindowSize(new Vector2(m_window.Width, m_window.Height - 24));
+            ImGui.SetWindowSize(GetScaledWindowSize());
             ImGui.SetWindowPos(new Vector2(0, 24), ImGuiCond.Always);
 
             if (ImGui.BeginMainMenuBar())
@@ -685,7 +699,9 @@ namespace CerbiosTool
 
             ImGui.EndChild();
 
-            ImGui.SetCursorPosY(m_window.Height - 64);
+            var windowSize = ImGui.GetWindowSize();
+
+            ImGui.SetCursorPosY(windowSize.Y - 64);
 
             if (m_biosLoaded)
             {
@@ -723,7 +739,7 @@ namespace CerbiosTool
                 ImGui.SameLine();
             }
 
-            ImGui.SetCursorPosX(m_window.Width - 374);
+            ImGui.SetCursorPosX(windowSize.X - 374);
 
             if (ImGui.Button("Patreon", new Vector2(100, 30)))
             {

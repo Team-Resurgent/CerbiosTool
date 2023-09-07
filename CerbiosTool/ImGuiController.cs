@@ -40,7 +40,13 @@ namespace CerbiosTool
 
         private int _windowWidth;
         private int _windowHeight;
-        private Vector2 _scaleFactor = System.Numerics.Vector2.One;
+        private Vector2 _hdpiScale = Vector2.One;
+        private Vector2 _retinaScale = Vector2.One;
+
+        public Vector2 GetScaleFactor()
+        {
+            return _hdpiScale / _retinaScale;
+        }
 
         public int CerbiosTextTexture => _cerbiosTextTexture;
         public int SafeModeTextTexture => _safeModeTextTexture;
@@ -198,10 +204,18 @@ namespace CerbiosTool
             style.PopupRounding = 6;
         }
 
-        public unsafe ImGuiController(int width, int height)
+        public unsafe ImGuiController(Window window)
         {
-            _windowWidth = width;
-            _windowHeight = height;
+            _windowWidth = window.ClientSize.X;
+            _windowHeight = window.ClientSize.Y;
+
+            _hdpiScale = Vector2.One;
+            if (window.TryGetCurrentMonitorScale(out var scaleX, out var scaleY))
+            {
+                _hdpiScale = new Vector2(scaleX, scaleY);
+            }
+
+            _retinaScale = new Vector2(window.Width / (float)window.Size.X, window.Height / (float)window.Size.Y);
 
             int major = GL.GetInteger(GetPName.MajorVersion);
             int minor = GL.GetInteger(GetPName.MinorVersion);
@@ -344,8 +358,7 @@ namespace CerbiosTool
         private void SetPerFrameImGuiData(float deltaSeconds)
         {
             ImGuiIOPtr io = ImGui.GetIO();
-            io.DisplaySize = new Vector2(_windowWidth / _scaleFactor.X, _windowHeight / _scaleFactor.Y);
-            io.DisplayFramebufferScale = _scaleFactor;
+            io.DisplaySize = new Vector2(_windowWidth, _windowHeight) / _hdpiScale;
             io.DeltaTime = deltaSeconds;
         }
 
@@ -375,7 +388,7 @@ namespace CerbiosTool
             io.MouseDown[1] = MouseState[MouseButton.Right];
             io.MouseDown[2] = MouseState[MouseButton.Middle];
 
-            io.MousePos = new Vector2((int)MouseState.X, (int)MouseState.Y);
+            io.MousePos = new Vector2((int)MouseState.X, (int)MouseState.Y) / GetScaleFactor();
 
             foreach (Keys key in Enum.GetValues(typeof(Keys)))
             {
@@ -470,7 +483,7 @@ namespace CerbiosTool
                     GL.BufferData(BufferTarget.ArrayBuffer, newSize, IntPtr.Zero, BufferUsageHint.DynamicDraw);
                     _vertexBufferSize = newSize;
 
-                    Debug.Print($"Resized dear imgui vertex buffer to new size {_vertexBufferSize}");
+                    Debug.WriteLine($"Resized dear imgui vertex buffer to new size {_vertexBufferSize}");
                 }
 
                 int indexSize = cmd_list.IdxBuffer.Size * sizeof(ushort);
@@ -480,7 +493,7 @@ namespace CerbiosTool
                     GL.BufferData(BufferTarget.ElementArrayBuffer, newSize, IntPtr.Zero, BufferUsageHint.DynamicDraw);
                     _indexBufferSize = newSize;
 
-                    Debug.Print($"Resized dear imgui index buffer to new size {_indexBufferSize}");
+                    Debug.WriteLine($"Resized dear imgui index buffer to new size {_indexBufferSize}");
                 }
             }
 
@@ -497,7 +510,7 @@ namespace CerbiosTool
             GL.BindVertexArray(_vertexArray);
             CheckGLError("VAO");
 
-            draw_data.ScaleClipRects(io.DisplayFramebufferScale);
+            draw_data.ScaleClipRects(_hdpiScale);
 
             GL.Enable(EnableCap.Blend);
             GL.Enable(EnableCap.ScissorTest);
