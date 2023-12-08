@@ -13,7 +13,7 @@
 
 [![Download](https://img.shields.io/badge/download-latest-brightgreen.svg?style=for-the-badge&logo=github)](https://github.com/Team-Resurgent/CerbiosTool/releases/latest)
 	
-Cerbios Tool is a tool which will allow you to customize some of the feature found in Cerbios. 
+Cerbios Tool is a tool which will allow you to customize some of the features found in Cerbios. 
 
 Time for some doggy style!!!!
 
