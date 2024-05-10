@@ -243,6 +243,10 @@ namespace CerbiosTool
                 iniFile.AppendLine($"FrontLed = {m_config.FrontLed}");
                 iniFile.AppendLine();
 
+                iniFile.AppendLine("; Fan Speed 0 = Default, 10-100 = Manual Control, Supports increments of 2's ");
+                iniFile.AppendLine($"FanSpeed = {m_config.FanSpeed}");
+                iniFile.AppendLine();
+
                 iniFile.AppendLine("; Drive Setup");
                 iniFile.AppendLine("; 0 = HDD & DVD,  1 = HDD & No DVD (Legacy Mode), 2 = HDD & No DVD (Modern Mode), 3 = Dual HDD");
                 iniFile.AppendLine($"DriveSetup = {m_config.DriveSetup}");
