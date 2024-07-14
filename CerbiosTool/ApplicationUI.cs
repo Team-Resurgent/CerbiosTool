@@ -258,9 +258,12 @@ namespace CerbiosTool
                 iniFile.AppendLine($"DriveSetup = {m_config.DriveSetup}");
                 iniFile.AppendLine();
 
-                iniFile.AppendLine("; Set UDMA mode 0-6 On Cold-Boot");
-                iniFile.AppendLine($"UDMAMode = {m_config.UDMAMode}");
-                iniFile.AppendLine();
+                if (m_configMainVersion == "02")
+                {
+                    iniFile.AppendLine("; Set UDMA mode 0-6 On Cold-Boot");
+                    iniFile.AppendLine($"UDMAMode = {m_config.UDMAMode}");
+                    iniFile.AppendLine();
+                }
 
                 iniFile.AppendLine("; Enables Automatic Time Sync With Optional RTC Hardware Connected to SMBus");
                 iniFile.AppendLine($"RTCEnable = {(m_config.RTCEnable == 1 ? "true" : "false")}");
