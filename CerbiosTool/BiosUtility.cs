@@ -84,35 +84,21 @@ namespace CerbiosTool
             return temp;
         }
 
-        public static bool LoadBiosComfig(string path, ref Config config, ref byte[] biosData)
+        public static bool LoadBiosComfig(string path, ref Config config, ref byte[] biosData, ref string configMainVersion, ref string confiIgrVersion)
         {
-            var unpacker = ResourceLoader.GetEmbeddedResourceBytes("CerbiosTool.Resources.unpack.exe");
-            var tempFile = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
-            File.WriteAllBytes(tempFile, unpacker);
-
-            var tempOutFile = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
-            var processStartInfo = new ProcessStartInfo(tempFile, $"\"{path}\" \"{tempOutFile}\"")
-            {
-                CreateNoWindow = true
-            };
-            var process = Process.Start(processStartInfo);
-            process?.WaitForExit();
-            if (process?.ExitCode != 0)
-            {
-                return false;
-            }
-
-            biosData = File.ReadAllBytes(tempOutFile);
+            biosData = File.ReadAllBytes(path);
 
             var searchPatternMain = new byte[] { (byte)'C', (byte)'E', (byte)'R', (byte)'B', (byte)'I', (byte)'O', (byte)'S', (byte)'-', (byte)'M', (byte)'A', (byte)'I', (byte)'N', (byte)'-', (byte)'-' };
             var configOffsetMain = SearchData(biosData, searchPatternMain);
             if (configOffsetMain >= 0)
             {                
-                var version = new string(new char[] { (char)biosData[configOffsetMain + 14], (char)biosData[configOffsetMain + 15] });                
-                if (version != "01")
+                var version = new string(new char[] { (char)biosData[configOffsetMain + 14], (char)biosData[configOffsetMain + 15] });
+                if (version != "01" && version != "02")
                 {
                     return false;
                 }
+
+                configMainVersion = version;
 
                 config.LoadConfig = biosData[configOffsetMain + 16];
                 config.AVCheck = biosData[configOffsetMain + 17];
@@ -128,14 +114,25 @@ namespace CerbiosTool
                 config.FrontLed = GetString(biosData, configOffsetMain + 720, 5);
                 config.FanSpeed = biosData[configOffsetMain + 725];
                 config.UDMAMode = biosData[configOffsetMain + 726];
-                config.SplashBackground = (uint)((biosData[configOffsetMain + 727]) | (biosData[configOffsetMain + 728] << 8) | biosData[configOffsetMain + 729] << 16);
-                config.SplashCerbiosText = (uint)((biosData[configOffsetMain + 731]) | (biosData[configOffsetMain + 732] << 8) | biosData[configOffsetMain + 733] << 16);
-                config.SplashSafeModeText = (uint)((biosData[configOffsetMain + 735]) | (biosData[configOffsetMain + 736] << 8) | biosData[configOffsetMain + 737] << 16);
-                config.SplashLogo1 = (uint)((biosData[configOffsetMain + 739]) | (biosData[configOffsetMain + 740] << 8) | biosData[configOffsetMain + 741] << 16);
-                config.SplashLogo2 = (uint)((biosData[configOffsetMain + 743]) | (biosData[configOffsetMain + 744] << 8) | biosData[configOffsetMain + 745] << 16);
-                config.SplashLogo3 = (uint)((biosData[configOffsetMain + 747]) | (biosData[configOffsetMain + 748] << 8) | biosData[configOffsetMain + 749] << 16);
-                config.SplashLogo4 = (uint)((biosData[configOffsetMain + 751]) | (biosData[configOffsetMain + 752] << 8) | biosData[configOffsetMain + 753] << 16);
-                config.SplashScale = biosData[configOffsetMain + 755];
+
+                var configOffset = 0;
+                if (version == "02")
+                {
+                    biosData[configOffsetMain + 727] = config.Force480p;
+                    biosData[configOffsetMain + 728] = config.ForceVGA;
+                    biosData[configOffsetMain + 729] = config.RTCEnable;
+                    biosData[configOffsetMain + 730] = config.BlockDashupdate;
+                    configOffset = 4;
+                }
+
+                config.SplashBackground = (uint)((biosData[configOffsetMain + 727 + configOffset]) | (biosData[configOffsetMain + 728 + configOffset] << 8) | biosData[configOffsetMain + 729 + configOffset] << 16);
+                config.SplashCerbiosText = (uint)((biosData[configOffsetMain + 731 + configOffset]) | (biosData[configOffsetMain + 732 + configOffset] << 8) | biosData[configOffsetMain + 733 + configOffset] << 16);
+                config.SplashSafeModeText = (uint)((biosData[configOffsetMain + 735 + configOffset]) | (biosData[configOffsetMain + 736 + configOffset] << 8) | biosData[configOffsetMain + 737 + configOffset] << 16);
+                config.SplashLogo1 = (uint)((biosData[configOffsetMain + 739 + configOffset]) | (biosData[configOffsetMain + 740 + configOffset] << 8) | biosData[configOffsetMain + 741 + configOffset] << 16);
+                config.SplashLogo2 = (uint)((biosData[configOffsetMain + 743 + configOffset]) | (biosData[configOffsetMain + 744 + configOffset] << 8) | biosData[configOffsetMain + 745 + configOffset] << 16);
+                config.SplashLogo3 = (uint)((biosData[configOffsetMain + 747 + configOffset]) | (biosData[configOffsetMain + 748 + configOffset] << 8) | biosData[configOffsetMain + 749 + configOffset] << 16);
+                config.SplashLogo4 = (uint)((biosData[configOffsetMain + 751 + configOffset]) | (biosData[configOffsetMain + 752 + configOffset] << 8) | biosData[configOffsetMain + 753 + configOffset] << 16);
+                config.SplashScale = biosData[configOffsetMain + 755 + configOffset];
             }
 
             var searchPatternIGR = new byte[] { (byte)'C', (byte)'E', (byte)'R', (byte)'B', (byte)'I', (byte)'O', (byte)'S', (byte)'-', (byte)'I', (byte)'G', (byte)'R', (byte)'-', (byte)'-', (byte)'-' };
@@ -143,33 +140,35 @@ namespace CerbiosTool
             if (configOffsetIGR >= 0)
             {
                 var version = new string(new char[] { (char)biosData[configOffsetIGR + 14], (char)biosData[configOffsetIGR + 15] });
-                if (version != "01")
+                if (version != "01" && version != "02")
                 {
                     return false;
                 }
+
+                confiIgrVersion = version;
 
                 config.IGRMasterPort = biosData[configOffsetIGR + 16];
                 config.IGRDash = ShortToIGR((ushort)((biosData[configOffsetIGR + 17]) | (biosData[configOffsetIGR + 18] << 8)));
                 config.IGRGame = ShortToIGR((ushort)((biosData[configOffsetIGR + 20]) | (biosData[configOffsetIGR + 21] << 8)));
                 config.IGRFull = ShortToIGR((ushort)((biosData[configOffsetIGR + 23]) | (biosData[configOffsetIGR + 24] << 8)));
                 config.IGRShutdown = ShortToIGR((ushort)((biosData[configOffsetIGR + 26]) | (biosData[configOffsetIGR + 27] << 8)));
-            }
 
+                if (version == "02")
+                {
+                    config.IGRCycle = ShortToIGR((ushort)((biosData[configOffsetIGR + 29]) | (biosData[configOffsetIGR + 30] << 8)));
+                }
+            }
             return true;
         }
 
         public static void SaveBiosConfig(Config config, string loadPath, string savePath, byte[] biosData, bool bfm)
         {
-            var packer = ResourceLoader.GetEmbeddedResourceBytes("CerbiosTool.Resources.pack.exe");
-            var tempFile = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
-            File.WriteAllBytes(tempFile, packer);
-
             var searchPatternMain = new byte[] { (byte)'C', (byte)'E', (byte)'R', (byte)'B', (byte)'I', (byte)'O', (byte)'S', (byte)'-', (byte)'M', (byte)'A', (byte)'I', (byte)'N', (byte)'-', (byte)'-' };
             var configOffsetMain = SearchData(biosData, searchPatternMain);
             if (configOffsetMain >= 0)
             {
                 var version = new string(new char[] { (char)biosData[configOffsetMain + 14], (char)biosData[configOffsetMain + 15] });
-                if (version != "01")
+                if (version != "01" && version != "02")
                 {
                     return;
                 }
@@ -188,28 +187,39 @@ namespace CerbiosTool
                 SetString(config.FrontLed.PadRight(4, 'O'), biosData, configOffsetMain + 720, 5);
                 biosData[configOffsetMain + 725] = config.FanSpeed;
                 biosData[configOffsetMain + 726] = config.UDMAMode;
-                biosData[configOffsetMain + 727] = (byte)((config.SplashBackground) & 0xff);
-                biosData[configOffsetMain + 728] = (byte)((config.SplashBackground >> 8) & 0xff);
-                biosData[configOffsetMain + 729] = (byte)((config.SplashBackground >> 16) & 0xff);
-                biosData[configOffsetMain + 731] = (byte)((config.SplashCerbiosText) & 0xff);
-                biosData[configOffsetMain + 732] = (byte)((config.SplashCerbiosText >> 8) & 0xff);
-                biosData[configOffsetMain + 733] = (byte)((config.SplashCerbiosText >> 16) & 0xff);
-                biosData[configOffsetMain + 735] = (byte)((config.SplashSafeModeText) & 0xff);
-                biosData[configOffsetMain + 736] = (byte)((config.SplashSafeModeText >> 8) & 0xff);
-                biosData[configOffsetMain + 737] = (byte)((config.SplashSafeModeText >> 16) & 0xff);
-                biosData[configOffsetMain + 739] = (byte)((config.SplashLogo1) & 0xff);
-                biosData[configOffsetMain + 740] = (byte)((config.SplashLogo1 >> 8) & 0xff);
-                biosData[configOffsetMain + 741] = (byte)((config.SplashLogo1 >> 16) & 0xff);
-                biosData[configOffsetMain + 743] = (byte)((config.SplashLogo2) & 0xff);
-                biosData[configOffsetMain + 744] = (byte)((config.SplashLogo2 >> 8) & 0xff);
-                biosData[configOffsetMain + 745] = (byte)((config.SplashLogo2 >> 16) & 0xff);
-                biosData[configOffsetMain + 747] = (byte)((config.SplashLogo3) & 0xff);
-                biosData[configOffsetMain + 748] = (byte)((config.SplashLogo3 >> 8) & 0xff);
-                biosData[configOffsetMain + 749] = (byte)((config.SplashLogo3 >> 16) & 0xff);
-                biosData[configOffsetMain + 751] = (byte)((config.SplashLogo4) & 0xff);
-                biosData[configOffsetMain + 752] = (byte)((config.SplashLogo4 >> 8) & 0xff);
-                biosData[configOffsetMain + 753] = (byte)((config.SplashLogo4 >> 16) & 0xff);
-                biosData[configOffsetMain + 755] = config.SplashScale;
+                
+                var configOffset = 0;
+                if (version == "02")
+                {
+                    biosData[configOffsetMain + 727] = config.Force480p;
+                    biosData[configOffsetMain + 728] = config.ForceVGA;
+                    biosData[configOffsetMain + 729] = config.RTCEnable;
+                    biosData[configOffsetMain + 730] = config.BlockDashupdate;
+                    configOffset = 4;
+                }
+
+                biosData[configOffsetMain + 727 + configOffset] = (byte)((config.SplashBackground) & 0xff);
+                biosData[configOffsetMain + 728 + configOffset] = (byte)((config.SplashBackground >> 8) & 0xff);
+                biosData[configOffsetMain + 729 + configOffset] = (byte)((config.SplashBackground >> 16) & 0xff);
+                biosData[configOffsetMain + 731 + configOffset] = (byte)((config.SplashCerbiosText) & 0xff);
+                biosData[configOffsetMain + 732 + configOffset] = (byte)((config.SplashCerbiosText >> 8) & 0xff);
+                biosData[configOffsetMain + 733 + configOffset] = (byte)((config.SplashCerbiosText >> 16) & 0xff);
+                biosData[configOffsetMain + 735 + configOffset] = (byte)((config.SplashSafeModeText) & 0xff);
+                biosData[configOffsetMain + 736 + configOffset] = (byte)((config.SplashSafeModeText >> 8) & 0xff);
+                biosData[configOffsetMain + 737 + configOffset] = (byte)((config.SplashSafeModeText >> 16) & 0xff);
+                biosData[configOffsetMain + 739 + configOffset] = (byte)((config.SplashLogo1) & 0xff);
+                biosData[configOffsetMain + 740 + configOffset] = (byte)((config.SplashLogo1 >> 8) & 0xff);
+                biosData[configOffsetMain + 741 + configOffset] = (byte)((config.SplashLogo1 >> 16) & 0xff);
+                biosData[configOffsetMain + 743 + configOffset] = (byte)((config.SplashLogo2) & 0xff);
+                biosData[configOffsetMain + 744 + configOffset] = (byte)((config.SplashLogo2 >> 8) & 0xff);
+                biosData[configOffsetMain + 745 + configOffset] = (byte)((config.SplashLogo2 >> 16) & 0xff);
+                biosData[configOffsetMain + 747 + configOffset] = (byte)((config.SplashLogo3) & 0xff);
+                biosData[configOffsetMain + 748 + configOffset] = (byte)((config.SplashLogo3 >> 8) & 0xff);
+                biosData[configOffsetMain + 749 + configOffset] = (byte)((config.SplashLogo3 >> 16) & 0xff);
+                biosData[configOffsetMain + 751 + configOffset] = (byte)((config.SplashLogo4) & 0xff);
+                biosData[configOffsetMain + 752 + configOffset] = (byte)((config.SplashLogo4 >> 8) & 0xff);
+                biosData[configOffsetMain + 753 + configOffset] = (byte)((config.SplashLogo4 >> 16) & 0xff);
+                biosData[configOffsetMain + 755 + configOffset] = config.SplashScale;
             }
 
             var searchPatternIGR = new byte[] { (byte)'C', (byte)'E', (byte)'R', (byte)'B', (byte)'I', (byte)'O', (byte)'S', (byte)'-', (byte)'I', (byte)'G', (byte)'R', (byte)'-', (byte)'-', (byte)'-' };
@@ -217,7 +227,7 @@ namespace CerbiosTool
             if (configOffsetIGR >= 0)
             {
                 var version = new string(new char[] { (char)biosData[configOffsetIGR + 14], (char)biosData[configOffsetIGR + 15] });
-                if (version != "01")
+                if (version != "01" && version != "02")
                 {
                     return;
                 }
@@ -235,35 +245,31 @@ namespace CerbiosTool
                 var tempIgrShutdown = IGRToUshort(config.IGRShutdown);
                 biosData[configOffsetIGR + 26] = (byte)((tempIgrShutdown) & 0xff);
                 biosData[configOffsetIGR + 27] = (byte)((tempIgrShutdown >> 8) & 0xff);
+
+                if (version == "02")
+                {
+                    var tempIgrCycle = IGRToUshort(config.IGRCycle);
+                    biosData[configOffsetIGR + 29] = (byte)((tempIgrCycle) & 0xff);
+                    biosData[configOffsetIGR + 30] = (byte)((tempIgrCycle >> 8) & 0xff);
+                }
             }
 
-            var tempInFile = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
-            File.WriteAllBytes(tempInFile, biosData);
-
-            var arguments = $"\"{tempInFile}\" \"{loadPath}\" \"{savePath}\"";
-            var processStartInfo = new ProcessStartInfo(tempFile, arguments)
-            {
-                CreateNoWindow = true
-            };
-            var process = Process.Start(processStartInfo);
-            process?.WaitForExit();
-
-            var biosToPatchData = File.ReadAllBytes(savePath);
             if (bfm == true)
             {
                 for (var i = 0; i < BFM.PatchData.Length; i++)
                 {
-                    biosToPatchData[i + BFM.PatchOffset] = BFM.PatchData[i];
+                    biosData[i + BFM.PatchOffset] = BFM.PatchData[i];
                 }
             }
             else
             {
                 for (var i = 0; i < NonBFM.PatchData.Length; i++)
                 {
-                    biosToPatchData[i + NonBFM.PatchOffset] = NonBFM.PatchData[i];
+                    biosData[i + NonBFM.PatchOffset] = NonBFM.PatchData[i];
                 }
             }
-            File.WriteAllBytes(savePath, biosToPatchData);
+
+            File.WriteAllBytes(savePath, biosData);
         }
     }
 }

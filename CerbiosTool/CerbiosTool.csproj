@@ -25,10 +25,8 @@
 	  <None Remove="Resources\Logo2.png" />
 	  <None Remove="Resources\Logo3.png" />
 	  <None Remove="Resources\Logo4.png" />
-	  <None Remove="Resources\pack.exe" />
 	  <None Remove="Resources\SafeModeText.png" />
 	  <None Remove="Resources\TeamResurgent.jpg" />
-	  <None Remove="Resources\unpack.exe" />
 	  <None Remove="Resources\imgui-vertex.glsl" />
 	  <None Remove="Resources\imgui-frag.glsl" />
 	</ItemGroup>
@@ -53,16 +51,10 @@
 		<EmbeddedResource Include="Resources\Logo4.png">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</EmbeddedResource>
-		<EmbeddedResource Include="Resources\pack.exe">
-			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</EmbeddedResource>
 		<EmbeddedResource Include="Resources\SafeModeText.png">
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</EmbeddedResource>
 		<EmbeddedResource Include="Resources\TeamResurgent.jpg" />
-		<EmbeddedResource Include="Resources\unpack.exe">
-			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</EmbeddedResource>
 		<EmbeddedResource Include="Resources\imgui-vertex.glsl">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</EmbeddedResource>
@@ -84,7 +76,7 @@
 	<ItemGroup>
 		<PackageReference Include="ImGui.NET" Version="1.89.5" />
 		<PackageReference Include="OpenTK" Version="4.7.7" />
-		<PackageReference Include="SixLabors.ImageSharp" Version="3.0.1" />
+		<PackageReference Include="SixLabors.ImageSharp" Version="3.1.4" />
 	</ItemGroup>
 
 	<ItemGroup>

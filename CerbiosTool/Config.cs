@@ -39,9 +39,19 @@ namespace CerbiosTool
 
         public string IGRShutdown { get; set; }
 
+        public string IGRCycle { get; set; }
+
         public byte FanSpeed { get; set; }
 
         public byte UDMAMode { get; set; }
+
+        public byte Force480p { get; set; }
+
+        public byte ForceVGA { get; set; }
+
+        public byte RTCEnable { get; set; }
+
+        public byte BlockDashupdate { get; set; }
 
         public uint SplashBackground { get; set; }
 
@@ -78,8 +88,13 @@ namespace CerbiosTool
             IGRGame = "467C";
             IGRFull = "467D";
             IGRShutdown = "678D";
+            IGRCycle = "4678";
             FanSpeed = 0;
             UDMAMode = 2;
+            Force480p = 0;
+            ForceVGA = 0;
+            RTCEnable = 0;
+            BlockDashupdate = 0;
             SplashBackground = 0x000000;
             SplashCerbiosText = 0xFFFFFF;
             SplashSafeModeText = 0xFFFFFF;
@@ -109,8 +124,13 @@ namespace CerbiosTool
             IGRGame = "467C";
             IGRFull = "467D";
             IGRShutdown = "678D";
+            IGRCycle = "4678";
             FanSpeed = 0;
             UDMAMode = 2;
+            Force480p = 0;
+            ForceVGA = 0;
+            RTCEnable = 0;
+            BlockDashupdate = 0;
             SplashBackground = 0x000000;
             SplashCerbiosText = 0xFFFFFF;
             SplashSafeModeText = 0xFFFFFF;
