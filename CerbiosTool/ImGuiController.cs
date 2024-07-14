@@ -7,6 +7,7 @@ using OpenTK.Graphics.OpenGL;
 using System.Diagnostics;
 using OpenTK.Windowing.Desktop;
 using OpenTK.Windowing.GraphicsLibraryFramework;
+using SixLabors.ImageSharp.PixelFormats;
 
 namespace CerbiosTool
 {
