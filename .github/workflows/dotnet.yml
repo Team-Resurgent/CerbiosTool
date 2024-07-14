@@ -19,7 +19,7 @@ jobs:
         arch: [x64]
         os_flavor: [win-x64, linux-x64, osx-x64]
         project: [CerbiosTool]
-        project_lowercase: [repackinator]
+        project_lowercase: [cerbiostool]
         include:
           - os_flavor: win-x64
             archive_ext: zip
