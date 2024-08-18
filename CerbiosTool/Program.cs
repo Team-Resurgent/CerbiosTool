@@ -2,7 +2,7 @@
 
 try
 {
-    var version = "V2.0.1";
+    var version = "V2.0.2";
     var application = new ApplicationUI(version);
     application.Run();
 }
