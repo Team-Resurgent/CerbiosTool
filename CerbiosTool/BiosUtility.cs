@@ -93,7 +93,7 @@ namespace CerbiosTool
             if (configOffsetMain >= 0)
             {                
                 var version = new string(new char[] { (char)biosData[configOffsetMain + 14], (char)biosData[configOffsetMain + 15] });
-                if (version != "01" && version != "02")
+                if (version != "01" && version != "02" && version != "03")
                 {
                     return false;
                 }
@@ -123,7 +123,7 @@ namespace CerbiosTool
                     configOffset += 1;
                 }
 
-                if (version == "02")
+                if (version == "02" || version == "03")
                 {
                     config.Force480p = biosData[configOffsetMain + 727 + configOffset] = config.Force480p;
                     config.ForceVGA = biosData[configOffsetMain + 728 + configOffset] = config.ForceVGA;
@@ -147,7 +147,7 @@ namespace CerbiosTool
             if (configOffsetIGR >= 0)
             {
                 var version = new string(new char[] { (char)biosData[configOffsetIGR + 14], (char)biosData[configOffsetIGR + 15] });
-                if (version != "01" && version != "02")
+                if (version != "01" && version != "02" && version != "03")
                 {
                     return false;
                 }
@@ -160,7 +160,7 @@ namespace CerbiosTool
                 config.IGRFull = ShortToIGR((ushort)((biosData[configOffsetIGR + 23]) | (biosData[configOffsetIGR + 24] << 8)));
                 config.IGRShutdown = ShortToIGR((ushort)((biosData[configOffsetIGR + 26]) | (biosData[configOffsetIGR + 27] << 8)));
 
-                if (version == "02")
+                if (version == "02" || version == "03")
                 {
                     config.IGRCycle = ShortToIGR((ushort)((biosData[configOffsetIGR + 29]) | (biosData[configOffsetIGR + 30] << 8)));
                 }
@@ -175,7 +175,7 @@ namespace CerbiosTool
             if (configOffsetMain >= 0)
             {
                 var version = new string(new char[] { (char)biosData[configOffsetMain + 14], (char)biosData[configOffsetMain + 15] });
-                if (version != "01" && version != "02")
+                if (version != "01" && version != "02" && version != "03")
                 {
                     return;
                 }
@@ -203,7 +203,7 @@ namespace CerbiosTool
                     configOffset += 1;
                 }
 
-                if (version == "02")
+                if (version == "02" || version == "03")
                 {
                     biosData[configOffsetMain + 727 + configOffset] = config.Force480p;
                     biosData[configOffsetMain + 728 + configOffset] = config.ForceVGA;
@@ -241,7 +241,7 @@ namespace CerbiosTool
             if (configOffsetIGR >= 0)
             {
                 var version = new string(new char[] { (char)biosData[configOffsetIGR + 14], (char)biosData[configOffsetIGR + 15] });
-                if (version != "01" && version != "02")
+                if (version != "01" && version != "02" && version != "03")
                 {
                     return;
                 }
@@ -260,7 +260,7 @@ namespace CerbiosTool
                 biosData[configOffsetIGR + 26] = (byte)((tempIgrShutdown) & 0xff);
                 biosData[configOffsetIGR + 27] = (byte)((tempIgrShutdown >> 8) & 0xff);
 
-                if (version == "02")
+                if (version == "02" || version == "03")
                 {
                     var tempIgrCycle = IGRToUshort(config.IGRCycle);
                     biosData[configOffsetIGR + 29] = (byte)((tempIgrCycle) & 0xff);
