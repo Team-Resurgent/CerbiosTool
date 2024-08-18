@@ -113,16 +113,23 @@ namespace CerbiosTool
                 config.BootAnimPath = GetString(biosData, configOffsetMain + 620, 100);
                 config.FrontLed = GetString(biosData, configOffsetMain + 720, 5);
                 config.FanSpeed = biosData[configOffsetMain + 725];
-                config.UDMAMode = biosData[configOffsetMain + 726];
+                config.UDMAModeMaster = biosData[configOffsetMain + 726];
 
                 var configOffset = 0;
+
+                if (version == "03")
+                {
+                    config.UDMAModeSlave = biosData[configOffsetMain + 727];
+                    configOffset += 1;
+                }
+
                 if (version == "02")
                 {
-                    config.Force480p = biosData[configOffsetMain + 727] = config.Force480p;
-                    config.ForceVGA = biosData[configOffsetMain + 728] = config.ForceVGA;
-                    config.RTCEnable = biosData[configOffsetMain + 729];
-                    config.BlockDashupdate = biosData[configOffsetMain + 730];
-                    configOffset = 4;
+                    config.Force480p = biosData[configOffsetMain + 727 + configOffset] = config.Force480p;
+                    config.ForceVGA = biosData[configOffsetMain + 728 + configOffset] = config.ForceVGA;
+                    config.RTCEnable = biosData[configOffsetMain + 729 + configOffset];
+                    config.BlockDashupdate = biosData[configOffsetMain + 730 + configOffset];
+                    configOffset += 4;
                 }
 
                 config.SplashBackground = (uint)((biosData[configOffsetMain + 727 + configOffset]) | (biosData[configOffsetMain + 728 + configOffset] << 8) | biosData[configOffsetMain + 729 + configOffset] << 16);
@@ -186,16 +193,23 @@ namespace CerbiosTool
                 SetString(config.BootAnimPath, biosData, configOffsetMain + 620, 100);
                 SetString(config.FrontLed.PadRight(4, 'O'), biosData, configOffsetMain + 720, 5);
                 biosData[configOffsetMain + 725] = config.FanSpeed;
-                biosData[configOffsetMain + 726] = config.UDMAMode;
-                
+                biosData[configOffsetMain + 726] = config.UDMAModeMaster;
+
                 var configOffset = 0;
+
+                if (version == "03")
+                {
+                    biosData[configOffsetMain + 727] = config.UDMAModeSlave;
+                    configOffset += 1;
+                }
+
                 if (version == "02")
                 {
-                    biosData[configOffsetMain + 727] = config.Force480p;
-                    biosData[configOffsetMain + 728] = config.ForceVGA;
-                    biosData[configOffsetMain + 729] = config.RTCEnable;
-                    biosData[configOffsetMain + 730] = config.BlockDashupdate;
-                    configOffset = 4;
+                    biosData[configOffsetMain + 727 + configOffset] = config.Force480p;
+                    biosData[configOffsetMain + 728 + configOffset] = config.ForceVGA;
+                    biosData[configOffsetMain + 729 + configOffset] = config.RTCEnable;
+                    biosData[configOffsetMain + 730 + configOffset] = config.BlockDashupdate;
+                    configOffset += 4;
                 }
 
                 biosData[configOffsetMain + 727 + configOffset] = (byte)((config.SplashBackground) & 0xff);

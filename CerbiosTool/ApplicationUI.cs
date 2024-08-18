@@ -261,7 +261,17 @@ namespace CerbiosTool
                 if (m_configMainVersion == "02")
                 {
                     iniFile.AppendLine("; Set UDMA mode 0-6 On Cold-Boot");
-                    iniFile.AppendLine($"UDMAMode = {m_config.UDMAMode}");
+                    iniFile.AppendLine($"UDMAMode = {m_config.UDMAModeMaster}");
+                    iniFile.AppendLine();
+                }
+
+                if (m_configMainVersion == "03")
+                {
+                    iniFile.AppendLine("; Set Master Drive UDMA mode 0-6 on cold-boot");
+                    iniFile.AppendLine($"UDMAModeMaster = {m_config.UDMAModeMaster}");
+                    iniFile.AppendLine();
+                    iniFile.AppendLine("; Set Slave Drive UDMA mode 0-6 on cold-boot (if enabled by DriveSetup = 3)");
+                    iniFile.AppendLine($"UDMAModeSlave = {m_config.UDMAModeSlave}");
                     iniFile.AppendLine();
                 }
 
@@ -526,18 +536,19 @@ namespace CerbiosTool
             if (m_configMainVersion == "02")
             {
                 string[] udmaModes = new string[] { "Auto (Startech Adapter)", "Auto (Generic Adapter)", "UDMA 2 (Default / Stock)", "UDMA 3 (Ultra DMA 80-Conductor)", "UDMA 4 (Ultra DMA 80-Conductor)", "UDMA 5 (Ultra DMA 80-Conductor)", "UDMA 6 (Experimental)" };
-                var udmaMode = (int)m_config.UDMAMode;
+               
+                var udmaModeMAster = (int)m_config.UDMAModeMaster;
                 ImGui.Text("UDMA Mode:");
                 ImGui.PushItemWidth(250);
-                if (ImGui.Combo("##udmaMode", ref udmaMode, udmaModes, udmaModes.Length))
+                if (ImGui.Combo("##udmaMode", ref udmaModeMAster, udmaModes, udmaModes.Length))
                 {
-                    if (udmaMode < 2)
+                    if (udmaModeMAster < 2)
                     {
                         m_okDialog.Title = "WARNING";
                         m_okDialog.Message = "Auto modes require a Ultra DMA (80-Conductor) IDE/ATA Cable\nto be installed. Using this mode without one can cause your\nXBOX not to boot.\nSafe Mode (Boot with Eject), will allow you to boot using UDMA 2 \nto perform a reflash if required.";
                         m_okDialog.ShowModal();
                     }
-                    else if (udmaMode == 6)
+                    else if (udmaModeMAster == 6)
                     {
                         m_okDialog.Title = "WARNING";
                         m_okDialog.Message = "UDMA Mode 6 is EXPERIMENTAL and requires a Ultra DMA\n(80-Conductor) IDE/ATA Cable to be installed.\nThis has ONLY been tested with Startech Adapter.\nSafe Mode (Boot with Eject), will allow you to boot using UDMA 2 \nto perform a reflash if required.\n";
@@ -545,7 +556,54 @@ namespace CerbiosTool
                     }
                 }
                 ImGui.PopItemWidth();
-                m_config.UDMAMode = (byte)(udmaMode);
+                m_config.UDMAModeMaster = (byte)(udmaModeMAster);
+            }
+
+            if (m_configMainVersion == "03")
+            {
+                string[] udmaModes = new string[] { "Auto (Startech Adapter)", "Auto (Generic Adapter)", "UDMA 2 (Default / Stock)", "UDMA 3 (Ultra DMA 80-Conductor)", "UDMA 4 (Ultra DMA 80-Conductor)", "UDMA 5 (Ultra DMA 80-Conductor)", "UDMA 6 (Experimental)" };
+
+                var udmaModeMaster = (int)m_config.UDMAModeMaster;
+                ImGui.Text("UDMA Mode Master:");
+                ImGui.PushItemWidth(250);
+                if (ImGui.Combo("##udmaModeMaster", ref udmaModeMaster, udmaModes, udmaModes.Length))
+                {
+                    if (udmaModeMaster < 2)
+                    {
+                        m_okDialog.Title = "WARNING";
+                        m_okDialog.Message = "Auto modes require a Ultra DMA (80-Conductor) IDE/ATA Cable\nto be installed. Using this mode without one can cause your\nXBOX not to boot.\nSafe Mode (Boot with Eject), will allow you to boot using UDMA 2 \nto perform a reflash if required.";
+                        m_okDialog.ShowModal();
+                    }
+                    else if (udmaModeMaster == 6)
+                    {
+                        m_okDialog.Title = "WARNING";
+                        m_okDialog.Message = "UDMA Mode 6 is EXPERIMENTAL and requires a Ultra DMA\n(80-Conductor) IDE/ATA Cable to be installed.\nThis has ONLY been tested with Startech Adapter.\nSafe Mode (Boot with Eject), will allow you to boot using UDMA 2 \nto perform a reflash if required.\n";
+                        m_okDialog.ShowModal();
+                    }
+                }
+                ImGui.PopItemWidth();
+                m_config.UDMAModeMaster = (byte)(udmaModeMaster);
+
+                var udmaModeSlave = (int)m_config.UDMAModeSlave;
+                ImGui.Text("UDMA Mode Slave:");
+                ImGui.PushItemWidth(250);
+                if (ImGui.Combo("##udmaModeSlave", ref udmaModeSlave, udmaModes, udmaModes.Length))
+                {
+                    if (udmaModeSlave < 2)
+                    {
+                        m_okDialog.Title = "WARNING";
+                        m_okDialog.Message = "Auto modes require a Ultra DMA (80-Conductor) IDE/ATA Cable\nto be installed. Using this mode without one can cause your\nXBOX not to boot.\nSafe Mode (Boot with Eject), will allow you to boot using UDMA 2 \nto perform a reflash if required.";
+                        m_okDialog.ShowModal();
+                    }
+                    else if (udmaModeSlave == 6)
+                    {
+                        m_okDialog.Title = "WARNING";
+                        m_okDialog.Message = "UDMA Mode 6 is EXPERIMENTAL and requires a Ultra DMA\n(80-Conductor) IDE/ATA Cable to be installed.\nThis has ONLY been tested with Startech Adapter.\nSafe Mode (Boot with Eject), will allow you to boot using UDMA 2 \nto perform a reflash if required.\n";
+                        m_okDialog.ShowModal();
+                    }
+                }
+                ImGui.PopItemWidth();
+                m_config.UDMAModeSlave = (byte)(udmaModeSlave);
             }
 
             ImGui.Spacing();
@@ -659,7 +717,7 @@ namespace CerbiosTool
             if (m_configMainVersion == "01")
             {
                 string[] udmaModes = new string[] { "Auto (Startech Adapter)", "Auto (Generic Adapter)", "UDMA 2 (Default / Stock)", "UDMA 3 (Ultra DMA 80-Conductor)", "UDMA 4 (Ultra DMA 80-Conductor)", "UDMA 5 (Ultra DMA 80-Conductor)", "UDMA 6 (Experimental)" };
-                var udmaMode = (int)m_config.UDMAMode;
+                var udmaMode = (int)m_config.UDMAModeMaster;
                 ImGui.Text("UDMA Mode:");
                 ImGui.PushItemWidth(250);
                 if (ImGui.Combo("##udmaMode", ref udmaMode, udmaModes, udmaModes.Length))
@@ -678,7 +736,7 @@ namespace CerbiosTool
                     }
                 }
                 ImGui.PopItemWidth();
-                m_config.UDMAMode = (byte)(udmaMode);
+                m_config.UDMAModeMaster = (byte)(udmaMode);
             }
 
             if (!m_biosLoaded)

@@ -43,7 +43,9 @@ namespace CerbiosTool
 
         public byte FanSpeed { get; set; }
 
-        public byte UDMAMode { get; set; }
+        public byte UDMAModeMaster { get; set; }
+
+        public byte UDMAModeSlave { get; set; }
 
         public byte Force480p { get; set; }
 
@@ -90,7 +92,8 @@ namespace CerbiosTool
             IGRShutdown = "678D";
             IGRCycle = "4678";
             FanSpeed = 0;
-            UDMAMode = 2;
+            UDMAModeMaster = 2;
+            UDMAModeSlave = 2;
             Force480p = 0;
             ForceVGA = 0;
             RTCEnable = 0;
@@ -126,7 +129,8 @@ namespace CerbiosTool
             IGRShutdown = "678D";
             IGRCycle = "4678";
             FanSpeed = 0;
-            UDMAMode = 2;
+            UDMAModeMaster = 2;
+            UDMAModeSlave = 2;
             Force480p = 0;
             ForceVGA = 0;
             RTCEnable = 0;
