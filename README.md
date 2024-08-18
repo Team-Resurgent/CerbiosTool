@@ -19,7 +19,7 @@ Time for some doggy style!!!!
 
 </div>
 
-				[ Program ..................................... Cerbios Tool V1.2.2 ]
+				[ Program ..................................... Cerbios Tool V2.0.2 ]
 				[ Type ................................. Cerbios Configuration Tool ]
 				[ OS Architecture ................................. Win, Linux, Mac ]
 				[ Patreon ....................https://www.patreon.com/teamresurgent ]
