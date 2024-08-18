@@ -125,8 +125,8 @@ namespace CerbiosTool
 
                 if (version == "02" || version == "03")
                 {
-                    config.Force480p = biosData[configOffsetMain + 727 + configOffset] = config.Force480p;
-                    config.ForceVGA = biosData[configOffsetMain + 728 + configOffset] = config.ForceVGA;
+                    config.Force480p = biosData[configOffsetMain + 727 + configOffset];
+                    config.ForceVGA = biosData[configOffsetMain + 728 + configOffset];
                     config.RTCEnable = biosData[configOffsetMain + 729 + configOffset];
                     config.BlockDashupdate = biosData[configOffsetMain + 730 + configOffset];
                     configOffset += 4;
