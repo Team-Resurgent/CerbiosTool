@@ -258,7 +258,7 @@ namespace CerbiosTool
                 iniFile.AppendLine($"DriveSetup = {m_config.DriveSetup}");
                 iniFile.AppendLine();
 
-                if (m_configMainVersion == "02")
+                if (m_configMainVersion == "02" || m_configMainVersion == "03")
                 {
                     iniFile.AppendLine("; Set UDMA mode 0-6 On Cold-Boot");
                     iniFile.AppendLine($"UDMAMode = {m_config.UDMAModeMaster}");
@@ -412,7 +412,7 @@ namespace CerbiosTool
             Toggle("##debug", ref debug, new Vector2(38, 20));
             m_config.Debug = (byte)(debug ? 1 : 0);
 
-            if (m_configMainVersion == "02")
+            if (m_configMainVersion == "02" || m_configMainVersion == "03")
             {
                 var force480p = m_config.Force480p == 1;
                 ImGui.Text("Force 480p:");
@@ -694,7 +694,7 @@ namespace CerbiosTool
             }
             ImGui.PopItemWidth();
 
-            if (m_configIgrVersion == "02")
+            if (m_configIgrVersion == "02" || m_configMainVersion == "03")
             {
                 var igrCycle = m_config.IGRCycle;
                 ImGui.Text("IGR Cycle:");
