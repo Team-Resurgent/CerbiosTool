@@ -31,7 +31,7 @@ Time for some doggy style!!!!
 				[ Hazeno ................................................... Tester ]
 				[ Dempsey_86 ............................................... Tester ]
 
-    				[                          Credits:                                 ]
+	                	[                          Credits:                                 ]
 				[ Harcroft ................................................. Tester ]				
 
 ## System Requirements
