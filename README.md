@@ -30,6 +30,8 @@ Time for some doggy style!!!!
 				[ HoRnEyDvL .............................. Tester / Project Manager ]
 				[ Hazeno ................................................... Tester ]
 				[ Dempsey_86 ............................................... Tester ]
+
+    				[                          Credits:                                 ]
 				[ Harcroft ................................................. Tester ]				
 
 ## System Requirements
